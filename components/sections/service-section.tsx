@@ -1,10 +1,13 @@
-import { fetchServices } from "@/sanity/lib/fetchers";
+import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
-import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { ServiceCard } from "@/components/cards/service-card";
-import { CtaSection } from "@/components/sections/cta-section";
 import type { Service } from "@/types/sanity";
+
+interface ServiceSectionProps {
+  services?: Service[];
+  className?: string;
+}
 
 const fallbackServices: Service[] = [
   {
@@ -28,15 +31,6 @@ const fallbackServices: Service[] = [
   {
     _id: "fallback-3",
     _type: "service",
-    title: "促排卵方案咨询",
-    slug: { current: "ovulation-induction", _type: "slug" },
-    summary:
-      "根据卵巢功能和身体状况，制定个性化促排方案，提高取卵效率。",
-    highlights: ["个性化方案", "卵巢调理", "监测指导"],
-  },
-  {
-    _id: "fallback-4",
-    _type: "service",
     title: "胚胎筛查方案",
     slug: { current: "embryo-screening", _type: "slug" },
     summary:
@@ -44,7 +38,7 @@ const fallbackServices: Service[] = [
     highlights: ["PGS/PGD", "着床率提升", "优生优育"],
   },
   {
-    _id: "fallback-5",
+    _id: "fallback-4",
     _type: "service",
     title: "高龄备孕方案",
     slug: { current: "advanced-age-fertility", _type: "slug" },
@@ -53,7 +47,7 @@ const fallbackServices: Service[] = [
     highlights: ["35+", "卵巢调理", "个性化方案"],
   },
   {
-    _id: "fallback-6",
+    _id: "fallback-5",
     _type: "service",
     title: "私密定制咨询",
     slug: { current: "private-consultation", _type: "slug" },
@@ -63,43 +57,32 @@ const fallbackServices: Service[] = [
   },
 ];
 
-export default async function ServicesPage() {
-  const services = await fetchServices();
+/**
+ * 首页服务区块
+ */
+export function ServiceSection({
+  services = fallbackServices,
+  className,
+}: ServiceSectionProps) {
   const displayServices =
     services && services.length > 0 ? services : fallbackServices;
 
   return (
-    <main>
-      {/* 面包屑 */}
-      <PageContainer className="pt-4 pb-0">
-        <Breadcrumbs items={[{ label: "服务项目" }]} />
+    <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
+      <PageContainer>
+        <SectionHeader
+          eyebrow="Our Services"
+          title="专业服务项目"
+          description="为您的家庭提供全方位的辅助生殖咨询服务"
+          align="center"
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          {displayServices.map((service) => (
+            <ServiceCard key={service._id} service={service} />
+          ))}
+        </div>
       </PageContainer>
-
-      {/* 页面标题区 */}
-      <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
-        <PageContainer>
-          <SectionHeader
-            eyebrow="服务项目"
-            title="根据您的情况，匹配更合适的助孕咨询路径"
-            description="不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。"
-            align="center"
-          />
-        </PageContainer>
-      </section>
-
-      {/* 服务卡片列表 */}
-      <section className="bg-brand-cream pb-16 lg:pb-24">
-        <PageContainer>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {displayServices.map((service) => (
-              <ServiceCard key={service._id} service={service} />
-            ))}
-          </div>
-        </PageContainer>
-      </section>
-
-      {/* CTA */}
-      <CtaSection />
-    </main>
+    </section>
   );
 }

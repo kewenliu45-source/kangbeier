@@ -1,6 +1,17 @@
 import type { SchemaTypeDefinition } from "sanity";
 
-import { siteSettings } from "./siteSettings";
+// Document Schemas
+import { advantage } from "./documents/advantage";
+import { article } from "./documents/article";
+import { articleCategory } from "./documents/articleCategory";
+import { banner } from "./documents/banner";
+import { caseSchema } from "./documents/case";
+import { contactInfo } from "./documents/contactInfo";
+import { faq } from "./documents/faq";
+import { pageSeo } from "./documents/pageSeo";
+import { service } from "./documents/service";
+import { siteSettings } from "./documents/siteSettings";
+import { video } from "./documents/video";
 
 // Object Schemas
 import { cta } from "./objects/cta";
@@ -19,7 +30,19 @@ export const objectTypes: SchemaTypeDefinition[] = [
 ];
 
 /** 所有 Document Schema */
-export const documentTypes: SchemaTypeDefinition[] = [siteSettings];
+export const documentTypes: SchemaTypeDefinition[] = [
+  siteSettings,
+  pageSeo,
+  banner,
+  service,
+  advantage,
+  caseSchema,
+  articleCategory,
+  article,
+  video,
+  faq,
+  contactInfo,
+];
 
 /** 汇总所有 Schema 类型 */
 export const schema: { types: SchemaTypeDefinition[] } = {
