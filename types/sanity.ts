@@ -93,6 +93,9 @@ export interface ArticleRef {
   _type: "article";
   title: string;
   slug: Slug;
+  excerpt?: string;
+  coverImage?: ImageWithAlt;
+  publishedAt?: string;
 }
 
 // ─────────────────────────────────────────────
