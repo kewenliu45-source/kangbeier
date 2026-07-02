@@ -1,10 +1,21 @@
+import type { Metadata } from "next";
 import { fetchServices } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { ServiceCard } from "@/components/cards/service-card";
 import { CtaSection } from "@/components/sections/cta-section";
 import type { Service } from "@/types/sanity";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "服务项目",
+    description:
+      "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。",
+    path: "/services",
+  });
+}
 
 const fallbackServices: Service[] = [
   {

@@ -5,6 +5,7 @@ import { Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/page-container";
+import { FadeIn } from "@/components/motion/fade-in";
 
 interface CtaSectionProps {
   /** 主标题 */
@@ -57,6 +58,7 @@ export function CtaSection({
       )}
     >
       <PageContainer>
+        <FadeIn>
         <div
           className={cn(
             "relative overflow-hidden rounded-2xl",
@@ -72,7 +74,7 @@ export function CtaSection({
             {/* 标题 */}
             <h2
               className={cn(
-                "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
+                "text-2xl sm:text-3xl lg:text-4xl font-bold",
                 "text-primary"
               )}
             >
@@ -164,6 +166,7 @@ export function CtaSection({
             )}
           </div>
         </div>
+        </FadeIn>
       </PageContainer>
     </section>
   );

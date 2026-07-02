@@ -6,6 +6,7 @@ import { article } from "./documents/article";
 import { articleCategory } from "./documents/articleCategory";
 import { banner } from "./documents/banner";
 import { caseSchema } from "./documents/case";
+import { consultationLead } from "./documents/consultationLead";
 import { contactInfo } from "./documents/contactInfo";
 import { faq } from "./documents/faq";
 import { pageSeo } from "./documents/pageSeo";
@@ -42,6 +43,7 @@ export const documentTypes: SchemaTypeDefinition[] = [
   video,
   faq,
   contactInfo,
+  consultationLead,
 ];
 
 /** 汇总所有 Schema 类型 */

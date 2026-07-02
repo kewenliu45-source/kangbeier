@@ -1,7 +1,9 @@
+import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { CaseCard } from "@/components/cards/case-card";
+import { FadeIn } from "@/components/motion/fade-in";
 import type { CaseStudy } from "@/types/sanity";
 
 interface CaseSectionProps {
@@ -69,18 +71,32 @@ export function CaseSection({
       className={cn("py-16 lg:py-24 bg-brand-cream", className)}
     >
       <PageContainer>
-        <SectionHeader
-          eyebrow="Success Stories"
-          title="真实案例分享"
-          description="匿名展示，保护隐私，仅供参考"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Success Stories"
+            title="真实案例分享"
+            description="匿名展示，保护隐私，仅供参考"
+            align="center"
+          />
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {displayCases.map((caseStudy) => (
-            <CaseCard key={caseStudy._id} caseStudy={caseStudy} />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {displayCases.map((caseStudy) => (
+              <CaseCard key={caseStudy._id} caseStudy={caseStudy} />
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* 空状态提示 */}
+        {displayCases.length === 0 && (
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <FileText className="w-4 h-4" />
+              <span>案例正在整理中，您可以联系我们了解详情</span>
+            </div>
+          </div>
+        )}
 
         {/* 合规提示 */}
         <p className="mt-8 text-center text-xs text-muted-foreground/60">

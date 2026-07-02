@@ -1,7 +1,9 @@
+import { BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ArticleCard } from "@/components/cards/article-card";
+import { FadeIn } from "@/components/motion/fade-in";
 import type { Article } from "@/types/sanity";
 
 interface ArticleSectionProps {
@@ -70,18 +72,32 @@ export function ArticleSection({
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
       <PageContainer>
-        <SectionHeader
-          eyebrow="Knowledge Center"
-          title="科普文章"
-          description="了解辅助生殖知识，做出更明智的决策"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Knowledge Center"
+            title="科普文章"
+            description="了解辅助生殖知识，做出更明智的决策"
+            align="center"
+          />
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {displayArticles.map((article) => (
-            <ArticleCard key={article._id} article={article} />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {displayArticles.map((article) => (
+              <ArticleCard key={article._id} article={article} />
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* 空状态提示 */}
+        {displayArticles.length === 0 && (
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <BookOpen className="w-4 h-4" />
+              <span>科普文章正在整理中，敬请期待</span>
+            </div>
+          </div>
+        )}
       </PageContainer>
     </section>
   );

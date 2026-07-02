@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
 import {
   Phone,
   MessageCircle,
@@ -6,12 +8,34 @@ import {
   Mail,
 } from "lucide-react";
 import { fetchContactPageData } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
+import { LocalBusinessJsonLd } from "@/components/seo/local-business-json-ld";
+import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
 import { cn } from "@/lib/utils";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchContactPageData();
+  const contactSeo = data.contactInfo?.seo;
+  const pageSeo = data.pageSeo;
+
+  return buildMetadata({
+    title: contactSeo?.metaTitle || pageSeo?.title || "联系我们",
+    description:
+      contactSeo?.metaDescription ||
+      pageSeo?.description ||
+      "如果您正在经历高龄备孕、试管多次失败、二胎规划或特殊生育需求，可以先做一次初步咨询。",
+    keywords: contactSeo?.keywords || pageSeo?.keywords,
+    path: "/contact",
+    noIndex: contactSeo?.noIndex || pageSeo?.noIndex || false,
+  });
+}
 
 const fallbackContact = {
   phone: "155-2728-3220",
@@ -39,6 +63,20 @@ export default async function ContactPage() {
 
   return (
     <main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "首页", url: "/" },
+          { name: "联系我们", url: "/contact" },
+        ]}
+      />
+      <LocalBusinessJsonLd
+        name={data.siteSettings?.siteName || "好孕生命中心"}
+        phone={phone}
+        address={contact?.address}
+        openingHours={businessHours}
+      />
+      <FaqJsonLd faqs={faqs} />
+
       {/* 面包屑 */}
       <PageContainer className="pt-4 pb-0">
         <Breadcrumbs items={[{ label: "联系我们" }]} />
@@ -63,7 +101,7 @@ export default async function ContactPage() {
             {/* 电话 */}
             <a
               href={`tel:${phone?.replace(/-/g, "")}`}
-              className="group bg-brand-cream rounded-[20px] p-6 border border-border/50 text-center hover:border-primary/30 hover:shadow-md transition-all"
+              className="group bg-brand-cream rounded-2xl p-6 border border-border/50 text-center hover:border-primary/30 hover:shadow-md transition-all"
             >
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <Phone className="w-5 h-5 text-primary" />
@@ -74,7 +112,7 @@ export default async function ContactPage() {
             </a>
 
             {/* 微信 */}
-            <div className="bg-brand-cream rounded-[20px] p-6 border border-border/50 text-center">
+            <div className="bg-brand-cream rounded-2xl p-6 border border-border/50 text-center">
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-primary" />
               </div>
@@ -83,7 +121,7 @@ export default async function ContactPage() {
             </div>
 
             {/* 营业时间 */}
-            <div className="bg-brand-cream rounded-[20px] p-6 border border-border/50 text-center">
+            <div className="bg-brand-cream rounded-2xl p-6 border border-border/50 text-center">
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <Clock className="w-5 h-5 text-primary" />
               </div>
@@ -92,7 +130,7 @@ export default async function ContactPage() {
             </div>
 
             {/* 地址/邮箱 */}
-            <div className="bg-brand-cream rounded-[20px] p-6 border border-border/50 text-center">
+            <div className="bg-brand-cream rounded-2xl p-6 border border-border/50 text-center">
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 {contact?.address ? (
                   <MapPin className="w-5 h-5 text-primary" />
@@ -135,25 +173,13 @@ export default async function ContactPage() {
         </PageContainer>
       </section>
 
-      {/* 表单占位区 */}
+      {/* 咨询表单 */}
       <section className="py-12 lg:py-16 bg-white">
         <PageContainer>
-          <div className="max-w-lg mx-auto text-center">
-            <div className="bg-brand-cream rounded-2xl p-8 border border-border/50">
-              <h3 className="text-lg font-bold text-primary mb-2">
-                咨询表单即将开放
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                当前可通过电话或公众号先联系
-              </p>
-              <a
-                href={`tel:${phone?.replace(/-/g, "")}`}
-                className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>电话咨询</span>
-              </a>
-            </div>
+          <div className="max-w-lg mx-auto">
+            <Suspense fallback={<div className="text-center py-8">加载中...</div>}>
+              <ConsultationForm />
+            </Suspense>
           </div>
         </PageContainer>
       </section>

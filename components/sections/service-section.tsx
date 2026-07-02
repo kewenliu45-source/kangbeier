@@ -1,7 +1,9 @@
+import { Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ServiceCard } from "@/components/cards/service-card";
+import { FadeIn } from "@/components/motion/fade-in";
 import type { Service } from "@/types/sanity";
 
 interface ServiceSectionProps {
@@ -70,18 +72,32 @@ export function ServiceSection({
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
       <PageContainer>
-        <SectionHeader
-          eyebrow="Our Services"
-          title="专业服务项目"
-          description="为您的家庭提供全方位的辅助生殖咨询服务"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Our Services"
+            title="专业服务项目"
+            description="为您的家庭提供全方位的辅助生殖咨询服务"
+            align="center"
+          />
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {displayServices.map((service) => (
-            <ServiceCard key={service._id} service={service} />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {displayServices.map((service) => (
+              <ServiceCard key={service._id} service={service} />
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* 空状态提示 */}
+        {displayServices.length === 0 && (
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <Stethoscope className="w-4 h-4" />
+              <span>服务项目正在更新中，欢迎联系我们了解详情</span>
+            </div>
+          </div>
+        )}
       </PageContainer>
     </section>
   );

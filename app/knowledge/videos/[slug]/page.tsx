@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink, Play } from "lucide-react";
 import { fetchVideoBySlug, fetchVideoSlugs } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
+import { VideoJsonLd } from "@/components/seo/video-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { CtaSection } from "@/components/sections/cta-section";
@@ -16,6 +20,25 @@ interface Props {
 export async function generateStaticParams() {
   const slugs = await fetchVideoSlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const video = await fetchVideoBySlug(slug);
+
+  if (!video) {
+    return buildMetadata({ title: "视频未找到", noIndex: true });
+  }
+
+  return buildMetadata({
+    title: video.seo?.metaTitle || video.title,
+    description: video.seo?.metaDescription || video.summary,
+    keywords: video.seo?.keywords,
+    path: `/knowledge/videos/${slug}`,
+    noIndex: video.seo?.noIndex || false,
+  });
 }
 
 /** 判断 URL 是否可安全嵌入 */
@@ -75,6 +98,24 @@ export default async function VideoDetailPage({ params }: Props) {
 
   return (
     <main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "首页", url: "/" },
+          { name: "科普中心", url: "/knowledge" },
+          { name: video.title, url: `/knowledge/videos/${slug}` },
+        ]}
+      />
+      <VideoJsonLd
+        name={video.title}
+        description={video.summary}
+        thumbnailUrl={coverUrl || undefined}
+        uploadDate={video.publishedAt}
+        duration={video.duration}
+        contentUrl={!embedUrl ? video.videoUrl : undefined}
+        embedUrl={embedUrl || undefined}
+        url={`/knowledge/videos/${slug}`}
+      />
+
       {/* 面包屑 */}
       <PageContainer className="pt-4 pb-0">
         <Breadcrumbs
@@ -111,7 +152,7 @@ export default async function VideoDetailPage({ params }: Props) {
             </div>
 
             {/* 标题 */}
-            <h1 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary">
               {video.title}
             </h1>
 
@@ -258,7 +299,7 @@ export default async function VideoDetailPage({ params }: Props) {
                   <Link
                     key={related._id}
                     href={`/knowledge/videos/${related.slug?.current || ""}`}
-                    className="group block bg-white rounded-[20px] p-6 border border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
+                    className="group block bg-white rounded-2xl p-6 border border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <Play className="w-4 h-4 text-accent" />

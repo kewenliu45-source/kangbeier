@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { fetchKnowledgePageData } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -9,6 +11,21 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { Film, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Article, Video } from "@/types/sanity";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchKnowledgePageData();
+  const seo = data.pageSeo;
+
+  return buildMetadata({
+    title: seo?.title || "科普中心",
+    description:
+      seo?.description ||
+      "整理试管基础知识、高龄备孕、胚胎筛查和常见问题，帮助您在咨询前先建立基本判断。",
+    keywords: seo?.keywords,
+    path: "/knowledge",
+    noIndex: seo?.noIndex || false,
+  });
+}
 
 const fallbackArticles: Article[] = [
   {

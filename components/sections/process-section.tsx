@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
+import { FadeIn } from "@/components/motion/fade-in";
 
 interface ProcessStep {
   title: string;
@@ -50,12 +51,14 @@ export function ProcessSection({
       className={cn("py-16 lg:py-24 bg-brand-cream", className)}
     >
       <PageContainer>
-        <SectionHeader
-          eyebrow="Our Process"
-          title="服务流程"
-          description="从初次咨询到后续随访，全程专业陪伴"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Our Process"
+            title="服务流程"
+            description="从初次咨询到后续随访，全程专业陪伴"
+            align="center"
+          />
+        </FadeIn>
 
         {/* 桌面端：横向步骤 */}
         <div className="hidden lg:block">

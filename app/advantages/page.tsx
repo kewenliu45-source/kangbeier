@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { fetchAdvantagesPageData } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -6,6 +8,21 @@ import { AdvantageCard } from "@/components/cards/advantage-card";
 import { CtaSection } from "@/components/sections/cta-section";
 import { cn } from "@/lib/utils";
 import type { Advantage } from "@/types/sanity";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchAdvantagesPageData();
+  const seo = data.pageSeo;
+
+  return buildMetadata({
+    title: seo?.title || "选择我们",
+    description:
+      seo?.description ||
+      "从身体情况评估、方案理解、资源对接到周期陪伴，为有特殊生育需求的家庭提供更清晰的咨询支持。",
+    keywords: seo?.keywords,
+    path: "/advantages",
+    noIndex: seo?.noIndex || false,
+  });
+}
 
 const fallbackAdvantages: Advantage[] = [
   {
@@ -115,7 +132,7 @@ export default async function AdvantagesPage() {
                 .map((stat, i) => (
                   <div
                     key={i}
-                    className="bg-brand-cream rounded-[20px] p-5 text-center border border-border/50"
+                    className="bg-brand-cream rounded-2xl p-5 text-center border border-border/50"
                   >
                     <p className="text-2xl font-bold text-primary">
                       {stat.value}

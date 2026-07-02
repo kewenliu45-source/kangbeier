@@ -13,7 +13,9 @@
   --color-secondary: #FBF8F2;
   --color-secondary-foreground: #064E45;
   --color-accent: #DDAA55;
+  --color-accent-hover: #C9913C;
   --color-accent-foreground: #064E45;
+  --color-primary-hover: #043C35;
   --color-muted: #E6DDD0;
   --color-muted-foreground: #475B57;
   --color-border: #E6DDD0;
@@ -157,4 +159,41 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Focus visible ring (品牌色) ── */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ── Smooth scroll (non-reduced-motion) ── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Brand skeleton pulse ── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-skeleton-pulse {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

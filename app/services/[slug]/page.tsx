@@ -1,5 +1,9 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { fetchServiceBySlug, fetchServiceSlugs } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
+import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -14,6 +18,25 @@ interface Props {
 export async function generateStaticParams() {
   const slugs = await fetchServiceSlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await fetchServiceBySlug(slug);
+
+  if (!service) {
+    return buildMetadata({ title: "服务未找到", noIndex: true });
+  }
+
+  return buildMetadata({
+    title: service.seo?.metaTitle || service.title,
+    description: service.seo?.metaDescription || service.summary,
+    keywords: service.seo?.keywords,
+    path: `/services/${slug}`,
+    noIndex: service.seo?.noIndex || false,
+  });
 }
 
 export default async function ServiceDetailPage({ params }: Props) {
@@ -32,6 +55,15 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   return (
     <main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "首页", url: "/" },
+          { name: "服务项目", url: "/services" },
+          { name: service.title, url: `/services/${slug}` },
+        ]}
+      />
+      <FaqJsonLd faqs={faqs} />
+
       {/* 面包屑 */}
       <PageContainer className="pt-4 pb-0">
         <Breadcrumbs
@@ -46,7 +78,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
               {service.title}
             </h1>
             {service.summary && (
@@ -150,7 +182,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               {service.advantages.map((adv, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-[20px] p-6 border border-border/50 shadow-sm"
+                  className="bg-white rounded-2xl p-6 border border-border/50 shadow-sm"
                 >
                   <h3 className="font-bold text-primary">{adv.title}</h3>
                   {adv.description && (

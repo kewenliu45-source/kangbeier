@@ -30,9 +30,10 @@ export function AdvantageCard({
   return (
     <div
       className={cn(
-        "bg-white rounded-[20px] p-6 sm:p-7",
+        "bg-white rounded-2xl p-6 sm:p-7",
         "border border-border/50 shadow-sm",
-        "transition-all duration-200 hover:shadow-md",
+        "transition-all duration-200",
+        "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
         className
       )}
     >

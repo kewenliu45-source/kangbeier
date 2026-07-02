@@ -1,4 +1,8 @@
+import type { Metadata } from "next";
 import { fetchHomePageData } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
+import { WebSiteJsonLd } from "@/components/seo/website-json-ld";
+import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { HeroSection } from "@/components/sections/hero-section";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { ServiceSection } from "@/components/sections/service-section";
@@ -9,6 +13,25 @@ import { ArticleSection } from "@/components/sections/article-section";
 import { VideoSection } from "@/components/sections/video-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchHomePageData();
+
+  // 优先级：pageSeo > siteSettings.defaultSeo > fallback
+  const pageSeo = data.pageSeo;
+  const defaultSeo = data.siteSettings?.defaultSeo;
+
+  return buildMetadata({
+    title: pageSeo?.title || defaultSeo?.metaTitle || "好孕生命中心",
+    description:
+      pageSeo?.description ||
+      defaultSeo?.metaDescription ||
+      "为高龄、二胎、试管多次失败及特殊生育需求家庭，提供一对一助孕咨询、方案评估和全程陪伴服务。",
+    keywords: pageSeo?.keywords || defaultSeo?.keywords,
+    path: "/",
+    noIndex: pageSeo?.noIndex || defaultSeo?.noIndex || false,
+  });
+}
 
 export default async function Home() {
   const data = await fetchHomePageData();
@@ -22,6 +45,12 @@ export default async function Home() {
 
   return (
     <main>
+      <WebSiteJsonLd
+        name={data.siteSettings?.siteName || "好孕生命中心"}
+        description={data.siteSettings?.description}
+      />
+      <FaqJsonLd faqs={faqs} />
+
       {/* 1. Hero 首屏 */}
       <HeroSection banner={data.banners?.[0]} />
 

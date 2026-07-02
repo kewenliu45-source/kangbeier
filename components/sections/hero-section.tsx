@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone } from "lucide-react";
+import { Phone, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/page-container";
+import { FadeIn } from "@/components/motion/fade-in";
 import { urlForImage } from "@/sanity/lib/image";
 import type { Banner, SanityImage } from "@/types/sanity";
 
@@ -61,7 +62,7 @@ export function HeroSection({ banner }: HeroSectionProps) {
       <PageContainer className="relative py-16 sm:py-20 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* 左侧文案 */}
-          <div className="max-w-xl">
+          <FadeIn className="max-w-xl" y={32}>
             <span
               className={cn(
                 "inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4",
@@ -73,7 +74,7 @@ export function HeroSection({ banner }: HeroSectionProps) {
 
             <h1
               className={cn(
-                "text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold tracking-tight leading-[1.15]",
+                "text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.15]",
                 "text-primary"
               )}
             >
@@ -122,13 +123,13 @@ export function HeroSection({ banner }: HeroSectionProps) {
                 </Button>
               </Link>
             </div>
-          </div>
+          </FadeIn>
 
           {/* 右侧图片卡片 */}
-          <div className="relative">
+          <FadeIn className="relative" delay={0.15} y={32}>
             <div
               className={cn(
-                "relative rounded-[28px] overflow-hidden",
+                "relative rounded-2xl overflow-hidden",
                 "bg-white shadow-lg border border-border/50"
               )}
             >
@@ -147,7 +148,7 @@ export function HeroSection({ banner }: HeroSectionProps) {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center p-8">
                       <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-3xl">🤱</span>
+                        <Heart className="w-8 h-8 text-primary/40" />
                       </div>
                       <p className="text-sm text-muted-foreground/60">
                         专业 · 温暖 · 陪伴
@@ -169,7 +170,7 @@ export function HeroSection({ banner }: HeroSectionProps) {
                 </p>
               </div>
             </div>
-          </div>
+          </FadeIn>
         </div>
 
       </PageContainer>

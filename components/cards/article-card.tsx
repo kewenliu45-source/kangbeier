@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { urlForImage } from "@/sanity/lib/image";
 import type { Article } from "@/types/sanity";
@@ -45,7 +45,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
     <Link
       href={href}
       className={cn(
-        "group block bg-white rounded-[20px] overflow-hidden",
+        "group block bg-white rounded-2xl overflow-hidden",
         "border border-border/50 shadow-sm",
         "transition-all duration-200",
         "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
@@ -66,7 +66,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center p-6">
               <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-lg">📖</span>
+                <FileText className="w-5 h-5 text-primary/40" />
               </div>
               <p className="text-xs text-muted-foreground/60">科普文章</p>
             </div>

@@ -1,7 +1,9 @@
+import { Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { AdvantageCard } from "@/components/cards/advantage-card";
+import { FadeIn } from "@/components/motion/fade-in";
 import type { Advantage } from "@/types/sanity";
 
 interface AdvantageSectionProps {
@@ -57,22 +59,36 @@ export function AdvantageSection({
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-green-light", className)}>
       <PageContainer>
-        <SectionHeader
-          eyebrow="Why Choose Us"
-          title="选择我们的理由"
-          description="专业、私密、高效的一站式辅助生殖咨询服务"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Why Choose Us"
+            title="选择我们的理由"
+            description="专业、私密、高效的一站式辅助生殖咨询服务"
+            align="center"
+          />
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {displayAdvantages.map((advantage, index) => (
-            <AdvantageCard
-              key={advantage._id}
-              advantage={advantage}
-              index={index}
-            />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+            {displayAdvantages.map((advantage, index) => (
+              <AdvantageCard
+                key={advantage._id}
+                advantage={advantage}
+                index={index}
+              />
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* 空状态提示 */}
+        {displayAdvantages.length === 0 && (
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <Shield className="w-4 h-4" />
+              <span>内容正在整理中，欢迎联系我们了解详情</span>
+            </div>
+          </div>
+        )}
       </PageContainer>
     </section>
   );

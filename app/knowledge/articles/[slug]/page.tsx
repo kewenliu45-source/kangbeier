@@ -1,8 +1,12 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
 import { fetchArticleBySlug, fetchArticleSlugs } from "@/sanity/lib/fetchers";
+import { buildMetadata } from "@/lib/metadata";
+import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
+import { ArticleJsonLd } from "@/components/seo/article-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { CtaSection } from "@/components/sections/cta-section";
@@ -16,6 +20,26 @@ interface Props {
 export async function generateStaticParams() {
   const slugs = await fetchArticleSlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await fetchArticleBySlug(slug);
+
+  if (!article) {
+    return buildMetadata({ title: "文章未找到", noIndex: true });
+  }
+
+  return buildMetadata({
+    title: article.seo?.metaTitle || article.title,
+    description: article.seo?.metaDescription || article.excerpt,
+    keywords: article.seo?.keywords,
+    path: `/knowledge/articles/${slug}`,
+    noIndex: article.seo?.noIndex || false,
+    type: "article",
+  });
 }
 
 export default async function ArticleDetailPage({ params }: Props) {
@@ -53,6 +77,23 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "首页", url: "/" },
+          { name: "科普中心", url: "/knowledge" },
+          { name: article.title, url: `/knowledge/articles/${slug}` },
+        ]}
+      />
+      <ArticleJsonLd
+        headline={article.title}
+        description={article.excerpt}
+        image={coverUrl || undefined}
+        datePublished={article.publishedAt}
+        dateModified={article.updatedAt || article.publishedAt}
+        author={article.author}
+        url={`/knowledge/articles/${slug}`}
+      />
+
       {/* 面包屑 */}
       <PageContainer className="pt-4 pb-0">
         <Breadcrumbs
@@ -83,7 +124,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
 
             {/* 标题 */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary leading-tight">
               {article.title}
             </h1>
 
@@ -189,7 +230,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                 <Link
                   key={related._id}
                   href={`/knowledge/articles/${related.slug?.current || ""}`}
-                  className="group block bg-white rounded-[20px] p-6 border border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
+                  className="group block bg-white rounded-2xl p-6 border border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                 >
                   <h3 className="font-bold text-primary group-hover:text-primary/80 transition-colors line-clamp-2">
                     {related.title}

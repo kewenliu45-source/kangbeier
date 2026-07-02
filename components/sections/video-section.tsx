@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { VideoCard } from "@/components/cards/video-card";
+import { FadeIn } from "@/components/motion/fade-in";
 import type { Video } from "@/types/sanity";
 
 interface VideoSectionProps {
@@ -67,18 +68,22 @@ export function VideoSection({
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream-light", className)}>
       <PageContainer>
-        <SectionHeader
-          eyebrow="Video Center"
-          title="科普视频"
-          description="通过视频快速了解辅助生殖知识"
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Video Center"
+            title="科普视频"
+            description="通过视频快速了解辅助生殖知识"
+            align="center"
+          />
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {displayVideos.map((video) => (
-            <VideoCard key={video._id} video={video} />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {displayVideos.map((video) => (
+              <VideoCard key={video._id} video={video} />
+            ))}
+          </div>
+        </FadeIn>
 
         {/* 空状态提示 */}
         {(!videos || videos.length === 0) && (

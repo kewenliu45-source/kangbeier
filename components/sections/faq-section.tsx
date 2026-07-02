@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
+import { FadeIn } from "@/components/motion/fade-in";
 
 interface FaqItem {
   question: string;
@@ -102,9 +103,26 @@ export function FaqSection({
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  // 空数据时不渲染
+  // 空数据时显示提示
   if (!faqs || faqs.length === 0) {
-    return null;
+    return (
+      <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
+        <PageContainer>
+          <SectionHeader
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
+            align="center"
+          />
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl border border-border shadow-sm p-8 text-center">
+            <HelpCircle className="w-8 h-8 mx-auto mb-3 text-muted-foreground/40" />
+            <p className="text-sm text-muted-foreground">
+              暂无常见问题，如有疑问欢迎联系我们。
+            </p>
+          </div>
+        </PageContainer>
+      </section>
+    );
   }
 
   return (
@@ -112,30 +130,34 @@ export function FaqSection({
       className={cn("py-16 lg:py-24 bg-brand-cream", className)}
     >
       <PageContainer>
-        <SectionHeader
-          eyebrow={eyebrow}
-          title={title}
-          description={description}
-          align="center"
-        />
+        <FadeIn>
+          <SectionHeader
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
+            align="center"
+          />
+        </FadeIn>
 
-        <div
-          className={cn(
-            "max-w-3xl mx-auto",
-            "bg-white rounded-2xl border border-border shadow-sm",
-            "overflow-hidden"
-          )}
-        >
-          {faqs.map((faq, index) => (
-            <FaqItemComponent
-              key={index}
-              question={faq.question}
-              answer={faq.answer}
-              isOpen={openIndex === index}
-              onToggle={() => handleToggle(index)}
-            />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div
+            className={cn(
+              "max-w-3xl mx-auto",
+              "bg-white rounded-2xl border border-border shadow-sm",
+              "overflow-hidden"
+            )}
+          >
+            {faqs.map((faq, index) => (
+              <FaqItemComponent
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isOpen={openIndex === index}
+                onToggle={() => handleToggle(index)}
+              />
+            ))}
+          </div>
+        </FadeIn>
       </PageContainer>
     </section>
   );
