@@ -18,7 +18,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
     <Link
       href={href}
       className={cn(
-        "group block bg-white rounded-2xl p-6 sm:p-7",
+        "group block h-full bg-white rounded-2xl p-6 sm:p-7",
         "border border-border/50 shadow-sm",
         "transition-all duration-200",
         "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
@@ -26,7 +26,7 @@ export function ServiceCard({ service, className }: ServiceCardProps) {
       )}
     >
       {/* 标题 */}
-      <h3 className="text-lg font-bold text-primary group-hover:text-primary/80 transition-colors">
+      <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
         {service.title}
       </h3>
 

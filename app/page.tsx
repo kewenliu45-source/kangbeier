@@ -17,12 +17,13 @@ import { CtaSection } from "@/components/sections/cta-section";
 export async function generateMetadata(): Promise<Metadata> {
   const data = await fetchHomePageData();
 
-  // 优先级：pageSeo > siteSettings.defaultSeo > fallback
+  // 优先级：pageSeo > siteSettings.defaultSeo > siteSettings.siteName > fallback
   const pageSeo = data.pageSeo;
   const defaultSeo = data.siteSettings?.defaultSeo;
+  const siteName = data.siteSettings?.siteName || "好孕生命中心";
 
   return buildMetadata({
-    title: pageSeo?.title || defaultSeo?.metaTitle || "好孕生命中心",
+    title: pageSeo?.title || defaultSeo?.metaTitle || siteName,
     description:
       pageSeo?.description ||
       defaultSeo?.metaDescription ||
@@ -55,31 +56,46 @@ export default async function Home() {
       <HeroSection banner={data.banners?.[0]} />
 
       {/* 2. 信任背书 */}
-      <TrustBar />
+      <TrustBar className="pt-8 pb-6 lg:pt-10 lg:pb-8" />
 
       {/* 3. 服务项目 */}
-      <ServiceSection services={data.featuredServices} />
+      <ServiceSection
+        services={data.featuredServices}
+        className="pt-8 pb-14 lg:pt-10 lg:pb-16"
+      />
 
       {/* 4. 核心优势 */}
-      <AdvantageSection advantages={data.featuredAdvantages} />
+      <AdvantageSection
+        advantages={data.featuredAdvantages}
+        className="py-14 lg:py-18"
+      />
 
       {/* 5. 服务流程 */}
-      <ProcessSection />
+      <ProcessSection className="py-14 lg:py-18 bg-white" />
 
       {/* 6. 成功案例 */}
-      <CaseSection cases={data.featuredCases} />
+      <CaseSection
+        cases={data.featuredCases}
+        className="pt-14 pb-10 lg:pt-18 lg:pb-12 bg-brand-green-light"
+      />
 
       {/* 7. 科普文章 */}
-      <ArticleSection articles={data.featuredArticles} />
+      <ArticleSection
+        articles={data.featuredArticles}
+        className="pt-10 pb-8 lg:pt-12 lg:pb-10 bg-brand-green-light"
+      />
 
       {/* 8. 科普视频 */}
-      <VideoSection videos={data.featuredVideos} />
+      <VideoSection
+        videos={data.featuredVideos}
+        className="pt-8 pb-14 lg:pt-10 lg:pb-18 bg-brand-green-light"
+      />
 
       {/* 9. 常见问题 */}
-      <FaqSection faqs={faqs} />
+      <FaqSection faqs={faqs} className="py-14 lg:py-18 bg-white" />
 
       {/* 10. 咨询转化 */}
-      <CtaSection />
+      <CtaSection className="pt-0 pb-14 lg:pb-18 bg-white" />
     </main>
   );
 }

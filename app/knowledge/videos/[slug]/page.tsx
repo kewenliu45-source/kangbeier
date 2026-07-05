@@ -152,7 +152,7 @@ export default async function VideoDetailPage({ params }: Props) {
             </div>
 
             {/* 标题 */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-foreground">
               {video.title}
             </h1>
 
@@ -248,7 +248,7 @@ export default async function VideoDetailPage({ params }: Props) {
         <section className="py-12 lg:py-16 bg-white">
           <PageContainer>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl font-bold text-primary mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-6">
                 视频文稿
               </h2>
               <div className="space-y-4">
@@ -285,7 +285,7 @@ export default async function VideoDetailPage({ params }: Props) {
         video.relatedVideos.length > 0 && (
           <section className="py-12 lg:py-16 bg-brand-cream">
             <PageContainer>
-              <h2 className="text-2xl font-bold text-primary text-center mb-8">
+              <h2 className="text-2xl font-bold text-foreground text-center mb-8">
                 相关视频
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -309,7 +309,7 @@ export default async function VideoDetailPage({ params }: Props) {
                         </span>
                       )}
                     </div>
-                    <h3 className="font-bold text-primary group-hover:text-primary/80 transition-colors line-clamp-2">
+                    <h3 className="font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
                       {related.title}
                     </h3>
                     {related.summary && (

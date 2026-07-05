@@ -13,7 +13,7 @@ interface TrustBarProps {
 }
 
 const fallbackItems: TrustItem[] = [
-  { number: "13年+", label: "行业经验" },
+  { number: "15年+", label: "行业经验" },
   { number: "3000+", label: "服务家庭" },
   { number: "1对1", label: "专属顾问" },
   { number: "隐私", label: "全程保护" },

@@ -27,7 +27,7 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "mb-8 lg:mb-12",
+        "mb-7 lg:mb-9",
         align === "center" && "text-center",
         align === "left" && "text-left",
         className
@@ -46,7 +46,7 @@ export function SectionHeader({
       <h2
         className={cn(
           "text-2xl sm:text-3xl lg:text-4xl font-bold",
-          "text-primary"
+          "text-foreground"
         )}
       >
         {title}

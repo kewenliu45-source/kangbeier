@@ -81,7 +81,7 @@ export function ProcessSection({
                   </div>
 
                   {/* 标题 */}
-                  <h3 className="text-base font-bold text-primary mb-2">
+                  <h3 className="text-base font-bold text-foreground mb-2">
                     {step.title}
                   </h3>
 
@@ -117,7 +117,7 @@ export function ProcessSection({
 
                   {/* 内容 */}
                   <div className="pt-2">
-                    <h3 className="text-base font-bold text-primary mb-1">
+                    <h3 className="text-base font-bold text-foreground mb-1">
                       {step.title}
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">

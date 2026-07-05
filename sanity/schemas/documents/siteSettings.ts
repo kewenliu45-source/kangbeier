@@ -92,10 +92,10 @@ export const siteSettings = defineType({
     // ── 联系方式 ──
     defineField({
       name: "wechatQrCode",
-      title: "微信公众号二维码",
+      title: "微信咨询二维码",
       type: "image",
       options: { hotspot: false },
-      description: "扫码关注公众号",
+      description: "扫码添加微信",
     }),
     defineField({
       name: "primaryPhone",

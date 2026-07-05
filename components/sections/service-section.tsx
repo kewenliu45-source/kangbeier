@@ -57,6 +57,15 @@ const fallbackServices: Service[] = [
       "一对一私密咨询，全程保护隐私，根据您的具体情况制定最适合的路径。",
     highlights: ["1对1", "隐私保护", "全程陪伴"],
   },
+  {
+    _id: "fallback-6",
+    _type: "service",
+    title: "LGBT人群辅助生殖方案",
+    slug: { current: "lgbt-fertility", _type: "slug" },
+    summary:
+      "为LGBT群体提供专业的辅助生殖咨询，包括卵子/精子挑选、代孕方案及出生证办理等全流程支持。",
+    highlights: ["卵子/精子挑选", "出生证办理", "全流程支持"],
+  },
 ];
 
 /**
@@ -82,7 +91,7 @@ export function ServiceSection({
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {displayServices.map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}

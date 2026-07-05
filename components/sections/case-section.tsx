@@ -81,7 +81,7 @@ export function CaseSection({
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {displayCases.map((caseStudy) => (
               <CaseCard key={caseStudy._id} caseStudy={caseStudy} />
             ))}

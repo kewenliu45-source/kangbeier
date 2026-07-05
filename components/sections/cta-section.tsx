@@ -127,12 +127,12 @@ export function CtaSection({
                     variant="outline"
                     className={cn(
                       "w-full sm:w-auto h-12 px-8 rounded-lg text-sm font-semibold",
-                      "border-accent text-accent-foreground",
-                      "hover:bg-accent hover:text-accent-foreground",
+                      "border-primary text-primary bg-transparent",
+                      "hover:bg-primary/5 hover:text-primary",
                       "transition-colors"
                     )}
                   >
-                    <Phone className="w-4 h-4 mr-2" />
+                    <Phone className="w-4 h-4 mr-2 text-primary" />
                     {secondaryButtonText}
                   </Button>
                 </Link>
@@ -141,12 +141,12 @@ export function CtaSection({
                   variant="outline"
                   className={cn(
                     "w-full sm:w-auto h-12 px-8 rounded-lg text-sm font-semibold",
-                    "border-accent text-accent-foreground",
-                    "hover:bg-accent hover:text-accent-foreground",
+                    "border-primary text-primary bg-transparent",
+                    "hover:bg-primary/5 hover:text-primary",
                     "transition-colors"
                   )}
                 >
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-4 h-4 mr-2 text-primary" />
                   {secondaryButtonText}
                 </Button>
               )}

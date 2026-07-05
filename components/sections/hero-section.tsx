@@ -1,6 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Heart } from "lucide-react";
+import {
+  CheckCircle2,
+  Heart,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+  UserRoundCheck,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/page-container";
@@ -51,31 +58,40 @@ export function HeroSection({ banner }: HeroSectionProps) {
     }
   }
 
+  const trustPoints = [
+    { icon: ShieldCheck, title: "隐私保护", text: "沟通资料严格保密" },
+    { icon: UserRoundCheck, title: "专属顾问", text: "一对一评估需求" },
+    { icon: CheckCircle2, title: "先评估", text: "不推固定套餐" },
+  ];
+
+  const serviceTags = ["高龄备孕", "二胎咨询", "试管多次失败", "特殊生育需求"];
+
   return (
-    <section className="relative bg-brand-cream overflow-hidden">
-      {/* 装饰性背景 */}
+    <section className="relative overflow-hidden bg-white">
+      {/* 极淡装饰性背景 */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/3 rounded-full translate-x-1/3 -translate-y-1/3" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/5 rounded-full -translate-x-1/3 translate-y-1/3" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/[0.045] to-transparent" />
+        <div className="absolute left-0 top-24 h-56 w-[42%] bg-brand-green-light/60" />
       </div>
 
-      <PageContainer className="relative py-16 sm:py-20 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <PageContainer className="relative py-12 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.96fr_1.04fr] lg:gap-12">
           {/* 左侧文案 */}
-          <FadeIn className="max-w-xl" y={32}>
+          <FadeIn className="max-w-2xl" y={32}>
             <span
               className={cn(
-                "inline-block text-xs sm:text-sm font-semibold tracking-widest uppercase mb-4",
-                "text-accent"
+                "inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-3 py-1.5",
+                "text-xs font-medium text-primary shadow-sm"
               )}
             >
+              <Sparkles className="h-3.5 w-3.5" />
               {eyebrow}
             </span>
 
             <h1
               className={cn(
-                "text-3xl sm:text-4xl lg:text-5xl xl:text-[3.5rem] font-bold leading-[1.15]",
-                "text-primary"
+                "mt-5 text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-[2.9rem]",
+                "text-foreground"
               )}
             >
               {title.split("\n").map((line, i) => (
@@ -88,7 +104,7 @@ export function HeroSection({ banner }: HeroSectionProps) {
 
             <p
               className={cn(
-                "mt-6 text-base sm:text-lg leading-relaxed",
+                "mt-5 max-w-[42rem] text-base leading-relaxed sm:text-lg",
                 "text-muted-foreground"
               )}
             >
@@ -96,13 +112,13 @@ export function HeroSection({ banner }: HeroSectionProps) {
             </p>
 
             {/* 按钮组 */}
-            <div className="mt-8 flex flex-col sm:flex-row w-full sm:w-auto gap-3 sm:gap-4">
+            <div className="mt-7 flex flex-col sm:flex-row w-full sm:w-auto gap-3">
               <Link href={primaryHref} className="w-full sm:w-auto">
                 <Button
                   className={cn(
-                    "w-full sm:w-auto h-12 px-8 rounded-full text-sm font-semibold",
+                    "w-full sm:w-auto h-11 px-7 rounded-[10px] text-sm font-medium",
                     "bg-primary text-primary-foreground",
-                    "hover:bg-primary/90 transition-colors"
+                    "hover:bg-primary-hover transition-colors"
                   )}
                 >
                   {primaryText}
@@ -112,16 +128,47 @@ export function HeroSection({ banner }: HeroSectionProps) {
                 <Button
                   variant="outline"
                   className={cn(
-                    "w-full sm:w-auto h-12 px-8 rounded-full text-sm font-semibold",
-                    "border-accent text-accent-foreground bg-accent/10",
-                    "hover:bg-accent hover:text-accent-foreground",
+                    "w-full sm:w-auto h-11 px-7 rounded-[10px] text-sm font-medium",
+                    "border-primary text-primary bg-transparent",
+                    "hover:bg-primary/5",
                     "transition-colors"
                   )}
                 >
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-4 h-4 mr-2 text-primary" />
                   {secondaryText}
                 </Button>
               </Link>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {trustPoints.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="rounded-xl border border-border/70 bg-white/90 p-4 shadow-sm"
+                  >
+                    <Icon className="h-5 w-5 text-primary" />
+                    <p className="mt-3 text-sm font-semibold text-foreground">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                      {item.text}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {serviceTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-primary/8 px-3 py-1.5 text-xs font-medium text-primary"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </FadeIn>
 
@@ -129,12 +176,12 @@ export function HeroSection({ banner }: HeroSectionProps) {
           <FadeIn className="relative" delay={0.15} y={32}>
             <div
               className={cn(
-                "relative rounded-2xl overflow-hidden",
-                "bg-white shadow-lg border border-border/50"
+                "relative overflow-hidden rounded-xl",
+                "border border-border bg-white shadow-[0_18px_50px_rgba(15,23,42,0.10)]"
               )}
             >
               {/* 图片区域 */}
-              <div className="relative aspect-[4/3] bg-brand-cream-light">
+              <div className="relative aspect-[4/3] bg-muted">
                 {imageUrl ? (
                   <Image
                     src={imageUrl}
@@ -147,22 +194,20 @@ export function HeroSection({ banner }: HeroSectionProps) {
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center p-8">
-                      <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Heart className="w-8 h-8 text-primary/40" />
+                      <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-primary/5 flex items-center justify-center">
+                        <Heart className="w-6 h-6 text-primary/30" />
                       </div>
-                      <p className="text-sm text-muted-foreground/60">
+                      <p className="text-xs text-muted-foreground/50">
                         专业 · 温暖 · 陪伴
                       </p>
                     </div>
                   </div>
                 )}
-                {/* 淡遮罩 */}
-                <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent" />
               </div>
 
               {/* 信息卡片 */}
-              <div className="p-6 sm:p-8">
-                <h3 className="text-lg sm:text-xl font-bold text-primary mb-2">
+              <div className="p-5 sm:p-6">
+                <h3 className="text-base font-semibold text-foreground mb-1.5">
                   先了解您的情况，再给方案
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">

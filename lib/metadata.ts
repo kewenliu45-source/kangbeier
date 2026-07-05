@@ -2,10 +2,20 @@ import type { Metadata } from "next";
 import type { Seo } from "@/types/sanity";
 
 // ─────────────────────────────────────────────
-// 常量
+// 常量（可通过 setSiteName 动态更新）
 // ─────────────────────────────────────────────
 
-const SITE_NAME = "好孕生命中心";
+let SITE_NAME = "好孕生命中心";
+
+/** 设置站点名称（从 Sanity siteSettings 获取） */
+export function setSiteName(name: string) {
+  if (name) SITE_NAME = name;
+}
+
+/** 获取当前站点名称 */
+export function getSiteName() {
+  return SITE_NAME;
+}
 
 const FALLBACK_SEO = {
   title: SITE_NAME,
@@ -89,10 +99,11 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
   const siteUrl = getSiteUrl();
   const canonical = buildCanonicalUrl(path);
 
-  // 标题处理：带品牌后缀
+  // 标题处理：带品牌后缀（使用动态 SITE_NAME）
+  const currentSiteName = getSiteName();
   const fullTitle = title
-    ? `${title} | ${SITE_NAME}`
-    : FALLBACK_SEO.title;
+    ? `${title} | ${currentSiteName}`
+    : currentSiteName;
 
   // 描述处理
   const metaDescription = description || FALLBACK_SEO.description;
@@ -121,7 +132,7 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
       title: fullTitle,
       description: metaDescription,
       url: canonical,
-      siteName: SITE_NAME,
+      siteName: currentSiteName,
       type,
       locale: "zh_CN",
       ...(ogImage && {

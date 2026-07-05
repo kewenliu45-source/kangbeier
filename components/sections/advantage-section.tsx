@@ -59,26 +59,34 @@ export function AdvantageSection({
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-green-light", className)}>
       <PageContainer>
-        <FadeIn>
-          <SectionHeader
-            eyebrow="Why Choose Us"
-            title="选择我们的理由"
-            description="专业、私密、高效的一站式辅助生殖咨询服务"
-            align="center"
-          />
-        </FadeIn>
-
-        <FadeIn delay={0.1}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-            {displayAdvantages.map((advantage, index) => (
-              <AdvantageCard
-                key={advantage._id}
-                advantage={advantage}
-                index={index}
+        <div className="grid gap-8 lg:grid-cols-[0.85fr_1.45fr] lg:items-start lg:gap-10">
+          <FadeIn>
+            <div className="lg:sticky lg:top-24">
+              <SectionHeader
+                eyebrow="Why Choose Us"
+                title="选择我们的理由"
+                description="专业、私密、高效的一站式辅助生殖咨询服务"
+                align="left"
+                className="mb-0"
               />
-            ))}
-          </div>
-        </FadeIn>
+              <div className="mt-6 rounded-xl border border-primary/10 bg-white/70 p-5 text-sm leading-relaxed text-muted-foreground shadow-sm">
+                先把过往经历、身体状态和当下顾虑梳理清楚，再匹配更合适的检查方向、医疗资源和陪伴节奏，避免在信息混乱里反复试错。
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
+              {displayAdvantages.map((advantage, index) => (
+                <AdvantageCard
+                  key={advantage._id}
+                  advantage={advantage}
+                  index={index}
+                />
+              ))}
+            </div>
+          </FadeIn>
+        </div>
 
         {/* 空状态提示 */}
         {displayAdvantages.length === 0 && (

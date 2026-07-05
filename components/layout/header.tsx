@@ -2,11 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { urlForImage } from "@/sanity/lib/image";
+import type { SiteSettings, ContactInfo } from "@/types/sanity";
 
-const navItems = [
+const fallbackNavItems = [
   { label: "服务项目", href: "/services" },
   { label: "选择我们", href: "/advantages" },
   { label: "服务流程", href: "/#process" },
@@ -15,10 +18,35 @@ const navItems = [
   { label: "联系我们", href: "/contact" },
 ];
 
-export function Header() {
+interface HeaderProps {
+  siteSettings?: SiteSettings | null;
+  contactInfo?: ContactInfo | null;
+}
+
+export function Header({ siteSettings, contactInfo }: HeaderProps) {
   const [showQr, setShowQr] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 字段优先级
+  const brandName =
+    siteSettings?.brandName || siteSettings?.siteName || "好孕生命中心";
+  const phone =
+    contactInfo?.phone || siteSettings?.primaryPhone || "155-2728-3220";
+  const telHref = `tel:${phone.replace(/[\s-]/g, "")}`;
+
+  // 导航：优先用 Sanity 数据
+  const navItems =
+    siteSettings?.headerNavigation && siteSettings.headerNavigation.length > 0
+      ? siteSettings.headerNavigation
+      : fallbackNavItems;
+
+  // Logo 图片
+  const logoImage = siteSettings?.logo?.image;
+
+  // 微信二维码
+  const wechatQrCode =
+    contactInfo?.wechatQrCode || siteSettings?.wechatQrCode;
 
   // 点击外部关闭
   useEffect(() => {
@@ -44,17 +72,26 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-50 w-full",
-        "bg-brand-cream/95 backdrop-blur-md supports-[backdrop-filter]:bg-brand-cream/80",
+        "bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80",
         "border-b border-border"
       )}
     >
-      <div className="container mx-auto flex h-[80px] items-center justify-between px-4 lg:px-8">
-        {/* 品牌名 */}
-        <Link
-          href="/"
-          className="text-xl lg:text-2xl font-bold text-primary tracking-wide"
-        >
-          好孕生命中心
+      <div className="container mx-auto flex h-[72px] items-center justify-between px-4 lg:px-8">
+        {/* 品牌名 / Logo */}
+        <Link href="/" className="flex items-center gap-1">
+          {logoImage && (
+            <Image
+              src={urlForImage(logoImage as unknown as Parameters<typeof urlForImage>[0]).width(200).url()}
+              alt={siteSettings?.logo?.alt || brandName}
+              width={56}
+              height={56}
+              className="h-14 w-auto"
+              priority
+            />
+          )}
+          <span className="text-lg lg:text-xl font-bold text-primary tracking-wide">
+            {brandName}
+          </span>
         </Link>
 
         {/* 桌面端导航 */}
@@ -64,15 +101,18 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors duration-200",
+                "text-sm font-medium text-[#4B5563] transition-colors duration-200",
                 "hover:text-primary"
               )}
+              {...(("openInNewTab" in item && item.openInNewTab)
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
             >
               {item.label}
             </Link>
           ))}
 
-          {/* 微信公众号 */}
+          {/* 微信咨询 */}
           <div
             ref={qrRef}
             className="relative"
@@ -87,11 +127,11 @@ export function Header() {
                 timeoutRef.current = setTimeout(() => setShowQr(false), 200);
               }}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors duration-200",
+                "text-sm font-medium text-[#4B5563] transition-colors duration-200",
                 "hover:text-primary focus:text-primary"
               )}
             >
-              微信公众号
+              微信咨询
             </button>
 
             {/* 二维码浮层 */}
@@ -99,30 +139,42 @@ export function Header() {
               <div
                 className={cn(
                   "absolute top-full right-0 mt-2 z-50",
-                  "w-[220px] p-4 rounded-2xl",
+                  "w-[220px] p-4 rounded-xl",
                   "bg-white border border-border shadow-lg"
                 )}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <p className="text-sm font-semibold text-primary mb-1">
-                  关注公众号
+                <p className="text-sm font-semibold text-foreground mb-1">
+                  添加微信
                 </p>
                 <p className="text-xs text-muted-foreground mb-3">
                   获取试管科普与咨询提醒
                 </p>
-                <div
-                  className={cn(
-                    "w-full aspect-square rounded-xl",
-                    "bg-brand-cream-light border border-border",
-                    "flex flex-col items-center justify-center gap-2"
-                  )}
-                >
-                  <QrCode className="w-10 h-10 text-primary/30" />
-                  <span className="text-xs text-muted-foreground/60">
-                    公众号二维码
-                  </span>
-                </div>
+                {wechatQrCode ? (
+                  <div className="w-full aspect-square rounded-lg overflow-hidden">
+                    <Image
+                      src={urlForImage(wechatQrCode as unknown as Parameters<typeof urlForImage>[0]).width(400).url()}
+                      alt="公众号二维码"
+                      width={400}
+                      height={400}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={cn(
+                      "w-full aspect-square rounded-lg",
+                      "bg-muted border border-border",
+                      "flex flex-col items-center justify-center gap-2"
+                    )}
+                  >
+                    <QrCode className="w-10 h-10 text-muted-foreground/20" />
+                    <span className="text-xs text-muted-foreground/50">
+                      公众号二维码
+                    </span>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -131,18 +183,18 @@ export function Header() {
         {/* 右侧电话 + 移动端菜单 */}
         <div className="flex items-center gap-4">
           <a
-            href="tel:15527283220"
+            href={telHref}
             className={cn(
               "hidden sm:flex items-center gap-2",
-              "text-sm font-semibold text-primary transition-colors hover:text-primary/80"
+              "text-sm font-medium text-[#168A94] transition-colors hover:text-[#168A94]/80"
             )}
           >
             <Phone className="h-4 w-4" />
-            <span>155-2728-3220</span>
+            <span>{phone}</span>
           </a>
 
           {/* 移动端导航 */}
-          <MobileNav />
+          <MobileNav siteSettings={siteSettings} contactInfo={contactInfo} />
         </div>
       </div>
     </header>

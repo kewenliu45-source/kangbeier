@@ -92,7 +92,7 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
         )}
       >
         <CheckCircle className="w-12 h-12 mx-auto mb-4 text-primary" />
-        <h3 className="text-xl font-bold text-primary mb-2">
+        <h3 className="text-xl font-bold text-foreground mb-2">
           已收到您的咨询信息
         </h3>
         <p className="text-muted-foreground mb-4">
@@ -125,7 +125,7 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
         className
       )}
     >
-      <h3 className="text-xl font-bold text-primary mb-6">预约咨询</h3>
+      <h3 className="text-xl font-bold text-foreground mb-6">预约咨询</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* 姓名 */}

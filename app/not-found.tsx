@@ -15,7 +15,7 @@ export default function NotFound() {
           </p>
 
           {/* 标题 */}
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
             页面没有找到
           </h1>
 

@@ -3,8 +3,21 @@
 import { Phone, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { SiteSettings, ContactInfo } from "@/types/sanity";
 
-export function FloatingContact() {
+interface FloatingContactProps {
+  siteSettings?: SiteSettings | null;
+  contactInfo?: ContactInfo | null;
+}
+
+export function FloatingContact({ siteSettings, contactInfo }: FloatingContactProps) {
+  // 字段优先级
+  const phone =
+    contactInfo?.phone || siteSettings?.primaryPhone || "155-2728-3220";
+  const wechatId =
+    contactInfo?.wechatId || siteSettings?.primaryWechat || "15527283220";
+  const telHref = `tel:${phone.replace(/[\s-]/g, "")}`;
+
   return (
     <>
       {/* 桌面端：右侧浮动按钮组 */}
@@ -24,14 +37,15 @@ export function FloatingContact() {
             "text-primary hover:text-accent hover:border-accent",
             "transition-all duration-200 hover:scale-105"
           )}
-          aria-label="微信咨询"
+          aria-label={`微信咨询：${wechatId}`}
+          title={`微信：${wechatId}`}
         >
           <MessageCircle className="w-5 h-5" />
         </a>
 
         {/* 电话咨询 */}
         <a
-          href="tel:15527283220"
+          href={telHref}
           className={cn(
             "flex items-center justify-center",
             "w-12 h-12 rounded-full shadow-lg",
@@ -55,7 +69,7 @@ export function FloatingContact() {
         <div className="flex items-center gap-3">
           {/* 电话沟通 */}
           <a
-            href="tel:15527283220"
+            href={telHref}
             className={cn(
               "flex items-center justify-center gap-2",
               "flex-1 h-11 rounded-lg",

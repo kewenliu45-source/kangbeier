@@ -30,7 +30,7 @@ export function AdvantageCard({
   return (
     <div
       className={cn(
-        "bg-white rounded-2xl p-6 sm:p-7",
+        "h-full bg-white rounded-2xl p-6 sm:p-7",
         "border border-border/50 shadow-sm",
         "transition-all duration-200",
         "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
@@ -48,7 +48,7 @@ export function AdvantageCard({
       </div>
 
       {/* 标题 */}
-      <h3 className="text-lg font-bold text-primary">{advantage.title}</h3>
+      <h3 className="text-lg font-bold text-foreground">{advantage.title}</h3>
 
       {/* 描述 */}
       {advantage.summary && (

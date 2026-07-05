@@ -124,7 +124,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             </div>
 
             {/* 标题 */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-primary leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-foreground leading-tight">
               {article.title}
             </h1>
 
@@ -161,7 +161,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       {/* 文章正文 */}
       <section className="py-12 lg:py-16 bg-white">
         <PageContainer>
-          <div className="max-w-3xl mx-auto prose prose-lg prose-headings:text-primary prose-p:text-muted-foreground prose-a:text-accent">
+          <div className="max-w-3xl mx-auto prose prose-lg prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-accent">
             {article.content && article.content.length > 0 ? (
               <div>
                 {article.content.map((block, i) => {
@@ -178,14 +178,14 @@ export default async function ArticleDetailPage({ params }: Props) {
                     const style = (block as { style?: string }).style || "normal";
                     if (style === "h2") {
                       return (
-                        <h2 key={i} className="text-2xl font-bold text-primary mt-8 mb-4">
+                        <h2 key={i} className="text-2xl font-bold text-foreground mt-8 mb-4">
                           {text}
                         </h2>
                       );
                     }
                     if (style === "h3") {
                       return (
-                        <h3 key={i} className="text-xl font-bold text-primary mt-6 mb-3">
+                        <h3 key={i} className="text-xl font-bold text-foreground mt-6 mb-3">
                           {text}
                         </h3>
                       );
@@ -222,7 +222,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       {article.relatedArticles && article.relatedArticles.length > 0 && (
         <section className="py-12 lg:py-16 bg-brand-cream">
           <PageContainer>
-            <h2 className="text-2xl font-bold text-primary text-center mb-8">
+            <h2 className="text-2xl font-bold text-foreground text-center mb-8">
               相关文章
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -232,7 +232,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   href={`/knowledge/articles/${related.slug?.current || ""}`}
                   className="group block bg-white rounded-2xl p-6 border border-border/50 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                 >
-                  <h3 className="font-bold text-primary group-hover:text-primary/80 transition-colors line-clamp-2">
+                  <h3 className="font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
                     {related.title}
                   </h3>
                   {related.excerpt && (

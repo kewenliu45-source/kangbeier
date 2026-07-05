@@ -13,7 +13,7 @@ export function CaseCard({ caseStudy, className }: CaseCardProps) {
   return (
     <div
       className={cn(
-        "bg-white rounded-2xl p-6 sm:p-7",
+        "h-full bg-white rounded-2xl p-6 sm:p-7",
         "border border-border/50 shadow-sm",
         "transition-all duration-200",
         "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
@@ -40,7 +40,7 @@ export function CaseCard({ caseStudy, className }: CaseCardProps) {
       </div>
 
       {/* 标题 */}
-      <h3 className="text-lg font-bold text-primary mb-3">
+      <h3 className="text-lg font-bold text-foreground mb-3">
         {caseStudy.title}
       </h3>
 

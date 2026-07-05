@@ -45,7 +45,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
     <Link
       href={href}
       className={cn(
-        "group block bg-white rounded-2xl overflow-hidden",
+        "group block h-full bg-white rounded-2xl overflow-hidden",
         "border border-border/50 shadow-sm",
         "transition-all duration-200",
         "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
@@ -92,7 +92,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
         </div>
 
         {/* 标题 */}
-        <h3 className="text-base sm:text-lg font-bold text-primary group-hover:text-primary/80 transition-colors line-clamp-2">
+        <h3 className="text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
           {article.title}
         </h3>
 

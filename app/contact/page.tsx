@@ -106,7 +106,7 @@ export default async function ContactPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <Phone className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-bold text-primary mb-1">电话咨询</h3>
+              <h3 className="font-bold text-foreground mb-1">电话咨询</h3>
               <p className="text-sm text-muted-foreground">{phone}</p>
               <p className="mt-2 text-xs text-accent font-medium">点击拨打</p>
             </a>
@@ -116,7 +116,7 @@ export default async function ContactPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-bold text-primary mb-1">微信咨询</h3>
+              <h3 className="font-bold text-foreground mb-1">微信咨询</h3>
               <p className="text-sm text-muted-foreground">{wechatId}</p>
             </div>
 
@@ -125,7 +125,7 @@ export default async function ContactPage() {
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
                 <Clock className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-bold text-primary mb-1">营业时间</h3>
+              <h3 className="font-bold text-foreground mb-1">营业时间</h3>
               <p className="text-sm text-muted-foreground">{businessHours}</p>
             </div>
 
@@ -138,7 +138,7 @@ export default async function ContactPage() {
                   <Mail className="w-5 h-5 text-primary" />
                 )}
               </div>
-              <h3 className="font-bold text-primary mb-1">
+              <h3 className="font-bold text-foreground mb-1">
                 {contact?.address ? "地址" : "邮箱"}
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -163,7 +163,7 @@ export default async function ContactPage() {
       <section className="py-12 lg:py-16 bg-brand-cream">
         <PageContainer>
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-primary mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
               咨询说明
             </h2>
             <p className="text-muted-foreground leading-relaxed">

@@ -78,7 +78,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
               {service.title}
             </h1>
             {service.summary && (
@@ -155,7 +155,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                     {index + 1}
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary">{step.title}</h3>
+                    <h3 className="font-bold text-foreground">{step.title}</h3>
                     {step.description && (
                       <p className="mt-1 text-sm text-muted-foreground">
                         {step.description}
@@ -184,7 +184,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   key={i}
                   className="bg-white rounded-2xl p-6 border border-border/50 shadow-sm"
                 >
-                  <h3 className="font-bold text-primary">{adv.title}</h3>
+                  <h3 className="font-bold text-foreground">{adv.title}</h3>
                   {adv.description && (
                     <p className="mt-2 text-sm text-muted-foreground">
                       {adv.description}
