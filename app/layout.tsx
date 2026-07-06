@@ -7,21 +7,51 @@ import { FloatingContact } from "@/components/layout/floating-contact";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { fetchLayoutData } from "@/sanity/lib/fetchers";
 import { setSiteName } from "@/lib/metadata";
+import { urlForImage } from "@/sanity/lib/image";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
-export const metadata: Metadata = {
-  title: "康贝儿",
-  description: "康贝儿项目",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { siteSettings } = await fetchLayoutData();
+
+  const siteName = siteSettings?.siteName || "康贝儿";
+  const description = siteSettings?.description || "康贝儿项目";
+
+  // 生成 favicon URL
+  let faviconUrl: string | undefined;
+  if (siteSettings?.favicon?.asset) {
+    try {
+      faviconUrl = urlForImage(
+        siteSettings.favicon as unknown as Parameters<typeof urlForImage>[0]
+      )
+        .width(64)
+        .height(64)
+        .url();
+    } catch {
+      // 忽略错误，使用默认
+    }
+  }
+
+  return {
+    title: siteName,
+    description,
+    icons: faviconUrl
+      ? {
+          icon: faviconUrl,
+          shortcut: faviconUrl,
+          apple: faviconUrl,
+        }
+      : undefined,
+  };
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { siteSettings, contactInfo } = await fetchLayoutData();
+  const { siteSettings, contactInfo, layoutConfig } = await fetchLayoutData();
 
   // 更新全局站点名称（用于 metadata 标题后缀）
   if (siteSettings?.siteName) {
@@ -45,10 +75,10 @@ export default async function RootLayout({
           }
           phone={phone}
         />
-        <Header siteSettings={siteSettings} contactInfo={contactInfo} />
+        <Header siteSettings={siteSettings} contactInfo={contactInfo} layoutConfig={layoutConfig} />
         <div className="flex-1">{children}</div>
-        <Footer siteSettings={siteSettings} contactInfo={contactInfo} />
-        <FloatingContact siteSettings={siteSettings} contactInfo={contactInfo} />
+        <Footer siteSettings={siteSettings} contactInfo={contactInfo} layoutConfig={layoutConfig} />
+        <FloatingContact siteSettings={siteSettings} contactInfo={contactInfo} layoutConfig={layoutConfig} />
         {/* 移动端底部安全区 padding */}
         <div className="lg:hidden h-[72px]" />
       </body>

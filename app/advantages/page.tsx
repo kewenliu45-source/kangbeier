@@ -93,9 +93,9 @@ export default async function AdvantagesPage() {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <SectionHeader
-            eyebrow="选择我们"
-            title="让每一步选择都有依据"
-            description="从身体情况评估、方案理解、资源对接到周期陪伴，为有特殊生育需求的家庭提供更清晰的咨询支持。"
+            eyebrow={data.advantagesPageConfig?.heroEyebrow || "选择我们"}
+            title={data.advantagesPageConfig?.heroTitle || "让每一步选择都有依据"}
+            description={data.advantagesPageConfig?.heroDescription || "从身体情况评估、方案理解、资源对接到周期陪伴，为有特殊生育需求的家庭提供更清晰的咨询支持。"}
             align="center"
           />
         </PageContainer>
@@ -121,8 +121,8 @@ export default async function AdvantagesPage() {
         <section className="py-12 lg:py-16 bg-white">
           <PageContainer>
             <SectionHeader
-              eyebrow="数据见证"
-              title="我们的服务数据"
+              eyebrow={data.advantagesPageConfig?.statsEyebrow || "数据见证"}
+              title={data.advantagesPageConfig?.statsTitle || "我们的服务数据"}
               align="center"
             />
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl mx-auto">
@@ -154,8 +154,8 @@ export default async function AdvantagesPage() {
         <section className="py-12 lg:py-16 bg-brand-cream">
           <PageContainer>
             <SectionHeader
-              eyebrow="相关服务"
-              title="了解更多服务项目"
+              eyebrow={data.advantagesPageConfig?.relatedServicesEyebrow || "相关服务"}
+              title={data.advantagesPageConfig?.relatedServicesTitle || "了解更多服务项目"}
               align="center"
             />
             <div className="flex flex-wrap justify-center gap-3">
@@ -180,7 +180,7 @@ export default async function AdvantagesPage() {
       )}
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={data.siteSettings} />
     </main>
   );
 }

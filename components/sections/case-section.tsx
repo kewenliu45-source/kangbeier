@@ -4,10 +4,11 @@ import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { CaseCard } from "@/components/cards/case-card";
 import { FadeIn } from "@/components/motion/fade-in";
-import type { CaseStudy } from "@/types/sanity";
+import type { CaseStudy, HomePageConfig } from "@/types/sanity";
 
 interface CaseSectionProps {
   cases?: CaseStudy[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
@@ -61,9 +62,16 @@ const fallbackCases: CaseStudy[] = [
  */
 export function CaseSection({
   cases = fallbackCases,
+  homePageConfig,
   className,
 }: CaseSectionProps) {
   const displayCases = cases && cases.length > 0 ? cases : fallbackCases;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.caseEyebrow || "Success Stories";
+  const title = homePageConfig?.caseTitle || "真实案例分享";
+  const description = homePageConfig?.caseDescription || "匿名展示，保护隐私，仅供参考";
+  const disclaimer = homePageConfig?.caseDisclaimer || "* 案例已匿名处理，仅供参考，不构成任何医疗建议或效果承诺";
 
   return (
     <section
@@ -73,9 +81,9 @@ export function CaseSection({
       <PageContainer>
         <FadeIn>
           <SectionHeader
-            eyebrow="Success Stories"
-            title="真实案例分享"
-            description="匿名展示，保护隐私，仅供参考"
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
             align="center"
           />
         </FadeIn>
@@ -100,7 +108,7 @@ export function CaseSection({
 
         {/* 合规提示 */}
         <p className="mt-8 text-center text-xs text-muted-foreground/60">
-          * 案例已匿名处理，仅供参考，不构成任何医疗建议或效果承诺
+          {disclaimer}
         </p>
       </PageContainer>
     </section>

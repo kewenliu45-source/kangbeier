@@ -146,9 +146,9 @@ export default async function KnowledgePage() {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <SectionHeader
-            eyebrow="科普中心"
-            title="用更清晰的信息，减少盲目焦虑"
-            description="整理试管基础知识、高龄备孕、胚胎筛查和常见问题，帮助您在咨询前先建立基本判断。"
+            eyebrow={data.knowledgePageConfig?.heroEyebrow || "科普中心"}
+            title={data.knowledgePageConfig?.heroTitle || "用更清晰的信息，减少盲目焦虑"}
+            description={data.knowledgePageConfig?.heroDescription || "整理试管基础知识、高龄备孕、胚胎筛查和常见问题，帮助您在咨询前先建立基本判断。"}
             align="center"
           />
         </PageContainer>
@@ -176,9 +176,9 @@ export default async function KnowledgePage() {
       <section className="py-12 lg:py-20 bg-brand-cream">
         <PageContainer>
           <SectionHeader
-            eyebrow="精选文章"
-            title="科普文章"
-            description="了解辅助生殖知识，做出更明智的决策"
+            eyebrow={data.knowledgePageConfig?.articleEyebrow || "精选文章"}
+            title={data.knowledgePageConfig?.articleTitle || "科普文章"}
+            description={data.knowledgePageConfig?.articleDescription || "了解辅助生殖知识，做出更明智的决策"}
             align="center"
           />
           {displayArticles.length > 0 ? (
@@ -202,9 +202,9 @@ export default async function KnowledgePage() {
       <section className="py-12 lg:py-20 bg-brand-cream-light">
         <PageContainer>
           <SectionHeader
-            eyebrow="科普视频"
-            title="视频内容"
-            description="通过视频快速了解辅助生殖知识"
+            eyebrow={data.knowledgePageConfig?.videoEyebrow || "科普视频"}
+            title={data.knowledgePageConfig?.videoTitle || "视频内容"}
+            description={data.knowledgePageConfig?.videoDescription || "通过视频快速了解辅助生殖知识"}
             align="center"
           />
           {displayVideos.length > 0 ? (
@@ -228,7 +228,7 @@ export default async function KnowledgePage() {
       <FaqSection faqs={faqs} />
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={data.siteSettings} />
     </main>
   );
 }

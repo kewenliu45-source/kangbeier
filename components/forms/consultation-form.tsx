@@ -12,12 +12,23 @@ import {
   consultationTypeOptions,
   type ConsultationFormData,
 } from "@/lib/validations/contact";
+import type { ConsultationFormConfig } from "@/types/sanity";
 
 interface ConsultationFormProps {
+  config?: ConsultationFormConfig | null;
   className?: string;
 }
 
-export function ConsultationForm({ className }: ConsultationFormProps) {
+export function ConsultationForm({ config, className }: ConsultationFormProps) {
+  // 配置文字
+  const formTitle = config?.formTitle || "预约咨询";
+  const successTitle = config?.successTitle || "已收到您的咨询信息";
+  const successDescription = config?.successDescription || "我们会尽快与您联系，也可以直接拨打电话沟通。";
+  const successPhone = config?.successPhone || "15527283220";
+  const successButtonText = config?.successButtonText || "继续咨询";
+  const submitButtonText = config?.submitButtonText || "提交咨询";
+  const submittingText = config?.submittingText || "提交中...";
+  const privacyNotice = config?.privacyNotice || "提交后顾问会在工作时间与您联系，您的信息将被严格保密";
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -93,17 +104,17 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
       >
         <CheckCircle className="w-12 h-12 mx-auto mb-4 text-primary" />
         <h3 className="text-xl font-bold text-foreground mb-2">
-          已收到您的咨询信息
+          {successTitle}
         </h3>
         <p className="text-muted-foreground mb-4">
-          我们会尽快与您联系，也可以直接拨打电话沟通。
+          {successDescription}
         </p>
         <a
-          href="tel:15527283220"
+          href={`tel:${successPhone}`}
           className="inline-flex items-center gap-2 mb-6 px-6 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
         >
           <Phone className="w-4 h-4" />
-          155-2728-3220
+          {successPhone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
         </a>
         <div>
           <Button
@@ -111,7 +122,7 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
             className="border-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground"
             onClick={() => setIsSubmitted(false)}
           >
-            继续咨询
+            {successButtonText}
           </Button>
         </div>
       </div>
@@ -125,7 +136,7 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
         className
       )}
     >
-      <h3 className="text-xl font-bold text-foreground mb-6">预约咨询</h3>
+      <h3 className="text-xl font-bold text-foreground mb-6">{formTitle}</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* 姓名 */}
@@ -316,18 +327,18 @@ export function ConsultationForm({ className }: ConsultationFormProps) {
           {isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              提交中...
+              {submittingText}
             </>
           ) : (
             <>
               <Send className="w-4 h-4 mr-2" />
-              提交咨询
+              {submitButtonText}
             </>
           )}
         </Button>
 
         <p className="text-xs text-muted-foreground text-center">
-          提交后顾问会在工作时间与您联系，您的信息将被严格保密
+          {privacyNotice}
         </p>
       </form>
     </div>

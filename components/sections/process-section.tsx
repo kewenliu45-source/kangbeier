@@ -2,18 +2,15 @@ import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { FadeIn } from "@/components/motion/fade-in";
-
-interface ProcessStep {
-  title: string;
-  description: string;
-}
+import type { HomePageConfig, HeroProcessStep } from "@/types/sanity";
 
 interface ProcessSectionProps {
-  steps?: ProcessStep[];
+  steps?: HeroProcessStep[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
-const fallbackSteps: ProcessStep[] = [
+const fallbackSteps: HeroProcessStep[] = [
   {
     title: "初步咨询",
     description: "了解年龄、身体情况、过往治疗经历和当前需求。",
@@ -40,10 +37,16 @@ const fallbackSteps: ProcessStep[] = [
  * 首页助孕流程区块
  */
 export function ProcessSection({
-  steps = fallbackSteps,
+  steps,
+  homePageConfig,
   className,
 }: ProcessSectionProps) {
   const displaySteps = steps && steps.length > 0 ? steps : fallbackSteps;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.processEyebrow || "Our Process";
+  const title = homePageConfig?.processTitle || "服务流程";
+  const description = homePageConfig?.processDescription || "从初次咨询到后续随访，全程专业陪伴";
 
   return (
     <section
@@ -53,9 +56,9 @@ export function ProcessSection({
       <PageContainer>
         <FadeIn>
           <SectionHeader
-            eyebrow="Our Process"
-            title="服务流程"
-            description="从初次咨询到后续随访，全程专业陪伴"
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
             align="center"
           />
         </FadeIn>

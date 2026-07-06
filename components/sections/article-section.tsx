@@ -4,10 +4,11 @@ import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ArticleCard } from "@/components/cards/article-card";
 import { FadeIn } from "@/components/motion/fade-in";
-import type { Article } from "@/types/sanity";
+import type { Article, HomePageConfig } from "@/types/sanity";
 
 interface ArticleSectionProps {
   articles?: Article[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
@@ -64,19 +65,25 @@ const fallbackArticles: Article[] = [
  */
 export function ArticleSection({
   articles = fallbackArticles,
+  homePageConfig,
   className,
 }: ArticleSectionProps) {
   const displayArticles =
     articles && articles.length > 0 ? articles : fallbackArticles;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.articleEyebrow || "Knowledge Center";
+  const title = homePageConfig?.articleTitle || "科普文章";
+  const description = homePageConfig?.articleDescription || "了解辅助生殖知识，做出更明智的决策";
 
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
       <PageContainer>
         <FadeIn>
           <SectionHeader
-            eyebrow="Knowledge Center"
-            title="科普文章"
-            description="了解辅助生殖知识，做出更明智的决策"
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
             align="center"
           />
         </FadeIn>

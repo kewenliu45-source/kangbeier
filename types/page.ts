@@ -7,12 +7,16 @@
 
 import type {
   Advantage,
+  AdvantagesPageConfig,
   Article,
   ArticleCategory,
   Banner,
   CaseStudy,
   ContactInfo,
+  ContactPageConfig,
   Faq,
+  HomePageConfig,
+  KnowledgePageConfig,
   PageSeo,
   Service,
   SiteSettings,
@@ -33,6 +37,7 @@ export interface HomePageData {
   featuredArticles: Article[];
   featuredVideos: Video[];
   featuredFaqs: Faq[];
+  homePageConfig: HomePageConfig | null;
 }
 
 // ─────────────────────────────────────────────
@@ -55,6 +60,7 @@ export interface AdvantagesPageData {
   pageSeo: PageSeo | null;
   banners: Banner[];
   advantages: Advantage[];
+  advantagesPageConfig: AdvantagesPageConfig | null;
 }
 
 // ─────────────────────────────────────────────
@@ -69,6 +75,7 @@ export interface KnowledgePageData {
   articles: Article[];
   videos: Video[];
   faqs: Faq[];
+  knowledgePageConfig: KnowledgePageConfig | null;
 }
 
 // ─────────────────────────────────────────────
@@ -81,4 +88,5 @@ export interface ContactPageData {
   banners: Banner[];
   contactInfo: ContactInfo | null;
   faqs: Faq[];
+  contactPageConfig: ContactPageConfig | null;
 }

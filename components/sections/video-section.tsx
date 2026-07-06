@@ -4,10 +4,11 @@ import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { VideoCard } from "@/components/cards/video-card";
 import { FadeIn } from "@/components/motion/fade-in";
-import type { Video } from "@/types/sanity";
+import type { Video, HomePageConfig } from "@/types/sanity";
 
 interface VideoSectionProps {
   videos?: Video[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
@@ -61,18 +62,24 @@ const fallbackVideos: Video[] = [
  */
 export function VideoSection({
   videos = fallbackVideos,
+  homePageConfig,
   className,
 }: VideoSectionProps) {
   const displayVideos = videos && videos.length > 0 ? videos : fallbackVideos;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.videoEyebrow || "Video Center";
+  const title = homePageConfig?.videoTitle || "科普视频";
+  const description = homePageConfig?.videoDescription || "通过视频快速了解辅助生殖知识";
 
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream-light", className)}>
       <PageContainer>
         <FadeIn>
           <SectionHeader
-            eyebrow="Video Center"
-            title="科普视频"
-            description="通过视频快速了解辅助生殖知识"
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
             align="center"
           />
         </FadeIn>

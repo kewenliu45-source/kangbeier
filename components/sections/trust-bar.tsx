@@ -1,18 +1,14 @@
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/shared/page-container";
 import { FadeIn } from "@/components/motion/fade-in";
-
-interface TrustItem {
-  number: string;
-  label: string;
-}
+import type { TrustBarItem } from "@/types/sanity";
 
 interface TrustBarProps {
-  items?: TrustItem[];
+  items?: TrustBarItem[];
   className?: string;
 }
 
-const fallbackItems: TrustItem[] = [
+const fallbackItems: TrustBarItem[] = [
   { number: "15年+", label: "行业经验" },
   { number: "3000+", label: "服务家庭" },
   { number: "1对1", label: "专属顾问" },

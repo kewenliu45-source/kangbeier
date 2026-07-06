@@ -53,41 +53,46 @@ export default async function Home() {
       <FaqJsonLd faqs={faqs} />
 
       {/* 1. Hero 首屏 */}
-      <HeroSection banner={data.banners?.[0]} />
+      <HeroSection banner={data.banners?.[0]} homePageConfig={data.homePageConfig} />
 
       {/* 2. 信任背书 */}
-      <TrustBar className="pt-8 pb-6 lg:pt-10 lg:pb-8" />
+      <TrustBar items={data.homePageConfig?.trustBarItems} className="pt-8 pb-6 lg:pt-10 lg:pb-8" />
 
       {/* 3. 服务项目 */}
       <ServiceSection
         services={data.featuredServices}
+        homePageConfig={data.homePageConfig}
         className="pt-8 pb-14 lg:pt-10 lg:pb-16"
       />
 
       {/* 4. 核心优势 */}
       <AdvantageSection
         advantages={data.featuredAdvantages}
+        homePageConfig={data.homePageConfig}
         className="py-14 lg:py-18"
       />
 
       {/* 5. 服务流程 */}
-      <ProcessSection className="py-14 lg:py-18 bg-white" />
+      <ProcessSection steps={data.homePageConfig?.processSteps} homePageConfig={data.homePageConfig} className="py-14 lg:py-18 bg-white" />
 
       {/* 6. 成功案例 */}
       <CaseSection
         cases={data.featuredCases}
+        homePageConfig={data.homePageConfig}
         className="pt-14 pb-10 lg:pt-18 lg:pb-12 bg-brand-green-light"
       />
 
       {/* 7. 科普文章 */}
       <ArticleSection
         articles={data.featuredArticles}
+        homePageConfig={data.homePageConfig}
         className="pt-10 pb-8 lg:pt-12 lg:pb-10 bg-brand-green-light"
       />
 
       {/* 8. 科普视频 */}
       <VideoSection
         videos={data.featuredVideos}
+        homePageConfig={data.homePageConfig}
         className="pt-8 pb-14 lg:pt-10 lg:pb-18 bg-brand-green-light"
       />
 
@@ -95,7 +100,7 @@ export default async function Home() {
       <FaqSection faqs={faqs} className="py-14 lg:py-18 bg-white" />
 
       {/* 10. 咨询转化 */}
-      <CtaSection className="pt-0 pb-14 lg:pb-18 bg-white" />
+      <CtaSection siteSettings={data.siteSettings} className="pt-0 pb-14 lg:pb-18 bg-white" />
     </main>
   );
 }

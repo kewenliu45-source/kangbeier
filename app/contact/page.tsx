@@ -7,7 +7,7 @@ import {
   MapPin,
   Mail,
 } from "lucide-react";
-import { fetchContactPageData } from "@/sanity/lib/fetchers";
+import { fetchContactPageData, fetchConsultationFormConfig } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { LocalBusinessJsonLd } from "@/components/seo/local-business-json-ld";
@@ -46,7 +46,10 @@ const fallbackContact = {
 };
 
 export default async function ContactPage() {
-  const data = await fetchContactPageData();
+  const [data, consultationFormConfig] = await Promise.all([
+    fetchContactPageData(),
+    fetchConsultationFormConfig(),
+  ]);
   const contact = data.contactInfo;
 
   const phone = contact?.phone || fallbackContact.phone;
@@ -86,9 +89,9 @@ export default async function ContactPage() {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <SectionHeader
-            eyebrow="联系我们"
-            title="先沟通情况，再判断下一步"
-            description="如果您正在经历高龄备孕、试管多次失败、二胎规划或特殊生育需求，可以先做一次初步咨询。"
+            eyebrow={data.contactPageConfig?.heroEyebrow || "联系我们"}
+            title={data.contactPageConfig?.heroTitle || "先沟通情况，再判断下一步"}
+            description={data.contactPageConfig?.heroDescription || "如果您正在经历高龄备孕、试管多次失败、二胎规划或特殊生育需求，可以先做一次初步咨询。"}
             align="center"
           />
         </PageContainer>
@@ -164,7 +167,7 @@ export default async function ContactPage() {
         <PageContainer>
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">
-              咨询说明
+              {data.contactPageConfig?.consultationTitle || "咨询说明"}
             </h2>
             <p className="text-muted-foreground leading-relaxed">
               {consultationNotice}
@@ -178,7 +181,7 @@ export default async function ContactPage() {
         <PageContainer>
           <div className="max-w-lg mx-auto">
             <Suspense fallback={<div className="text-center py-8">加载中...</div>}>
-              <ConsultationForm />
+              <ConsultationForm config={consultationFormConfig} />
             </Suspense>
           </div>
         </PageContainer>
@@ -188,7 +191,7 @@ export default async function ContactPage() {
       <FaqSection faqs={faqs} />
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={data.siteSettings} />
     </main>
   );
 }

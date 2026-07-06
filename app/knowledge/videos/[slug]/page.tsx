@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink, Play } from "lucide-react";
-import { fetchVideoBySlug, fetchVideoSlugs } from "@/sanity/lib/fetchers";
+import { fetchVideoBySlug, fetchVideoSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { VideoJsonLd } from "@/components/seo/video-json-ld";
@@ -62,7 +62,10 @@ function getEmbedUrl(url: string): string | null {
 
 export default async function VideoDetailPage({ params }: Props) {
   const { slug } = await params;
-  const video = await fetchVideoBySlug(slug);
+  const [video, siteSettings] = await Promise.all([
+    fetchVideoBySlug(slug),
+    fetchSiteSettings(),
+  ]);
 
   if (!video) {
     notFound();
@@ -325,7 +328,7 @@ export default async function VideoDetailPage({ params }: Props) {
         )}
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={siteSettings} />
     </main>
   );
 }

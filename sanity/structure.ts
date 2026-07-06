@@ -26,7 +26,95 @@ export const structure: StructureResolver = (S) =>
             .documentId("contactInfo")
             .views([S.view.form()])
         ),
+      S.listItem()
+        .id("layout-config")
+        .title("布局配置")
+        .child(
+          S.document()
+            .id("layout-config-doc")
+            .schemaType("layoutConfig")
+            .documentId("layoutConfig")
+            .views([S.view.form()])
+        ),
       S.divider(),
+
+      // ── 页面配置 ──
+      S.listItem()
+        .id("page-config")
+        .title("页面配置")
+        .child(
+          S.list()
+            .id("page-config-list")
+            .title("页面配置")
+            .items([
+              S.listItem()
+                .id("page-config-home")
+                .title("首页配置")
+                .child(
+                  S.document()
+                    .id("page-config-home-doc")
+                    .schemaType("homePageConfig")
+                    .documentId("homePageConfig")
+                    .title("首页配置")
+                    .views([S.view.form()])
+                ),
+              S.listItem()
+                .id("page-config-contact")
+                .title("联系页配置")
+                .child(
+                  S.document()
+                    .id("page-config-contact-doc")
+                    .schemaType("contactPageConfig")
+                    .documentId("contactPageConfig")
+                    .title("联系页配置")
+                    .views([S.view.form()])
+                ),
+              S.listItem()
+                .id("page-config-advantages")
+                .title("优势页配置")
+                .child(
+                  S.document()
+                    .id("page-config-advantages-doc")
+                    .schemaType("advantagesPageConfig")
+                    .documentId("advantagesPageConfig")
+                    .title("优势页配置")
+                    .views([S.view.form()])
+                ),
+              S.listItem()
+                .id("page-config-services")
+                .title("服务页配置")
+                .child(
+                  S.document()
+                    .id("page-config-services-doc")
+                    .schemaType("servicesPageConfig")
+                    .documentId("servicesPageConfig")
+                    .title("服务页配置")
+                    .views([S.view.form()])
+                ),
+              S.listItem()
+                .id("page-config-knowledge")
+                .title("科普页配置")
+                .child(
+                  S.document()
+                    .id("page-config-knowledge-doc")
+                    .schemaType("knowledgePageConfig")
+                    .documentId("knowledgePageConfig")
+                    .title("科普页配置")
+                    .views([S.view.form()])
+                ),
+              S.listItem()
+                .id("page-config-consultation-form")
+                .title("咨询表单配置")
+                .child(
+                  S.document()
+                    .id("page-config-consultation-form-doc")
+                    .schemaType("consultationFormConfig")
+                    .documentId("consultationFormConfig")
+                    .title("咨询表单配置")
+                    .views([S.view.form()])
+                ),
+            ])
+        ),
 
       // ── 页面 SEO ──
       S.listItem()
@@ -428,6 +516,13 @@ export const structure: StructureResolver = (S) =>
         (listItem) =>
           ![
             "siteSettings",
+            "layoutConfig",
+            "homePageConfig",
+            "contactPageConfig",
+            "advantagesPageConfig",
+            "servicesPageConfig",
+            "knowledgePageConfig",
+            "consultationFormConfig",
             "pageSeo",
             "banner",
             "service",

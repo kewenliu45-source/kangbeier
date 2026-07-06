@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Phone, MessageCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { SiteSettings, ContactInfo } from "@/types/sanity";
+import type { SiteSettings, ContactInfo, LayoutConfig } from "@/types/sanity";
 
 const fallbackNavItems = [
   { label: "服务项目", href: "/services" },
@@ -13,9 +13,10 @@ const fallbackNavItems = [
 interface FooterProps {
   siteSettings?: SiteSettings | null;
   contactInfo?: ContactInfo | null;
+  layoutConfig?: LayoutConfig | null;
 }
 
-export function Footer({ siteSettings, contactInfo }: FooterProps) {
+export function Footer({ siteSettings, contactInfo, layoutConfig }: FooterProps) {
   // 字段优先级
   const brandName =
     siteSettings?.brandName || siteSettings?.siteName || "好孕生命中心";
@@ -40,6 +41,11 @@ export function Footer({ siteSettings, contactInfo }: FooterProps) {
       ? siteSettings.footerNavigation
       : fallbackNavItems;
 
+  // 配置文字
+  const footerNavTitle = layoutConfig?.footerNavTitle || "快速导航";
+  const footerContactTitle = layoutConfig?.footerContactTitle || "联系我们";
+  const footerWechatNote = layoutConfig?.footerWechatNote || "微信咨询：顶部导航扫码添加";
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 lg:px-8 py-12 lg:py-16">
@@ -60,7 +66,7 @@ export function Footer({ siteSettings, contactInfo }: FooterProps) {
           {/* 快速导航 */}
           <div>
             <h3 className="text-sm font-semibold text-primary-foreground mb-4">
-              快速导航
+              {footerNavTitle}
             </h3>
             <ul className="space-y-3">
               {navItems.map((item) => (
@@ -82,7 +88,7 @@ export function Footer({ siteSettings, contactInfo }: FooterProps) {
           {/* 联系方式 */}
           <div>
             <h3 className="text-sm font-semibold text-primary-foreground mb-4">
-              联系我们
+              {footerContactTitle}
             </h3>
             <ul className="space-y-3">
               <li>
@@ -111,7 +117,7 @@ export function Footer({ siteSettings, contactInfo }: FooterProps) {
               </li>
               <li className="pt-1">
                 <p className="text-xs text-primary-foreground/50">
-                  微信咨询：顶部导航扫码添加
+                  {footerWechatNote}
                 </p>
               </li>
             </ul>

@@ -170,6 +170,12 @@ export interface SiteSettings {
   primaryWechat?: string;
   primaryEmail?: string;
   businessHours?: string;
+  // CTA 咨询转化区块
+  ctaTitle?: string;
+  ctaDescription?: string;
+  ctaPrimaryButtonText?: string;
+  ctaSecondaryButtonText?: string;
+  ctaPhone?: string;
 }
 
 export interface PageSeo {
@@ -344,4 +350,136 @@ export interface ContactInfo {
   consultationNotice?: string;
   contactMethods?: ContactMethod[];
   seo?: Seo;
+}
+
+// ─────────────────────────────────────────────
+// 配置文档类型
+// ─────────────────────────────────────────────
+
+export interface TrustPoint {
+  icon?: string;
+  title: string;
+  text: string;
+}
+
+export interface TrustBarItem {
+  number: string;
+  label: string;
+}
+
+export interface HeroProcessStep {
+  title: string;
+  description: string;
+}
+
+export interface LayoutConfig {
+  _id: string;
+  _type: "layoutConfig";
+  // Header
+  wechatConsultText?: string;
+  wechatModalTitle?: string;
+  wechatModalDescription?: string;
+  wechatQrPlaceholder?: string;
+  // Footer
+  footerNavTitle?: string;
+  footerContactTitle?: string;
+  footerWechatNote?: string;
+  // FloatingContact
+  floatingPhoneText?: string;
+  floatingCtaText?: string;
+}
+
+export interface HomePageConfig {
+  _id: string;
+  _type: "homePageConfig";
+  // Hero
+  heroTrustPoints?: TrustPoint[];
+  heroServiceTags?: string[];
+  heroInfoCardTitle?: string;
+  heroInfoCardDescription?: string;
+  // TrustBar
+  trustBarItems?: TrustBarItem[];
+  // Process
+  processEyebrow?: string;
+  processTitle?: string;
+  processDescription?: string;
+  processSteps?: HeroProcessStep[];
+  // Service
+  serviceEyebrow?: string;
+  serviceTitle?: string;
+  serviceDescription?: string;
+  // Advantage
+  advantageEyebrow?: string;
+  advantageTitle?: string;
+  advantageDescription?: string;
+  advantageDetailText?: string;
+  // Case
+  caseEyebrow?: string;
+  caseTitle?: string;
+  caseDescription?: string;
+  caseDisclaimer?: string;
+  // Article
+  articleEyebrow?: string;
+  articleTitle?: string;
+  articleDescription?: string;
+  // Video
+  videoEyebrow?: string;
+  videoTitle?: string;
+  videoDescription?: string;
+}
+
+export interface ContactPageConfig {
+  _id: string;
+  _type: "contactPageConfig";
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  consultationTitle?: string;
+}
+
+export interface AdvantagesPageConfig {
+  _id: string;
+  _type: "advantagesPageConfig";
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  statsEyebrow?: string;
+  statsTitle?: string;
+  relatedServicesEyebrow?: string;
+  relatedServicesTitle?: string;
+}
+
+export interface ServicesPageConfig {
+  _id: string;
+  _type: "servicesPageConfig";
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+}
+
+export interface KnowledgePageConfig {
+  _id: string;
+  _type: "knowledgePageConfig";
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  articleEyebrow?: string;
+  articleTitle?: string;
+  articleDescription?: string;
+  videoEyebrow?: string;
+  videoTitle?: string;
+  videoDescription?: string;
+}
+
+export interface ConsultationFormConfig {
+  _id: string;
+  _type: "consultationFormConfig";
+  formTitle?: string;
+  successTitle?: string;
+  successDescription?: string;
+  successPhone?: string;
+  successButtonText?: string;
+  submitButtonText?: string;
+  submittingText?: string;
+  privacyNotice?: string;
 }

@@ -4,10 +4,11 @@ import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ServiceCard } from "@/components/cards/service-card";
 import { FadeIn } from "@/components/motion/fade-in";
-import type { Service } from "@/types/sanity";
+import type { Service, HomePageConfig } from "@/types/sanity";
 
 interface ServiceSectionProps {
   services?: Service[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
@@ -73,19 +74,25 @@ const fallbackServices: Service[] = [
  */
 export function ServiceSection({
   services = fallbackServices,
+  homePageConfig,
   className,
 }: ServiceSectionProps) {
   const displayServices =
     services && services.length > 0 ? services : fallbackServices;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.serviceEyebrow || "Our Services";
+  const title = homePageConfig?.serviceTitle || "专业服务项目";
+  const description = homePageConfig?.serviceDescription || "为您的家庭提供全方位的辅助生殖咨询服务";
 
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-cream", className)}>
       <PageContainer>
         <FadeIn>
           <SectionHeader
-            eyebrow="Our Services"
-            title="专业服务项目"
-            description="为您的家庭提供全方位的辅助生殖咨询服务"
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
             align="center"
           />
         </FadeIn>

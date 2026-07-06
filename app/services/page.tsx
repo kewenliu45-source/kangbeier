@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { fetchServices } from "@/sanity/lib/fetchers";
+import { fetchServices, fetchSiteSettings, fetchServicesPageConfig } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
@@ -75,7 +75,11 @@ const fallbackServices: Service[] = [
 ];
 
 export default async function ServicesPage() {
-  const services = await fetchServices();
+  const [services, siteSettings, servicesPageConfig] = await Promise.all([
+    fetchServices(),
+    fetchSiteSettings(),
+    fetchServicesPageConfig(),
+  ]);
   const displayServices =
     services && services.length > 0 ? services : fallbackServices;
 
@@ -90,9 +94,9 @@ export default async function ServicesPage() {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <SectionHeader
-            eyebrow="服务项目"
-            title="根据您的情况，匹配更合适的助孕咨询路径"
-            description="不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。"
+            eyebrow={servicesPageConfig?.heroEyebrow || "服务项目"}
+            title={servicesPageConfig?.heroTitle || "根据您的情况，匹配更合适的助孕咨询路径"}
+            description={servicesPageConfig?.heroDescription || "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。"}
             align="center"
           />
         </PageContainer>
@@ -110,7 +114,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={siteSettings} />
     </main>
   );
 }

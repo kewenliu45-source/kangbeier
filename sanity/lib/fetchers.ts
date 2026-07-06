@@ -11,6 +11,12 @@ import type {
   Service,
   SiteSettings,
   Video,
+  LayoutConfig,
+  HomePageConfig,
+  AdvantagesPageConfig,
+  ServicesPageConfig,
+  KnowledgePageConfig,
+  ConsultationFormConfig,
 } from "@/types/sanity";
 import type {
   AdvantagesPageData,
@@ -28,6 +34,12 @@ import {
   homePageQuery,
   knowledgePageQuery,
   layoutDataQuery,
+  layoutConfigQuery,
+  homePageConfigQuery,
+  advantagesPageConfigQuery,
+  servicesPageConfigQuery,
+  knowledgePageConfigQuery,
+  consultationFormConfigQuery,
   serviceBySlugQuery,
   serviceSlugsQuery,
   servicesQuery,
@@ -69,15 +81,17 @@ export async function fetchContactInfo(): Promise<ContactInfo | null> {
   }
 }
 
-/** 布局数据（siteSettings + contactInfo），用于 Header/Footer */
+/** 布局数据（siteSettings + contactInfo + layoutConfig），用于 Header/Footer */
 export async function fetchLayoutData(): Promise<{
   siteSettings: SiteSettings | null;
   contactInfo: ContactInfo | null;
+  layoutConfig: LayoutConfig | null;
 }> {
   try {
     return await sanityFetch<{
       siteSettings: SiteSettings | null;
       contactInfo: ContactInfo | null;
+      layoutConfig: LayoutConfig | null;
     }>({
       query: layoutDataQuery,
       cache: "force-cache",
@@ -85,7 +99,7 @@ export async function fetchLayoutData(): Promise<{
     });
   } catch {
     console.warn("Failed to fetch layout data");
-    return { siteSettings: null, contactInfo: null };
+    return { siteSettings: null, contactInfo: null, layoutConfig: null };
   }
 }
 
@@ -113,6 +127,7 @@ export async function fetchHomePageData(): Promise<HomePageData> {
       featuredArticles: [],
       featuredVideos: [],
       featuredFaqs: [],
+      homePageConfig: null,
     };
   }
 }
@@ -186,6 +201,7 @@ export async function fetchAdvantagesPageData(): Promise<AdvantagesPageData> {
       pageSeo: null,
       banners: [],
       advantages: [],
+      advantagesPageConfig: null,
     };
   }
 }
@@ -212,6 +228,7 @@ export async function fetchKnowledgePageData(): Promise<KnowledgePageData> {
       articles: [],
       videos: [],
       faqs: [],
+      knowledgePageConfig: null,
     };
   }
 }
@@ -308,6 +325,95 @@ export async function fetchContactPageData(): Promise<ContactPageData> {
       banners: [],
       contactInfo: null,
       faqs: [],
+      contactPageConfig: null,
     };
+  }
+}
+
+// ─────────────────────────────────────────────
+// 配置文档
+// ─────────────────────────────────────────────
+
+/** 获取布局配置（单例），无数据返回 null */
+export async function fetchLayoutConfig(): Promise<LayoutConfig | null> {
+  try {
+    return await sanityFetch<LayoutConfig | null>({
+      query: layoutConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch layoutConfig");
+    return null;
+  }
+}
+
+/** 获取首页配置（单例），无数据返回 null */
+export async function fetchHomePageConfig(): Promise<HomePageConfig | null> {
+  try {
+    return await sanityFetch<HomePageConfig | null>({
+      query: homePageConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch homePageConfig");
+    return null;
+  }
+}
+
+/** 获取优势页配置（单例），无数据返回 null */
+export async function fetchAdvantagesPageConfig(): Promise<AdvantagesPageConfig | null> {
+  try {
+    return await sanityFetch<AdvantagesPageConfig | null>({
+      query: advantagesPageConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch advantagesPageConfig");
+    return null;
+  }
+}
+
+/** 获取服务页配置（单例），无数据返回 null */
+export async function fetchServicesPageConfig(): Promise<ServicesPageConfig | null> {
+  try {
+    return await sanityFetch<ServicesPageConfig | null>({
+      query: servicesPageConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch servicesPageConfig");
+    return null;
+  }
+}
+
+/** 获取科普页配置（单例），无数据返回 null */
+export async function fetchKnowledgePageConfig(): Promise<KnowledgePageConfig | null> {
+  try {
+    return await sanityFetch<KnowledgePageConfig | null>({
+      query: knowledgePageConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch knowledgePageConfig");
+    return null;
+  }
+}
+
+/** 获取咨询表单配置（单例），无数据返回 null */
+export async function fetchConsultationFormConfig(): Promise<ConsultationFormConfig | null> {
+  try {
+    return await sanityFetch<ConsultationFormConfig | null>({
+      query: consultationFormConfigQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch consultationFormConfig");
+    return null;
   }
 }

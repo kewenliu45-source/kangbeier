@@ -127,6 +127,39 @@ export const siteSettings = defineType({
       type: "string",
       description: "如：周一至周五 9:00-18:00",
     }),
+
+    // ── CTA 咨询转化区块 ──
+    defineField({
+      name: "ctaTitle",
+      title: "CTA 标题",
+      type: "string",
+      description: "咨询转化区块的主标题",
+    }),
+    defineField({
+      name: "ctaDescription",
+      title: "CTA 描述",
+      type: "text",
+      rows: 2,
+      description: "咨询转化区块的描述文字",
+    }),
+    defineField({
+      name: "ctaPrimaryButtonText",
+      title: "CTA 主按钮文字",
+      type: "string",
+      description: "如：免费咨询方案",
+    }),
+    defineField({
+      name: "ctaSecondaryButtonText",
+      title: "CTA 次按钮文字",
+      type: "string",
+      description: "如：立即电话沟通",
+    }),
+    defineField({
+      name: "ctaPhone",
+      title: "CTA 电话号码",
+      type: "string",
+      description: "底部咨询区块显示的电话号码，如：15527283220",
+    }),
   ],
   preview: {
     prepare() {

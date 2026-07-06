@@ -13,10 +13,11 @@ import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/page-container";
 import { FadeIn } from "@/components/motion/fade-in";
 import { urlForImage } from "@/sanity/lib/image";
-import type { Banner, SanityImage } from "@/types/sanity";
+import type { Banner, HomePageConfig, SanityImage } from "@/types/sanity";
 
 interface HeroSectionProps {
   banner?: Banner | null;
+  homePageConfig?: HomePageConfig | null;
 }
 
 const fallback = {
@@ -28,12 +29,14 @@ const fallback = {
   primaryButtonHref: "/contact",
   secondaryButtonText: "立即电话沟通",
   secondaryButtonHref: "tel:15527283220",
+  infoCardTitle: "先了解您的情况，再给方案",
+  infoCardDescription: "我们不做统一报价，不推固定套餐。先评估年龄、身体情况、过往经历，再给适合您的路径建议。",
 };
 
 /**
  * 首页 Hero 首屏
  */
-export function HeroSection({ banner }: HeroSectionProps) {
+export function HeroSection({ banner, homePageConfig }: HeroSectionProps) {
   const eyebrow = banner?.subtitle || fallback.eyebrow;
   const title = banner?.title || fallback.title;
   const description = banner?.description || fallback.description;
@@ -41,6 +44,10 @@ export function HeroSection({ banner }: HeroSectionProps) {
   const primaryHref = banner?.buttonLink || fallback.primaryButtonHref;
   const secondaryText = banner?.secondaryButtonText || fallback.secondaryButtonText;
   const secondaryHref = banner?.secondaryButtonLink || fallback.secondaryButtonHref;
+
+  // 从配置读取
+  const infoCardTitle = homePageConfig?.heroInfoCardTitle || fallback.infoCardTitle;
+  const infoCardDescription = homePageConfig?.heroInfoCardDescription || fallback.infoCardDescription;
 
   // 图片处理
   const hasImage = banner?.desktopImage?.image?.asset;
@@ -58,13 +65,26 @@ export function HeroSection({ banner }: HeroSectionProps) {
     }
   }
 
-  const trustPoints = [
-    { icon: ShieldCheck, title: "隐私保护", text: "沟通资料严格保密" },
-    { icon: UserRoundCheck, title: "专属顾问", text: "一对一评估需求" },
-    { icon: CheckCircle2, title: "先评估", text: "不推固定套餐" },
-  ];
+  // 信任点：从配置读取或使用默认值
+  const trustPoints = homePageConfig?.heroTrustPoints?.length
+    ? homePageConfig.heroTrustPoints.map((tp) => ({
+        icon: tp.icon === "ShieldCheck" ? ShieldCheck
+          : tp.icon === "UserRoundCheck" ? UserRoundCheck
+          : tp.icon === "CheckCircle2" ? CheckCircle2
+          : ShieldCheck,
+        title: tp.title,
+        text: tp.text,
+      }))
+    : [
+        { icon: ShieldCheck, title: "隐私保护", text: "沟通资料严格保密" },
+        { icon: UserRoundCheck, title: "专属顾问", text: "一对一评估需求" },
+        { icon: CheckCircle2, title: "先评估", text: "不推固定套餐" },
+      ];
 
-  const serviceTags = ["高龄备孕", "二胎咨询", "试管多次失败", "特殊生育需求"];
+  // 服务标签：从配置读取或使用默认值
+  const serviceTags = homePageConfig?.heroServiceTags?.length
+    ? homePageConfig.heroServiceTags
+    : ["高龄备孕", "二胎咨询", "试管多次失败", "特殊生育需求"];
 
   return (
     <section className="relative overflow-hidden bg-white">
@@ -208,10 +228,10 @@ export function HeroSection({ banner }: HeroSectionProps) {
               {/* 信息卡片 */}
               <div className="p-5 sm:p-6">
                 <h3 className="text-base font-semibold text-foreground mb-1.5">
-                  先了解您的情况，再给方案
+                  {infoCardTitle}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  我们不做统一报价，不推固定套餐。先评估年龄、身体情况、过往经历，再给适合您的路径建议。
+                  {infoCardDescription}
                 </p>
               </div>
             </div>

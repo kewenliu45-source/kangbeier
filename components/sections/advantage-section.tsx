@@ -4,10 +4,11 @@ import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { AdvantageCard } from "@/components/cards/advantage-card";
 import { FadeIn } from "@/components/motion/fade-in";
-import type { Advantage } from "@/types/sanity";
+import type { Advantage, HomePageConfig } from "@/types/sanity";
 
 interface AdvantageSectionProps {
   advantages?: Advantage[];
+  homePageConfig?: HomePageConfig | null;
   className?: string;
 }
 
@@ -51,10 +52,17 @@ const fallbackAdvantages: Advantage[] = [
  */
 export function AdvantageSection({
   advantages = fallbackAdvantages,
+  homePageConfig,
   className,
 }: AdvantageSectionProps) {
   const displayAdvantages =
     advantages && advantages.length > 0 ? advantages : fallbackAdvantages;
+
+  // 配置文字
+  const eyebrow = homePageConfig?.advantageEyebrow || "Why Choose Us";
+  const title = homePageConfig?.advantageTitle || "选择我们的理由";
+  const description = homePageConfig?.advantageDescription || "专业、私密、高效的一站式辅助生殖咨询服务";
+  const detailText = homePageConfig?.advantageDetailText || "先把过往经历、身体状态和当下顾虑梳理清楚，再匹配更合适的检查方向、医疗资源和陪伴节奏，避免在信息混乱里反复试错。";
 
   return (
     <section className={cn("py-16 lg:py-24 bg-brand-green-light", className)}>
@@ -63,14 +71,14 @@ export function AdvantageSection({
           <FadeIn>
             <div className="lg:sticky lg:top-24">
               <SectionHeader
-                eyebrow="Why Choose Us"
-                title="选择我们的理由"
-                description="专业、私密、高效的一站式辅助生殖咨询服务"
+                eyebrow={eyebrow}
+                title={title}
+                description={description}
                 align="left"
                 className="mb-0"
               />
               <div className="mt-6 rounded-xl border border-primary/10 bg-white/70 p-5 text-sm leading-relaxed text-muted-foreground shadow-sm">
-                先把过往经历、身体状态和当下顾虑梳理清楚，再匹配更合适的检查方向、医疗资源和陪伴节奏，避免在信息混乱里反复试错。
+                {detailText}
               </div>
             </div>
           </FadeIn>

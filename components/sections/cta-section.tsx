@@ -6,22 +6,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/shared/page-container";
 import { FadeIn } from "@/components/motion/fade-in";
+import type { SiteSettings } from "@/types/sanity";
 
 interface CtaSectionProps {
-  /** 主标题 */
-  title?: string;
-  /** 描述文字 */
-  description?: string;
-  /** 主按钮文字 */
-  primaryButtonText?: string;
-  /** 主按钮链接 */
-  primaryButtonHref?: string;
-  /** 次按钮文字 */
-  secondaryButtonText?: string;
-  /** 次按钮链接 */
-  secondaryButtonHref?: string;
-  /** 电话号码 */
-  phone?: string;
+  /** 站点设置（从 Sanity 读取 CTA 配置） */
+  siteSettings?: SiteSettings | null;
   /** 自定义 className */
   className?: string;
 }
@@ -39,16 +28,15 @@ const defaultProps = {
  * 可复用咨询转化区块
  * 用于首页、服务页、文章页等位置。
  */
-export function CtaSection({
-  title = defaultProps.title,
-  description = defaultProps.description,
-  primaryButtonText = defaultProps.primaryButtonText,
-  primaryButtonHref,
-  secondaryButtonText = defaultProps.secondaryButtonText,
-  secondaryButtonHref = `tel:${defaultProps.phone}`,
-  phone = defaultProps.phone,
-  className,
-}: CtaSectionProps) {
+export function CtaSection({ siteSettings, className }: CtaSectionProps) {
+  // 从 siteSettings 读取 CTA 配置，fallback 到默认值
+  const title = siteSettings?.ctaTitle || defaultProps.title;
+  const description = siteSettings?.ctaDescription || defaultProps.description;
+  const primaryButtonText = siteSettings?.ctaPrimaryButtonText || defaultProps.primaryButtonText;
+  const secondaryButtonText = siteSettings?.ctaSecondaryButtonText || defaultProps.secondaryButtonText;
+  const phone = siteSettings?.ctaPhone || defaultProps.phone;
+  const primaryButtonHref = "/contact";
+  const secondaryButtonHref = `tel:${phone}`;
   return (
     <section
       className={cn(

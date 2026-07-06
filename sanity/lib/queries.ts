@@ -78,7 +78,12 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   primaryPhone,
   primaryWechat,
   primaryEmail,
-  businessHours
+  businessHours,
+  ctaTitle,
+  ctaDescription,
+  ctaPrimaryButtonText,
+  ctaSecondaryButtonText,
+  ctaPhone
 }`;
 
 /** 联系方式（单例） */
@@ -98,10 +103,123 @@ export const contactInfoQuery = `*[_type == "contactInfo"][0]{
   seo${SEO}
 }`;
 
+// ─────────────────────────────────────────────
+// 配置文档查询（必须在使用前声明）
+// ─────────────────────────────────────────────
+
+/** 布局配置（单例） */
+export const layoutConfigQuery = `*[_type == "layoutConfig"][0]{
+  _id,
+  _type,
+  wechatConsultText,
+  wechatModalTitle,
+  wechatModalDescription,
+  wechatQrPlaceholder,
+  footerNavTitle,
+  footerContactTitle,
+  footerWechatNote,
+  floatingPhoneText,
+  floatingCtaText
+}`;
+
+/** 首页配置（单例） */
+export const homePageConfigQuery = `*[_type == "homePageConfig"][0]{
+  _id,
+  _type,
+  heroTrustPoints[]{
+    icon,
+    title,
+    text
+  },
+  heroServiceTags,
+  heroInfoCardTitle,
+  heroInfoCardDescription,
+  trustBarItems[]{
+    number,
+    label
+  },
+  processEyebrow,
+  processTitle,
+  processDescription,
+  processSteps[]{
+    title,
+    description
+  },
+  serviceEyebrow,
+  serviceTitle,
+  serviceDescription,
+  advantageEyebrow,
+  advantageTitle,
+  advantageDescription,
+  advantageDetailText,
+  caseEyebrow,
+  caseTitle,
+  caseDescription,
+  caseDisclaimer,
+  articleEyebrow,
+  articleTitle,
+  articleDescription,
+  videoEyebrow,
+  videoTitle,
+  videoDescription
+}`;
+
+/** 优势页配置（单例） */
+export const advantagesPageConfigQuery = `*[_type == "advantagesPageConfig"][0]{
+  _id,
+  _type,
+  heroEyebrow,
+  heroTitle,
+  heroDescription,
+  statsEyebrow,
+  statsTitle,
+  relatedServicesEyebrow,
+  relatedServicesTitle
+}`;
+
+/** 服务页配置（单例） */
+export const servicesPageConfigQuery = `*[_type == "servicesPageConfig"][0]{
+  _id,
+  _type,
+  heroEyebrow,
+  heroTitle,
+  heroDescription
+}`;
+
+/** 科普页配置（单例） */
+export const knowledgePageConfigQuery = `*[_type == "knowledgePageConfig"][0]{
+  _id,
+  _type,
+  heroEyebrow,
+  heroTitle,
+  heroDescription,
+  articleEyebrow,
+  articleTitle,
+  articleDescription,
+  videoEyebrow,
+  videoTitle,
+  videoDescription
+}`;
+
+/** 咨询表单配置（单例） */
+export const consultationFormConfigQuery = `*[_type == "consultationFormConfig"][0]{
+  _id,
+  _type,
+  formTitle,
+  successTitle,
+  successDescription,
+  successPhone,
+  successButtonText,
+  submitButtonText,
+  submittingText,
+  privacyNotice
+}`;
+
 /** 布局数据（Header + Footer 共需） */
 export const layoutDataQuery = `{
   "siteSettings": ${siteSettingsQuery},
-  "contactInfo": ${contactInfoQuery}
+  "contactInfo": ${contactInfoQuery},
+  "layoutConfig": ${layoutConfigQuery}
 }`;
 
 // ─────────────────────────────────────────────
@@ -248,7 +366,8 @@ export const homePageQuery = `{
   "featuredCases": ${FEATURED_CASES},
   "featuredArticles": ${FEATURED_ARTICLES},
   "featuredVideos": ${FEATURED_VIDEOS},
-  "featuredFaqs": ${FEATURED_FAQS}
+  "featuredFaqs": ${FEATURED_FAQS},
+  "homePageConfig": ${homePageConfigQuery}
 }`;
 
 // ─────────────────────────────────────────────
@@ -380,7 +499,8 @@ export const advantagesPageQuery = `{
   "siteSettings": ${siteSettingsQuery},
   "pageSeo": ${ADVANTAGES_PAGE_SEO},
   "banners": ${ADVANTAGES_BANNERS},
-  "advantages": ${ALL_ADVANTAGES}
+  "advantages": ${ALL_ADVANTAGES},
+  "advantagesPageConfig": ${advantagesPageConfigQuery}
 }`;
 
 // ─────────────────────────────────────────────
@@ -493,7 +613,8 @@ export const knowledgePageQuery = `{
   "categories": ${ALL_ARTICLE_CATEGORIES},
   "articles": ${ALL_ARTICLES},
   "videos": ${ALL_VIDEOS},
-  "faqs": ${ALL_FAQS}
+  "faqs": ${ALL_FAQS},
+  "knowledgePageConfig": ${knowledgePageConfigQuery}
 }`;
 
 // ─────────────────────────────────────────────
@@ -637,5 +758,13 @@ export const contactPageQuery = `{
   "pageSeo": ${CONTACT_PAGE_SEO},
   "banners": ${CONTACT_BANNERS},
   "contactInfo": ${contactInfoQuery},
-  "faqs": ${CONTACT_FAQS}
+  "faqs": ${CONTACT_FAQS},
+  "contactPageConfig": *[_type == "contactPageConfig"][0]{
+    _id,
+    _type,
+    heroEyebrow,
+    heroTitle,
+    heroDescription,
+    consultationTitle
+  }
 }`;

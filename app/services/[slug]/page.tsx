@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { fetchServiceBySlug, fetchServiceSlugs } from "@/sanity/lib/fetchers";
+import { fetchServiceBySlug, fetchServiceSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { FaqJsonLd } from "@/components/seo/faq-json-ld";
@@ -41,7 +41,10 @@ export async function generateMetadata({
 
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const service = await fetchServiceBySlug(slug);
+  const [service, siteSettings] = await Promise.all([
+    fetchServiceBySlug(slug),
+    fetchSiteSettings(),
+  ]);
 
   if (!service) {
     notFound();
@@ -201,7 +204,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       <FaqSection faqs={faqs} />
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={siteSettings} />
     </main>
   );
 }

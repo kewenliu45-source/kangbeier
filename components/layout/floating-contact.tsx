@@ -3,20 +3,25 @@
 import { Phone, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { SiteSettings, ContactInfo } from "@/types/sanity";
+import type { SiteSettings, ContactInfo, LayoutConfig } from "@/types/sanity";
 
 interface FloatingContactProps {
   siteSettings?: SiteSettings | null;
   contactInfo?: ContactInfo | null;
+  layoutConfig?: LayoutConfig | null;
 }
 
-export function FloatingContact({ siteSettings, contactInfo }: FloatingContactProps) {
+export function FloatingContact({ siteSettings, contactInfo, layoutConfig }: FloatingContactProps) {
   // 字段优先级
   const phone =
     contactInfo?.phone || siteSettings?.primaryPhone || "155-2728-3220";
   const wechatId =
     contactInfo?.wechatId || siteSettings?.primaryWechat || "15527283220";
   const telHref = `tel:${phone.replace(/[\s-]/g, "")}`;
+
+  // 配置文字
+  const floatingPhoneText = layoutConfig?.floatingPhoneText || "电话沟通";
+  const floatingCtaText = layoutConfig?.floatingCtaText || "免费咨询方案";
 
   return (
     <>
@@ -79,7 +84,7 @@ export function FloatingContact({ siteSettings, contactInfo }: FloatingContactPr
             )}
           >
             <Phone className="w-4 h-4" />
-            <span>电话沟通</span>
+            <span>{floatingPhoneText}</span>
           </a>
 
           {/* 免费咨询方案 */}
@@ -91,7 +96,7 @@ export function FloatingContact({ siteSettings, contactInfo }: FloatingContactPr
               "hover:bg-primary/90"
             )}
           >
-            免费咨询方案
+            {floatingCtaText}
           </Button>
         </div>
       </div>

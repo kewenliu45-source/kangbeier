@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
-import { fetchArticleBySlug, fetchArticleSlugs } from "@/sanity/lib/fetchers";
+import { fetchArticleBySlug, fetchArticleSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { ArticleJsonLd } from "@/components/seo/article-json-ld";
@@ -44,7 +44,10 @@ export async function generateMetadata({
 
 export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
-  const article = await fetchArticleBySlug(slug);
+  const [article, siteSettings] = await Promise.all([
+    fetchArticleBySlug(slug),
+    fetchSiteSettings(),
+  ]);
 
   if (!article) {
     notFound();
@@ -252,7 +255,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       )}
 
       {/* CTA */}
-      <CtaSection />
+      <CtaSection siteSettings={siteSettings} />
     </main>
   );
 }

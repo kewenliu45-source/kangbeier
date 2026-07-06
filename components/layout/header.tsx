@@ -7,7 +7,7 @@ import { Phone, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { urlForImage } from "@/sanity/lib/image";
-import type { SiteSettings, ContactInfo } from "@/types/sanity";
+import type { SiteSettings, ContactInfo, LayoutConfig } from "@/types/sanity";
 
 const fallbackNavItems = [
   { label: "服务项目", href: "/services" },
@@ -21,9 +21,10 @@ const fallbackNavItems = [
 interface HeaderProps {
   siteSettings?: SiteSettings | null;
   contactInfo?: ContactInfo | null;
+  layoutConfig?: LayoutConfig | null;
 }
 
-export function Header({ siteSettings, contactInfo }: HeaderProps) {
+export function Header({ siteSettings, contactInfo, layoutConfig }: HeaderProps) {
   const [showQr, setShowQr] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -47,6 +48,12 @@ export function Header({ siteSettings, contactInfo }: HeaderProps) {
   // 微信二维码
   const wechatQrCode =
     contactInfo?.wechatQrCode || siteSettings?.wechatQrCode;
+
+  // 配置文字
+  const wechatConsultText = layoutConfig?.wechatConsultText || "微信咨询";
+  const wechatModalTitle = layoutConfig?.wechatModalTitle || "添加微信";
+  const wechatModalDescription = layoutConfig?.wechatModalDescription || "获取试管科普与咨询提醒";
+  const wechatQrPlaceholder = layoutConfig?.wechatQrPlaceholder || "公众号二维码";
 
   // 点击外部关闭
   useEffect(() => {
@@ -131,7 +138,7 @@ export function Header({ siteSettings, contactInfo }: HeaderProps) {
                 "hover:text-primary focus:text-primary"
               )}
             >
-              微信咨询
+              {wechatConsultText}
             </button>
 
             {/* 二维码浮层 */}
@@ -146,16 +153,16 @@ export function Header({ siteSettings, contactInfo }: HeaderProps) {
                 onMouseLeave={handleMouseLeave}
               >
                 <p className="text-sm font-semibold text-foreground mb-1">
-                  添加微信
+                  {wechatModalTitle}
                 </p>
                 <p className="text-xs text-muted-foreground mb-3">
-                  获取试管科普与咨询提醒
+                  {wechatModalDescription}
                 </p>
                 {wechatQrCode ? (
                   <div className="w-full aspect-square rounded-lg overflow-hidden">
                     <Image
                       src={urlForImage(wechatQrCode as unknown as Parameters<typeof urlForImage>[0]).width(400).url()}
-                      alt="公众号二维码"
+                      alt={wechatQrPlaceholder}
                       width={400}
                       height={400}
                       className="w-full h-full object-contain"
@@ -171,7 +178,7 @@ export function Header({ siteSettings, contactInfo }: HeaderProps) {
                   >
                     <QrCode className="w-10 h-10 text-muted-foreground/20" />
                     <span className="text-xs text-muted-foreground/50">
-                      公众号二维码
+                      {wechatQrPlaceholder}
                     </span>
                   </div>
                 )}
