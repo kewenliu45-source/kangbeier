@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { FloatingContact } from "@/components/layout/floating-contact";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { fetchLayoutData } from "@/sanity/lib/fetchers";
-import { setSiteName } from "@/lib/metadata";
+import { setSiteName, getSiteUrl, getDefaultOgImage } from "@/lib/metadata";
 import { urlForImage } from "@/sanity/lib/image";
 import "./globals.css";
 
@@ -33,6 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   }
 
+  const siteUrl = getSiteUrl();
+  const ogImage = getDefaultOgImage();
+
   return {
     title: siteName,
     description,
@@ -43,6 +46,28 @@ export async function generateMetadata(): Promise<Metadata> {
           apple: faviconUrl,
         }
       : undefined,
+    openGraph: {
+      title: siteName,
+      description,
+      url: siteUrl,
+      siteName,
+      type: "website" as const,
+      locale: "zh_CN",
+      images: [
+        {
+          url: ogImage,
+          width: 800,
+          height: 800,
+          alt: siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: siteName,
+      description,
+      images: [ogImage],
+    },
   };
 }
 

@@ -182,12 +182,11 @@ export function MobileNav({ siteSettings, contactInfo }: MobileNavProps) {
             <Phone className="h-4 w-4 text-accent" />
             <span>{phone}</span>
           </a>
-          <Button
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-11 text-sm font-semibold"
-            onClick={handleClose}
-          >
-            免费咨询方案
-          </Button>
+          <Link href="/contact" onClick={handleClose}>
+            <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-11 text-sm font-semibold">
+              免费咨询方案
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

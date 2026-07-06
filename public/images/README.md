@@ -1,28 +1,21 @@
 # 分享图片说明
 
-## 需要上传的文件
+## 当前文件
 
-请在此目录上传一个名为 `share.jpg` 的分享图片：
+- `share.png` — 微信分享、社交媒体分享时显示的封面图（800×800 PNG）
+- `share.svg` — 源文件（用于重新生成 PNG）
 
-- **文件名**: `share.jpg`
-- **尺寸**: 800×800 像素（推荐）或 500×500 像素
-- **格式**: JPG 或 PNG
-- **用途**: 微信分享、社交媒体分享时显示的封面图
+## 如何更新分享图片
 
-## 图片内容建议
+1. 修改 `share.svg` 中的内容
+2. 运行以下命令重新生成 PNG：
+   ```bash
+   node -e "const sharp = require('sharp'); const fs = require('fs'); sharp(fs.readFileSync('public/images/share.svg')).resize(800,800).png().toFile('public/images/share.png').then(() => console.log('done'))"
+   ```
+3. 提交代码并推送
 
-建议包含：
-- 品牌名称：好孕生命中心
-- 简短标语：专业助孕咨询服务
-- 品牌 Logo（如有）
+## 图片要求
 
-## 上传方式
-
-1. 准备好图片文件
-2. 命名为 `share.jpg`
-3. 放置在此目录 (`public/images/`)
-4. 提交代码并推送
-
-## 当前状态
-
-- `share.svg` - 占位文件，需要替换为 `share.jpg`
+- **尺寸**: 800×800 像素（微信最低要求 200×200）
+- **格式**: PNG 或 JPG（微信不支持 SVG）
+- **大小**: 建议不超过 32KB（当前约 24KB）

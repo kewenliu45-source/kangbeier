@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Phone, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -88,16 +89,18 @@ export function FloatingContact({ siteSettings, contactInfo, layoutConfig }: Flo
           </a>
 
           {/* 免费咨询方案 */}
-          <Button
-            className={cn(
-              "flex-1 h-11 rounded-lg",
-              "bg-primary text-primary-foreground",
-              "text-sm font-semibold",
-              "hover:bg-primary/90"
-            )}
-          >
-            {floatingCtaText}
-          </Button>
+          <Link href="/contact" className="flex-1">
+            <Button
+              className={cn(
+                "w-full h-11 rounded-lg",
+                "bg-primary text-primary-foreground",
+                "text-sm font-semibold",
+                "hover:bg-primary/90"
+              )}
+            >
+              {floatingCtaText}
+            </Button>
+          </Link>
         </div>
       </div>
     </>

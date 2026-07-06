@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Seo } from "@/types/sanity";
+import { urlForImage } from "@/sanity/lib/image";
 
 // ─────────────────────────────────────────────
 // 常量（可通过 setSiteName 动态更新）
@@ -45,7 +46,7 @@ export function buildCanonicalUrl(pathname: string): string {
 /** 获取默认分享图片 URL（用于微信分享等场景） */
 export function getDefaultOgImage(): string {
   const siteUrl = getSiteUrl();
-  return `${siteUrl}/images/share.jpg`;
+  return `${siteUrl}/images/share.png`;
 }
 
 // ─────────────────────────────────────────────
@@ -67,6 +68,10 @@ interface BuildMetadataOptions {
   noIndex?: boolean;
   /** 页面类型 */
   type?: "website" | "article";
+  /** 社交分享标题（覆盖 title） */
+  ogTitle?: string;
+  /** 社交分享描述（覆盖 description） */
+  ogDescription?: string;
 }
 
 /**
@@ -90,6 +95,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
     path = "/",
     noIndex = false,
     type = "website",
+    ogTitle,
+    ogDescription,
   } = options;
 
   const siteUrl = getSiteUrl();
@@ -125,8 +132,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
       canonical,
     },
     openGraph: {
-      title: fullTitle,
-      description: metaDescription,
+      title: ogTitle || fullTitle,
+      description: ogDescription || metaDescription,
       url: canonical,
       siteName: currentSiteName,
       type,
@@ -161,12 +168,29 @@ export function buildMetadataFromSeo(
     path?: string;
   }
 ): Metadata {
+  // 从 Sanity ogImage 生成 URL
+  let ogImageUrl: string | undefined;
+  if (seo?.ogImage?.asset) {
+    try {
+      ogImageUrl = urlForImage(
+        seo.ogImage as unknown as Parameters<typeof urlForImage>[0]
+      )
+        .width(1200)
+        .height(630)
+        .url();
+    } catch {
+      // 忽略错误，使用默认图片
+    }
+  }
+
   return buildMetadata({
     title: seo?.metaTitle || fallback?.title,
     description: seo?.metaDescription || fallback?.description,
     keywords: seo?.keywords,
-    image: fallback?.image,
+    image: ogImageUrl || fallback?.image,
     path: fallback?.path,
     noIndex: seo?.noIndex || false,
+    ogTitle: seo?.ogTitle,
+    ogDescription: seo?.ogDescription,
   });
 }
