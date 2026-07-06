@@ -66,6 +66,7 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   siteName,
   brandName,
   logo${IMAGE_WITH_ALT},
+  favicon${IMAGE_ASSET},
   slogan,
   description,
   defaultSeo${SEO},
