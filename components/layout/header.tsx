@@ -85,14 +85,14 @@ export function Header({ siteSettings, contactInfo, layoutConfig }: HeaderProps)
     >
       <div className="container mx-auto flex h-[72px] items-center justify-between px-4 lg:px-8">
         {/* 品牌名 / Logo */}
-        <Link href="/" className="flex items-center gap-1">
+        <Link href="/" className="flex items-center gap-2">
           {logoImage && (
             <Image
-              src={urlForImage(logoImage as unknown as Parameters<typeof urlForImage>[0]).width(200).url()}
+              src={urlForImage(logoImage as unknown as Parameters<typeof urlForImage>[0]).width(300).url()}
               alt={siteSettings?.logo?.alt || brandName}
-              width={56}
-              height={56}
-              className="h-14 w-auto"
+              width={80}
+              height={80}
+              className="h-16 lg:h-20 w-auto"
               priority
             />
           )}
