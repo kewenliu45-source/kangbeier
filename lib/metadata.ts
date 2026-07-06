@@ -42,14 +42,10 @@ export function buildCanonicalUrl(pathname: string): string {
   return `${siteUrl}${path === "/" ? "" : path}`;
 }
 
-/** 获取 Sanity 图片 URL */
-function getImageUrl(
-  image?: { asset?: { _ref?: string } } | null
-): string | undefined {
-  if (!image?.asset?._ref) return undefined;
-  // Sanity image URL 格式：image-{assetId}-{dimensions}-{format}
-  // 这里返回 undefined，让页面组件处理具体 URL
-  return undefined;
+/** 获取默认分享图片 URL（用于微信分享等场景） */
+export function getDefaultOgImage(): string {
+  const siteUrl = getSiteUrl();
+  return `${siteUrl}/images/share.jpg`;
 }
 
 // ─────────────────────────────────────────────
@@ -115,8 +111,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
       : keywords.split(",").map((k) => k.trim())
     : FALLBACK_SEO.keywords;
 
-  // OG 图片
-  const ogImage = image || undefined;
+  // OG 图片：优先使用传入的图片，否则使用默认分享图片
+  const ogImage = image || getDefaultOgImage();
 
   return {
     title: fullTitle,
@@ -135,22 +131,20 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
       siteName: currentSiteName,
       type,
       locale: "zh_CN",
-      ...(ogImage && {
-        images: [
-          {
-            url: ogImage,
-            width: 1200,
-            height: 630,
-            alt: title || SITE_NAME,
-          },
-        ],
-      }),
+      images: [
+        {
+          url: ogImage,
+          width: 800,
+          height: 800,
+          alt: title || SITE_NAME,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description: metaDescription,
-      ...(ogImage && { images: [ogImage] }),
+      images: [ogImage],
     },
   };
 }
