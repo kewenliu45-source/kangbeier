@@ -476,7 +476,7 @@ const ALL_ADVANTAGES = `*[_type == "advantage"] | order(sortOrder asc){
   description,
   content[]{
     ...,
-    _type == "imageWithAlt"${IMAGE_WITH_ALT}
+    _type == "imageWithAlt" => ${IMAGE_WITH_ALT}
   },
   statistics[]{
     label,
@@ -642,7 +642,7 @@ export const articleBySlugQuery = `*[_type == "article" && slug.current == $slug
   updatedAt,
   content[]{
     ...,
-    _type == "imageWithAlt"${IMAGE_WITH_ALT}
+    _type == "imageWithAlt" => ${IMAGE_WITH_ALT}
   },
   relatedArticles[]->{
     _id,
