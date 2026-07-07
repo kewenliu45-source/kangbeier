@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        white: "#FFFFFF",
         // Brand palette (Medicio Refined)
         background: "#FFFFFF",
         foreground: "#263238",
