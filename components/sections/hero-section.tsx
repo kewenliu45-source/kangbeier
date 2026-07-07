@@ -184,7 +184,7 @@ export function HeroSection({ banner, homePageConfig }: HeroSectionProps) {
               {serviceTags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-primary/8 px-3 py-1.5 text-xs font-medium text-primary"
+                  className="rounded-full bg-primary/[0.08] px-3 py-1.5 text-xs font-medium text-primary"
                 >
                   {tag}
                 </span>

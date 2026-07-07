@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -48,6 +48,21 @@ export function MobileNav({ siteSettings, contactInfo }: MobileNavProps) {
 
   const handleClose = () => setOpen(false);
 
+  // 右滑收起：记录触摸起点
+  const touchStartX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    // 向右滑动超过 50px 则收起
+    if (deltaX > 50) {
+      handleClose();
+    }
+  };
+
   return (
     <div className="lg:hidden">
       {/* 触发按钮 */}
@@ -76,10 +91,12 @@ export function MobileNav({ siteSettings, contactInfo }: MobileNavProps) {
       <div
         className={cn(
           "fixed top-0 right-0 z-[101] h-full w-[280px] max-w-[85vw]",
-          "bg-brand-cream shadow-2xl",
+          "bg-white shadow-2xl",
           "transform transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "translate-x-full"
         )}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* 面板头部 */}
         <div className="flex items-center justify-between px-6 h-[80px] border-b border-border">
@@ -171,7 +188,7 @@ export function MobileNav({ siteSettings, contactInfo }: MobileNavProps) {
         </nav>
 
         {/* 底部操作区 */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 py-6 border-t border-border bg-brand-cream">
+        <div className="absolute bottom-0 left-0 right-0 px-6 py-6 border-t border-border bg-white">
           <a
             href={telHref}
             className={cn(
