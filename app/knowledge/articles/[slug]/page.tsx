@@ -13,6 +13,9 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { urlForImage } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
 
+// 允许动态生成未预渲染的页面
+export const dynamicParams = true;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
