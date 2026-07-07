@@ -83,9 +83,16 @@ export function CaseCard({ caseStudy, className }: CaseCardProps) {
         </div>
 
         {/* 标题 */}
-        <h3 className="text-lg font-bold text-foreground mb-3">
+        <h3 className="text-lg font-bold text-foreground mb-2">
           {caseStudy.title}
         </h3>
+
+        {/* 案例简介 */}
+        {caseStudy.summary && (
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3">
+            {caseStudy.summary}
+          </p>
+        )}
 
         {/* 挑战 */}
         {caseStudy.challenge && (
