@@ -10,6 +10,7 @@ export const article = defineType({
       name: "title",
       title: "文章标题",
       type: "string",
+      description: "[前台位置: 科普文章列表页卡片标题、文章详情页顶部标题]",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -18,21 +19,21 @@ export const article = defineType({
       type: "slug",
       options: { source: "title", maxLength: 96 },
       validation: (rule) => rule.required(),
-      description: "从标题自动生成，用于 /knowledge/articles/[slug]",
+      description: "[前台位置: 文章详情页网址路径] [注意: 修改后旧链接失效，建议只在创建时设置一次]",
     }),
     defineField({
       name: "excerpt",
       title: "文章摘要",
       type: "text",
       rows: 3,
-      description: "列表页卡片展示，建议 100-160 字",
+      description: "[前台位置: 科普文章列表页卡片简介文字] [注意: 建议100-160字]",
       validation: (rule) => rule.max(200).warning("建议不超过 200 字"),
     }),
     defineField({
       name: "coverImage",
       title: "封面图片",
       type: "imageWithAlt",
-      description: "文章列表页和详情页顶部展示",
+      description: "[前台位置: 科普文章列表页卡片封面图、文章详情页顶部大图] [注意: 建议1200x600px，500KB以内]",
     }),
 
     // ── 分类与标签 ──
@@ -41,7 +42,7 @@ export const article = defineType({
       title: "文章分类",
       type: "reference",
       to: [{ type: "articleCategory" }],
-      description: "选择文章所属分类",
+      description: "[前台位置: 文章列表页卡片分类标签、详情页面包屑分类] [注意: 需先在[文章分类]中创建]",
     }),
     defineField({
       name: "tags",
@@ -49,7 +50,7 @@ export const article = defineType({
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
-      description: "用于筛选和搜索，如：试管婴儿、高龄备孕、成功率",
+      description: "[前台位置: 文章列表页卡片标签] [注意: 用于内部筛选，建议2-5个]",
     }),
 
     // ── 作者与时间 ──
@@ -57,20 +58,20 @@ export const article = defineType({
       name: "author",
       title: "作者",
       type: "string",
-      description: "文章作者名称",
+      description: "[前台位置: 文章列表页卡片作者名、文章详情页作者信息]",
     }),
     defineField({
       name: "publishedAt",
       title: "发布时间",
       type: "datetime",
       initialValue: () => new Date().toISOString(),
-      description: "默认为当前时间",
+      description: "[前台位置: 文章列表页卡片日期、文章详情页发布时间]",
     }),
     defineField({
       name: "updatedAt",
       title: "最后更新时间",
       type: "datetime",
-      description: "内容更新时手动维护",
+      description: "[前台位置: 文章详情页更新时间] [注意: 需手动更新，用于显示内容时效性]",
     }),
 
     // ── 文章内容 ──
@@ -78,7 +79,7 @@ export const article = defineType({
       name: "content",
       title: "文章正文",
       type: "richText",
-      description: "支持富文本、图片、链接",
+      description: "[前台位置: 文章详情页正文内容区域，支持图文混排]",
     }),
 
     // ── 关联文章 ──
@@ -92,7 +93,7 @@ export const article = defineType({
           to: [{ type: "article" }],
         },
       ],
-      description: "详情页底部推荐阅读",
+      description: "[前台位置: 文章详情页底部推荐阅读区域] [注意: 需先创建其他文章]",
     }),
 
     // ── 展示控制 ──
@@ -101,7 +102,7 @@ export const article = defineType({
       title: "首页精选",
       type: "boolean",
       initialValue: false,
-      description: "勾选后展示在首页科普区块",
+      description: "[前台位置: 首页第七屏科普文章区块] [注意: 关闭后首页不展示该文章]",
     }),
 
     // ── SEO ──
@@ -109,7 +110,7 @@ export const article = defineType({
       name: "seo",
       title: "SEO 设置",
       type: "seo",
-      description: "不填则使用默认 SEO",
+      description: "[前台位置: 文章详情页的搜索引擎展示信息] [注意: 非专业人员建议保持默认]",
     }),
   ],
   orderings: [

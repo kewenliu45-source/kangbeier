@@ -11,12 +11,14 @@ export const servicesPageConfig = defineType({
       name: "heroEyebrow",
       title: "Hero 小标题",
       type: "string",
+      description: "[前台位置: 服务页顶部Hero区域的小标题/标签]",
       initialValue: "服务项目",
     }),
     defineField({
       name: "heroTitle",
       title: "Hero 标题",
       type: "string",
+      description: "[前台位置: 服务页顶部Hero区域的主标题]",
       initialValue: "根据您的情况，匹配更合适的助孕咨询路径",
     }),
     defineField({
@@ -24,6 +26,7 @@ export const servicesPageConfig = defineType({
       title: "Hero 描述",
       type: "text",
       rows: 2,
+      description: "[前台位置: 服务页顶部Hero区域主标题下方的描述文字]",
       initialValue: "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。",
     }),
   ],

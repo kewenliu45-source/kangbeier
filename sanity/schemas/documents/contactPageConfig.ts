@@ -11,12 +11,14 @@ export const contactPageConfig = defineType({
       name: "heroEyebrow",
       title: "Hero 小标题",
       type: "string",
+      description: "[前台位置: 联系页顶部Hero区域的小标题/标签]",
       initialValue: "联系我们",
     }),
     defineField({
       name: "heroTitle",
       title: "Hero 标题",
       type: "string",
+      description: "[前台位置: 联系页顶部Hero区域的主标题]",
       initialValue: "先沟通情况，再判断下一步",
     }),
     defineField({
@@ -24,6 +26,7 @@ export const contactPageConfig = defineType({
       title: "Hero 描述",
       type: "text",
       rows: 2,
+      description: "[前台位置: 联系页顶部Hero区域主标题下方的描述文字]",
       initialValue: "如果您正在经历高龄备孕、试管多次失败、二胎规划或特殊生育需求，可以先做一次初步咨询。",
     }),
 
@@ -32,6 +35,7 @@ export const contactPageConfig = defineType({
       name: "consultationTitle",
       title: "咨询说明标题",
       type: "string",
+      description: "[前台位置: 联系页咨询说明区域的标题]",
       initialValue: "咨询说明",
     }),
   ],

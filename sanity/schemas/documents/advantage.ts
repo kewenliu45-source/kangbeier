@@ -10,6 +10,7 @@ export const advantage = defineType({
       name: "title",
       title: "优势标题",
       type: "string",
+      description: "[前台位置: 优势列表页卡片标题、优势详情页顶部标题]",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -17,6 +18,7 @@ export const advantage = defineType({
       title: "URL 标识",
       type: "slug",
       options: { source: "title", maxLength: 96 },
+      description: "[前台位置: 优势详情页网址路径] [注意: 修改后旧链接失效，建议只在创建时设置一次]",
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -24,20 +26,20 @@ export const advantage = defineType({
       title: "优势简介",
       type: "text",
       rows: 2,
-      description: "列表页和首页卡片展示，建议 80-120 字",
+      description: "[前台位置: 优势列表页卡片简介、首页优势区块卡片简介] [注意: 建议80-120字]",
       validation: (rule) => rule.max(200).warning("建议不超过 200 字"),
     }),
     defineField({
       name: "icon",
       title: "图标",
       type: "image",
-      description: "优势卡片小图标",
+      description: "[前台位置: 优势列表页卡片左上角小图标] [注意: 建议64x64px透明背景PNG]",
     }),
     defineField({
       name: "coverImage",
       title: "封面图片",
       type: "imageWithAlt",
-      description: "优势详情页展示",
+      description: "[前台位置: 优势详情页顶部封面大图] [注意: 建议1200x600px，500KB以内]",
     }),
 
     // ── 详情内容 ──
@@ -46,12 +48,13 @@ export const advantage = defineType({
       title: "简要描述",
       type: "text",
       rows: 3,
+      description: "[前台位置: 优势详情页封面图下方的简要描述文字]",
     }),
     defineField({
       name: "content",
       title: "详细介绍",
       type: "richText",
-      description: "优势详情页主体内容",
+      description: "[前台位置: 优势详情页主体内容区域，支持图文混排]",
     }),
 
     // ── 数据统计 ──
@@ -59,6 +62,7 @@ export const advantage = defineType({
       name: "statistics",
       title: "数据统计",
       type: "array",
+      description: "[前台位置: 优势页底部数据统计区块] [注意: 最多显示前4项]",
       of: [
         {
           type: "object",
@@ -69,19 +73,21 @@ export const advantage = defineType({
               name: "label",
               title: "指标名称",
               type: "string",
+              description: "[前台位置: 数据统计区块每项的指标名称文字]",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "value",
               title: "指标数值",
               type: "string",
-              description: "如：98%、5000+、30 年",
+              description: "[前台位置: 数据统计区块每项的数值，如98%、5000+] [注意: 建议简短有力]",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "description",
               title: "补充说明",
               type: "string",
+              description: "[前台位置: 数据统计区块每项数值下方的补充说明]",
             }),
           ],
           preview: {
@@ -102,7 +108,7 @@ export const advantage = defineType({
           to: [{ type: "service" }],
         },
       ],
-      description: "关联的服务项目，展示在优势详情页",
+      description: "[前台位置: 优势详情页底部关联服务入口] [注意: 需先在[服务项目]中创建]",
     }),
 
     // ── 排序与展示 ──
@@ -111,14 +117,14 @@ export const advantage = defineType({
       title: "排序权重",
       type: "number",
       initialValue: 0,
-      description: "数字越小越靠前",
+      description: "[前台位置: 优势列表页排列顺序] [注意: 数值越小越靠前，建议用10/20/30间隔]",
     }),
     defineField({
       name: "isFeatured",
       title: "首页展示",
       type: "boolean",
       initialValue: false,
-      description: "勾选后展示在首页优势区块",
+      description: "[前台位置: 首页第四屏核心优势区块] [注意: 关闭后首页不展示该优势]",
     }),
 
     // ── SEO ──
@@ -126,7 +132,7 @@ export const advantage = defineType({
       name: "seo",
       title: "SEO 设置",
       type: "seo",
-      description: "不填则使用默认 SEO",
+      description: "[前台位置: 优势详情页的搜索引擎展示信息] [注意: 非专业人员建议保持默认]",
     }),
   ],
   orderings: [

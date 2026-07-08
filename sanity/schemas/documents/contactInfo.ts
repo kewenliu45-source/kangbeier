@@ -10,25 +10,26 @@ export const contactInfo = defineType({
       name: "phone",
       title: "联系电话",
       type: "string",
-      description: "如：400-123-4567",
+      description: "[前台位置: 联系页电话咨询卡片、页脚联系方式区电话号码]",
     }),
     defineField({
       name: "wechatId",
       title: "微信号",
       type: "string",
-      description: "客服微信号",
+      description: "[前台位置: 联系页微信咨询卡片微信号、页脚微信号码]",
     }),
     defineField({
       name: "wechatQrCode",
       title: "微信二维码",
       type: "image",
       options: { hotspot: false },
-      description: "扫码添加微信咨询",
+      description: "[前台位置: 联系页微信二维码弹窗] [注意: 建议500x500px，200KB以内]",
     }),
     defineField({
       name: "email",
       title: "联系邮箱",
       type: "string",
+      description: "[前台位置: 联系页地址/邮箱卡片]",
       validation: (rule) =>
         rule.custom((value) => {
           if (!value) return true;
@@ -42,19 +43,19 @@ export const contactInfo = defineType({
       title: "地址",
       type: "text",
       rows: 2,
-      description: "详细地址",
+      description: "[前台位置: 联系页地址/邮箱卡片地址信息]",
     }),
     defineField({
       name: "mapImage",
       title: "地图图片",
       type: "imageWithAlt",
-      description: "可选，静态地图截图",
+      description: "[前台位置: 联系页地图展示区域] [注意: 建议800x400px，300KB以内]",
     }),
     defineField({
       name: "mapUrl",
       title: "地图链接",
       type: "url",
-      description: "高德/百度/腾讯地图链接",
+      description: "[前台位置: 联系页地图卡片的[查看地图]链接] [注意: 需填写完整的地图链接]",
       validation: (rule) =>
         rule.uri({ scheme: ["http", "https"] }),
     }),
@@ -63,14 +64,14 @@ export const contactInfo = defineType({
       title: "营业时间",
       type: "text",
       rows: 2,
-      description: "如：周一至周五 9:00-18:00\n周六 9:00-12:00",
+      description: "[前台位置: 联系页营业时间卡片、页脚营业时间]",
     }),
     defineField({
       name: "consultationNotice",
       title: "咨询提示",
       type: "text",
       rows: 2,
-      description: "联系页顶部或表单旁的提示文案",
+      description: "[前台位置: 联系页咨询说明区域的提示文案]",
     }),
 
     // ── 联系方式列表 ──
@@ -78,6 +79,7 @@ export const contactInfo = defineType({
       name: "contactMethods",
       title: "联系方式列表",
       type: "array",
+      description: "[前台位置: 联系页联系方式卡片列表]",
       of: [
         {
           type: "object",
@@ -88,6 +90,7 @@ export const contactInfo = defineType({
               name: "type",
               title: "类型",
               type: "string",
+              description: "[前台位置: 联系方式卡片的类型]",
               options: {
                 list: [
                   { title: "电话", value: "phone" },
@@ -103,36 +106,39 @@ export const contactInfo = defineType({
               name: "label",
               title: "显示名称",
               type: "string",
+              description: "[前台位置: 联系方式卡片的标题文字]",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "value",
               title: "值",
               type: "string",
-              description: "电话号码、微信号、邮箱地址等",
+              description: "[前台位置: 联系方式卡片的值，如电话号码、微信号等]",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "description",
               title: "说明",
               type: "string",
+              description: "[前台位置: 联系方式卡片的补充说明文字]",
             }),
             defineField({
               name: "icon",
               title: "图标",
               type: "string",
-              description: "可选，图标名称（lucide-react）",
+              description: "[前台位置: 联系方式卡片的图标] [注意: 需填写lucide-react图标名称]",
             }),
             defineField({
               name: "href",
               title: "链接",
               type: "string",
-              description: "可选，点击跳转地址",
+              description: "[前台位置: 联系方式卡片的点击跳转链接] [注意: 站内用/path形式]",
             }),
             defineField({
               name: "isPrimary",
               title: "主要联系方式",
               type: "boolean",
+              description: "[注意: 勾选后该联系方式在列表中优先显示]",
               initialValue: false,
             }),
           ],
@@ -158,7 +164,7 @@ export const contactInfo = defineType({
       name: "seo",
       title: "SEO 设置",
       type: "seo",
-      description: "联系页 SEO 配置",
+      description: "[前台位置: 联系页的搜索引擎展示信息] [注意: 非专业人员建议保持默认]",
     }),
   ],
   preview: {

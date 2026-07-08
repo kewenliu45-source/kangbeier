@@ -9,7 +9,7 @@ export const seo = defineType({
       name: "metaTitle",
       title: "页面标题（Meta Title）",
       type: "string",
-      description: "建议 50-60 个字符，显示在浏览器标签和搜索结果中",
+      description: "[前台位置: 浏览器标签页标题、搜索结果标题] [注意: 建议50-60个字符，过长会被截断]",
       validation: (rule) =>
         rule.max(60).warning("建议不超过 60 个字符，过长会被搜索引擎截断"),
     }),
@@ -18,7 +18,7 @@ export const seo = defineType({
       title: "页面描述（Meta Description）",
       type: "text",
       rows: 3,
-      description: "建议 120-160 个字符，显示在搜索结果摘要中",
+      description: "[前台位置: 搜索结果标题下方的描述文字] [注意: 建议120-160个字符]",
       validation: (rule) =>
         rule.max(160).warning("建议不超过 160 个字符"),
     }),
@@ -28,13 +28,13 @@ export const seo = defineType({
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
-      description: "页面核心关键词，用于内部管理参考",
+      description: "[前台位置: 搜索引擎关键词参考] [注意: 非专业人员建议保持默认]",
     }),
     defineField({
       name: "ogTitle",
       title: "社交分享标题（OG Title）",
       type: "string",
-      description: "分享到微信、微博等平台时显示的标题",
+      description: "[前台位置: 微信/社交平台分享时的标题] [注意: 建议不超过70个字符]",
       validation: (rule) => rule.max(70),
     }),
     defineField({
@@ -42,7 +42,7 @@ export const seo = defineType({
       title: "社交分享描述（OG Description）",
       type: "text",
       rows: 2,
-      description: "分享到社交平台时显示的描述",
+      description: "[前台位置: 微信/社交平台分享时的描述文字] [注意: 建议不超过200个字符]",
       validation: (rule) => rule.max(200),
     }),
     defineField({
@@ -50,20 +50,20 @@ export const seo = defineType({
       title: "社交分享图片（OG Image）",
       type: "image",
       options: { hotspot: true },
-      description: "建议尺寸 1200×630 像素",
+      description: "[前台位置: 微信/社交平台分享时的预览图] [注意: 建议1200x630px，200KB以内]",
     }),
     defineField({
       name: "canonicalUrl",
       title: "规范链接（Canonical URL）",
       type: "url",
-      description: "避免重复内容问题，留空则使用页面默认 URL",
+      description: "[前台位置: 搜索引擎收录的标准链接] [注意: 非专业人员建议留空]",
     }),
     defineField({
       name: "noIndex",
       title: "禁止搜索引擎索引",
       type: "boolean",
       initialValue: false,
-      description: "勾选后该页面不会出现在搜索结果中",
+      description: "[注意: 一般页面不要勾选，勾选后搜索引擎不收录该页面]",
     }),
   ],
 });
