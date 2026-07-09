@@ -173,11 +173,11 @@ export default async function ArticleDetailPage({ params }: Props) {
                 {article.content.map((block, i) => {
                   // 处理内嵌图片
                   if (block._type === "imageWithAlt" || block._type === "image") {
-                    const imgAsset = (block as { asset?: unknown }).asset;
-                    if (!imgAsset) return null;
+                    const imageData = (block as { image?: { asset?: unknown } }).image;
+                    if (!imageData?.asset) return null;
                     try {
                       const imgUrl = urlForImage(
-                        block as unknown as Parameters<typeof urlForImage>[0]
+                        imageData as unknown as Parameters<typeof urlForImage>[0]
                       )
                         .width(800)
                         .url();
