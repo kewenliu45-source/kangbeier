@@ -32,7 +32,7 @@ const FALLBACK_SEO = {
 /** 获取站点 URL */
 export function getSiteUrl(): string {
   return (
-    process.env.NEXT_PUBLIC_SITE_URL || "https://www.kangbeier.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.kbeier.com"
   );
 }
 

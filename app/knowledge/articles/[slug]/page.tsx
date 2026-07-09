@@ -171,6 +171,34 @@ export default async function ArticleDetailPage({ params }: Props) {
             {article.content && article.content.length > 0 ? (
               <div>
                 {article.content.map((block, i) => {
+                  // 处理内嵌图片
+                  if (block._type === "imageWithAlt" || block._type === "image") {
+                    const imgAsset = (block as { asset?: unknown }).asset;
+                    if (!imgAsset) return null;
+                    try {
+                      const imgUrl = urlForImage(
+                        block as unknown as Parameters<typeof urlForImage>[0]
+                      )
+                        .width(800)
+                        .url();
+                      const alt = (block as { alt?: string }).alt || article.title;
+                      return (
+                        <figure key={i} className="my-6">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={imgUrl}
+                            alt={alt}
+                            className="w-full rounded-lg"
+                            loading="lazy"
+                          />
+                        </figure>
+                      );
+                    } catch {
+                      return null;
+                    }
+                  }
+
+                  // 处理文字 block
                   if (block._type === "block" && "children" in block) {
                     const children = block.children as Array<{
                       _type: string;
