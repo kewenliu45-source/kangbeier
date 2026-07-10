@@ -684,7 +684,7 @@ export const videoBySlugQuery = `*[_type == "video" && slug.current == $slug][0]
   },
   transcript[]{
     ...,
-    _type == "imageWithAlt"${IMAGE_WITH_ALT}
+    _type == "imageWithAlt" => ${IMAGE_WITH_ALT}
   },
   publishedAt,
   isFeatured,
