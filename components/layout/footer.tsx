@@ -58,7 +58,7 @@ export function Footer({ siteSettings, contactInfo, layoutConfig }: FooterProps)
             >
               {brandName}
             </Link>
-            <p className="mt-4 text-sm text-primary-foreground/70 leading-relaxed">
+            <p className="mt-4 text-sm text-primary-foreground/70 leading-relaxed whitespace-pre-line">
               {footerDescription}
             </p>
           </div>
