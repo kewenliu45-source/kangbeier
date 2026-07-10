@@ -74,7 +74,7 @@ export const pageSeo = defineType({
           type: "reference",
           to: [{ type: "keywordLibrary" }],
           description: "选择关键词库后，点击文档顶部「同步关键词」按钮导入",
-          hidden: ({ parent }) => parent?.keywordSource?.sourceType !== "keywordLibrary",
+          hidden: ({ parent }) => parent?.sourceType !== "keywordLibrary",
         }),
         defineField({
           name: "sourcePage",
@@ -82,7 +82,7 @@ export const pageSeo = defineType({
           type: "reference",
           to: [{ type: "pageSeo" }],
           description: "选择来源页面后，点击文档顶部「同步关键词」按钮导入",
-          hidden: ({ parent }) => parent?.keywordSource?.sourceType !== "pageSeo",
+          hidden: ({ parent }) => parent?.sourceType !== "pageSeo",
         }),
       ],
     }),
