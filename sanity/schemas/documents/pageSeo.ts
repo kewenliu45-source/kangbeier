@@ -69,26 +69,20 @@ export const pageSeo = defineType({
           },
         }),
         defineField({
-          name: "sourceRef",
-          title: "来源文档",
+          name: "sourceLibrary",
+          title: "公共关键词库",
           type: "reference",
-          to: [{ type: "keywordLibrary" }, { type: "pageSeo" }],
-          description: "选择来源后，点击文档顶部「同步关键词」按钮导入关键词",
-          options: {
-            filter: ({ document }) => {
-              const sourceType = (document as any)?.keywordSource?.sourceType;
-              if (!sourceType) return { filter: "false" };
-              if (sourceType === "keywordLibrary") {
-                return { filter: '_type == "keywordLibrary"' };
-              }
-              // pageSeo: 排除自身
-              const currentId = (document as any)?._id?.replace(/^drafts\./, "");
-              return {
-                filter: '_type == "pageSeo" && _id != $currentId',
-                params: { currentId },
-              };
-            },
-          },
+          to: [{ type: "keywordLibrary" }],
+          description: "选择关键词库后，点击文档顶部「同步关键词」按钮导入",
+          hidden: ({ parent }) => parent?.keywordSource?.sourceType !== "keywordLibrary",
+        }),
+        defineField({
+          name: "sourcePage",
+          title: "其他页面 SEO",
+          type: "reference",
+          to: [{ type: "pageSeo" }],
+          description: "选择来源页面后，点击文档顶部「同步关键词」按钮导入",
+          hidden: ({ parent }) => parent?.keywordSource?.sourceType !== "pageSeo",
         }),
       ],
     }),

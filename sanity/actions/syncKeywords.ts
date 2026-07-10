@@ -13,7 +13,8 @@ import { SyncIcon } from "@sanity/icons";
 
 interface KeywordSource {
   sourceType?: "keywordLibrary" | "pageSeo";
-  sourceRef?: { _ref: string };
+  sourceLibrary?: { _ref: string };
+  sourcePage?: { _ref: string };
 }
 
 export const syncKeywords: DocumentActionComponent = (props) => {
@@ -28,7 +29,14 @@ export const syncKeywords: DocumentActionComponent = (props) => {
 
   const doc = (draft || published) as Record<string, any> | undefined;
   const keywordSource = doc?.keywordSource as KeywordSource | undefined;
-  const sourceRef = keywordSource?.sourceRef?._ref;
+
+  // 根据来源类型取对应的 ref
+  const sourceRef =
+    keywordSource?.sourceType === "keywordLibrary"
+      ? keywordSource?.sourceLibrary?._ref
+      : keywordSource?.sourceType === "pageSeo"
+        ? keywordSource?.sourcePage?._ref
+        : undefined;
 
   // 未配置来源时禁用按钮
   if (!keywordSource?.sourceType || !sourceRef) {
