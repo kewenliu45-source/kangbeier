@@ -158,8 +158,7 @@ export async function fetchServiceBySlug(
     return await sanityFetch<Service | null>({
       query: serviceBySlugQuery,
       params: { slug },
-      cache: "force-cache",
-      revalidate: 60,
+      cache: "no-store",
     });
   } catch {
     console.warn(`Failed to fetch service by slug: ${slug}`);
@@ -245,8 +244,7 @@ export async function fetchArticleBySlug(
     return await sanityFetch<Article | null>({
       query: articleBySlugQuery,
       params: { slug },
-      cache: "force-cache",
-      revalidate: 60,
+      cache: "no-store",
     });
   } catch {
     console.warn(`Failed to fetch article by slug: ${slug}`);
@@ -281,8 +279,7 @@ export async function fetchVideoBySlug(
     return await sanityFetch<Video | null>({
       query: videoBySlugQuery,
       params: { slug },
-      cache: "force-cache",
-      revalidate: 60,
+      cache: "no-store",
     });
   } catch {
     console.warn(`Failed to fetch video by slug: ${slug}`);
