@@ -58,6 +58,11 @@ function getEmbedUrl(url: string): string | null {
   return null;
 }
 
+/** 判断 URL 是否为直链视频文件（MP4、WebM、Ogg） */
+function isDirectVideoUrl(url: string): boolean {
+  return /\.(mp4|webm|ogg)(\?|$|#)/i.test(url);
+}
+
 export default async function VideoDetailPage({ params }: Props) {
   const { slug } = await params;
   const [video, siteSettings] = await Promise.all([
@@ -87,6 +92,8 @@ export default async function VideoDetailPage({ params }: Props) {
 
   // 嵌入 URL
   const embedUrl = video.videoUrl ? getEmbedUrl(video.videoUrl) : null;
+  // 直链视频（MP4、WebM 等）
+  const isDirectVideo = video.videoUrl ? isDirectVideoUrl(video.videoUrl) : false;
 
   // 日期格式化
   const publishedDate = video.publishedAt
@@ -180,6 +187,14 @@ export default async function VideoDetailPage({ params }: Props) {
                   allowFullScreen
                   title={video.title}
                 />
+              ) : isDirectVideo ? (
+                <video
+                  src={video.videoUrl!}
+                  className="absolute inset-0 w-full h-full"
+                  controls
+                  preload="metadata"
+                  playsInline
+                />
               ) : coverUrl ? (
                 <div className="relative w-full h-full">
                   <Image
@@ -226,8 +241,8 @@ export default async function VideoDetailPage({ params }: Props) {
               )}
             </div>
 
-            {/* 外链按钮 */}
-            {video.videoUrl && !embedUrl && (
+            {/* 外链按钮（仅非 iframe 且非直链视频时显示） */}
+            {video.videoUrl && !embedUrl && !isDirectVideo && (
               <div className="mt-4 text-center">
                 <a
                   href={video.videoUrl}
