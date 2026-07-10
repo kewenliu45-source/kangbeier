@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { KeywordsInput } from "../../components/KeywordsInput";
 
 export const keywordLibrary = defineType({
   name: "keywordLibrary",
@@ -16,9 +17,11 @@ export const keywordLibrary = defineType({
       name: "keywords",
       title: "关键词",
       type: "array",
-      of: [{ type: "string" }],
-      options: { layout: "tags" },
-      description: "公共关键词列表，页面SEO可引用此库同步关键词",
+      of: [{ type: "keywordItem" }],
+      description: "公共关键词列表，页面SEO可引用此库同步关键词 [灰色=同步，蓝色=手动添加]",
+      components: {
+        input: KeywordsInput,
+      },
     }),
     defineField({
       name: "description",

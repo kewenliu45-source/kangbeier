@@ -25,6 +25,7 @@ import { video } from "./documents/video";
 // Object Schemas
 import { cta } from "./objects/cta";
 import { imageWithAlt } from "./objects/imageWithAlt";
+import { keywordItem } from "./objects/keywordItem";
 import { link } from "./objects/link";
 import { richText } from "./objects/richText";
 import { seo } from "./objects/seo";
@@ -33,6 +34,7 @@ import { seo } from "./objects/seo";
 export const objectTypes: SchemaTypeDefinition[] = [
   seo,
   imageWithAlt,
+  keywordItem,
   richText,
   link,
   cta,

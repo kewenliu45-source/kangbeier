@@ -351,7 +351,7 @@ const HOME_PAGE_SEO = `*[_type == "pageSeo" && pageKey == "home"][0]{
   pageKey,
   title,
   description,
-  keywords,
+  "keywords": keywords[].text,
   ogImage${IMAGE_ASSET},
   canonicalUrl,
   noIndex
@@ -440,7 +440,7 @@ const ADVANTAGES_PAGE_SEO = `*[_type == "pageSeo" && pageKey == "advantages"][0]
   pageKey,
   title,
   description,
-  keywords,
+  "keywords": keywords[].text,
   ogImage${IMAGE_ASSET},
   canonicalUrl,
   noIndex
@@ -515,7 +515,7 @@ const KNOWLEDGE_PAGE_SEO = `*[_type == "pageSeo" && pageKey == "knowledge"][0]{
   pageKey,
   title,
   description,
-  keywords,
+  "keywords": keywords[].text,
   ogImage${IMAGE_ASSET},
   canonicalUrl,
   noIndex
@@ -718,7 +718,7 @@ const CONTACT_PAGE_SEO = `*[_type == "pageSeo" && pageKey == "contact"][0]{
   pageKey,
   title,
   description,
-  keywords,
+  "keywords": keywords[].text,
   ogImage${IMAGE_ASSET},
   canonicalUrl,
   noIndex

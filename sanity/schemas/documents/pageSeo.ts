@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { KeywordsInput } from "../../components/KeywordsInput";
 
 /** 可维护 SEO 的静态页面 */
 const PAGE_KEYS = [
@@ -46,9 +47,11 @@ export const pageSeo = defineType({
       name: "keywords",
       title: "关键词",
       type: "array",
-      of: [{ type: "string" }],
-      options: { layout: "tags" },
-      description: "[前台位置: 搜索引擎关键词参考] [注意: 非专业人员建议保持默认]",
+      of: [{ type: "keywordItem" }],
+      description: "[前台位置: 搜索引擎关键词参考] [注意: 灰色=同步，蓝色=手动添加]",
+      components: {
+        input: KeywordsInput,
+      },
     }),
     defineField({
       name: "keywordSource",
