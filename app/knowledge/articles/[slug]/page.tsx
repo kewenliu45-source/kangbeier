@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
-import { fetchArticleBySlug, fetchArticleSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
+import { fetchArticleBySlug, fetchSiteSettings } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { ArticleJsonLd } from "@/components/seo/article-json-ld";
@@ -13,16 +13,11 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { urlForImage } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
 
-// 允许动态生成未预渲染的页面
-export const dynamicParams = true;
+// 强制动态渲染，避免构建时超时
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const slugs = await fetchArticleSlugs();
-  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

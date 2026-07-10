@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink, Play } from "lucide-react";
-import { fetchVideoBySlug, fetchVideoSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
+import { fetchVideoBySlug, fetchSiteSettings } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { VideoJsonLd } from "@/components/seo/video-json-ld";
@@ -13,16 +13,11 @@ import { CtaSection } from "@/components/sections/cta-section";
 import { urlForImage } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
 
-// 允许动态生成未预渲染的页面
-export const dynamicParams = true;
+// 强制动态渲染，避免构建时超时
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const slugs = await fetchVideoSlugs();
-  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
