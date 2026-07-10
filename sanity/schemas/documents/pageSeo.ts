@@ -51,6 +51,48 @@ export const pageSeo = defineType({
       description: "[前台位置: 搜索引擎关键词参考] [注意: 非专业人员建议保持默认]",
     }),
     defineField({
+      name: "keywordSource",
+      title: "关键词来源",
+      type: "object",
+      description: "引用其他页面或公共关键词库的关键词，点击文档顶部「同步关键词」按钮增量同步",
+      fields: [
+        defineField({
+          name: "sourceType",
+          title: "来源类型",
+          type: "string",
+          options: {
+            list: [
+              { title: "公共关键词库", value: "keywordLibrary" },
+              { title: "其他页面 SEO", value: "pageSeo" },
+            ],
+            layout: "radio",
+          },
+        }),
+        defineField({
+          name: "sourceRef",
+          title: "来源文档",
+          type: "reference",
+          to: [{ type: "keywordLibrary" }, { type: "pageSeo" }],
+          description: "选择来源后，点击文档顶部「同步关键词」按钮导入关键词",
+          options: {
+            filter: ({ document }) => {
+              const sourceType = (document as any)?.keywordSource?.sourceType;
+              if (!sourceType) return { filter: "false" };
+              if (sourceType === "keywordLibrary") {
+                return { filter: '_type == "keywordLibrary"' };
+              }
+              // pageSeo: 排除自身
+              const currentId = (document as any)?._id?.replace(/^drafts\./, "");
+              return {
+                filter: '_type == "pageSeo" && _id != $currentId',
+                params: { currentId },
+              };
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
       name: "ogImage",
       title: "社交分享图片",
       type: "image",

@@ -13,6 +13,7 @@ import { contactInfo } from "./documents/contactInfo";
 import { contactPageConfig } from "./documents/contactPageConfig";
 import { faq } from "./documents/faq";
 import { homePageConfig } from "./documents/homePageConfig";
+import { keywordLibrary } from "./documents/keywordLibrary";
 import { knowledgePageConfig } from "./documents/knowledgePageConfig";
 import { layoutConfig } from "./documents/layoutConfig";
 import { pageSeo } from "./documents/pageSeo";
@@ -48,6 +49,7 @@ export const documentTypes: SchemaTypeDefinition[] = [
   knowledgePageConfig,
   consultationFormConfig,
   pageSeo,
+  keywordLibrary,
   banner,
   service,
   advantage,

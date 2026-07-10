@@ -182,6 +182,15 @@ export const structure: StructureResolver = (S) =>
                 ),
             ])
         ),
+      S.listItem()
+        .id("keyword-library")
+        .title("公共关键词库")
+        .child(
+          S.documentList()
+            .id("keyword-library-list")
+            .title("公共关键词库")
+            .filter('_type == "keywordLibrary"')
+        ),
 
       // ── Banner 管理 ──
       S.listItem()
@@ -524,6 +533,7 @@ export const structure: StructureResolver = (S) =>
             "knowledgePageConfig",
             "consultationFormConfig",
             "pageSeo",
+            "keywordLibrary",
             "banner",
             "service",
             "advantage",
