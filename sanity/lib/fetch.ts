@@ -42,8 +42,5 @@ export async function sanityFetch<T>({
   revalidate = false,
   cache = "no-store",
 }: FetchOptions): Promise<T> {
-  return client.fetch<T>(query, params, {
-    cache,
-    next: { revalidate },
-  });
+  return client.fetch<T>(query, params);
 }
