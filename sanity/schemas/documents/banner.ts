@@ -17,8 +17,10 @@ export const banner = defineType({
     defineField({
       name: "title",
       title: "标题",
-      type: "string",
-      description: "[前台位置: 对应页面首屏Hero区域的主标题]",
+      type: "text",
+      rows: 2,
+      description:
+        "可按回车控制前台标题换行，电脑端和手机端都会保留换行",
       validation: (rule) => rule.required(),
     }),
     defineField({

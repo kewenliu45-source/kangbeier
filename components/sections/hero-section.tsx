@@ -114,10 +114,10 @@ export function HeroSection({ banner, homePageConfig }: HeroSectionProps) {
                 "text-foreground"
               )}
             >
-              {title.split("\n").map((line, i) => (
+              {title.split(/\r?\n/).map((line, i, arr) => (
                 <span key={i}>
-                  {line}
-                  {i < title.split("\n").length - 1 && <br />}
+                  {line || " "}
+                  {i < arr.length - 1 && <br />}
                 </span>
               ))}
             </h1>
