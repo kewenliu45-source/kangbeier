@@ -110,7 +110,7 @@ export function HeroSection({ banner, homePageConfig }: HeroSectionProps) {
 
             <h1
               className={cn(
-                "mt-5 text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-[2.9rem]",
+                "mt-5 text-3xl font-semibold leading-[1.3] sm:text-4xl lg:text-[2.9rem]",
                 "text-foreground"
               )}
             >
