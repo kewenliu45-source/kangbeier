@@ -110,14 +110,13 @@ export function HeroSection({ banner, homePageConfig }: HeroSectionProps) {
 
             <h1
               className={cn(
-                "mt-5 text-3xl font-semibold leading-[1.5] sm:text-4xl lg:text-[2.9rem]",
+                "mt-5 text-3xl font-semibold leading-[1.18] sm:text-4xl lg:text-[2.9rem]",
                 "text-foreground"
               )}
             >
               {title.split(/\r?\n/).map((line, i, arr) => (
-                <span key={i}>
+                <span key={i} className={i < arr.length - 1 ? "block mb-3" : undefined}>
                   {line || " "}
-                  {i < arr.length - 1 && <br />}
                 </span>
               ))}
             </h1>
