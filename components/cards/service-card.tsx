@@ -12,7 +12,7 @@ interface ServiceCardProps {
  * 服务项目卡片
  */
 export function ServiceCard({ service, className }: ServiceCardProps) {
-  const href = `/services/${service.slug?.current || ""}`;
+  const href = "/contact";
 
   return (
     <Link
