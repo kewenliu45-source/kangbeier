@@ -177,7 +177,7 @@ export default async function ContactPage() {
       </section>
 
       {/* 咨询表单 */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section id="form" className="py-12 lg:py-16 bg-white">
         <PageContainer>
           <div className="max-w-lg mx-auto">
             <Suspense fallback={<div className="text-center py-8">加载中...</div>}>
