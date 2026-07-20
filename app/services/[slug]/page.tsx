@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { fetchServiceBySlug, fetchServiceSlugs, fetchSiteSettings } from "@/sanity/lib/fetchers";
+import {
+  fetchConsultationFormConfig,
+  fetchServiceBySlug,
+  fetchServiceSlugs,
+  fetchSiteSettings,
+} from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
-import { cn } from "@/lib/utils";
 
 // 允许动态生成未预渲染的页面
 export const dynamicParams = true;
@@ -44,9 +50,10 @@ export async function generateMetadata({
 
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const [service, siteSettings] = await Promise.all([
+  const [service, siteSettings, consultationFormConfig] = await Promise.all([
     fetchServiceBySlug(slug),
     fetchSiteSettings(),
+    fetchConsultationFormConfig(),
   ]);
 
   if (!service) {
@@ -205,6 +212,17 @@ export default async function ServiceDetailPage({ params }: Props) {
 
       {/* FAQ */}
       <FaqSection faqs={faqs} />
+
+      {/* 鍜ㄨ琛ㄥ崟 */}
+      <section id="form" className="py-12 lg:py-16 bg-white">
+        <PageContainer>
+          <div className="max-w-lg mx-auto">
+            <Suspense fallback={<div className="text-center py-8">鍔犺浇涓?..</div>}>
+              <ConsultationForm config={consultationFormConfig} />
+            </Suspense>
+          </div>
+        </PageContainer>
+      </section>
 
       {/* CTA */}
       <CtaSection siteSettings={siteSettings} />

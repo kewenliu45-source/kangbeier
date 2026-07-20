@@ -100,7 +100,7 @@ export function ServiceSection({
         <FadeIn delay={0.1}>
           <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {displayServices.map((service) => (
-              <ServiceCard key={service._id} service={service} />
+              <ServiceCard key={service._id} service={service} href="/contact#form" />
             ))}
           </div>
         </FadeIn>

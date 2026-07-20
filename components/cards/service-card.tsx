@@ -5,18 +5,22 @@ import type { Service } from "@/types/sanity";
 
 interface ServiceCardProps {
   service: Service;
+  href?: string;
   className?: string;
 }
 
 /**
  * 服务项目卡片
  */
-export function ServiceCard({ service, className }: ServiceCardProps) {
-  const href = "/contact#form";
+export function ServiceCard({ service, href, className }: ServiceCardProps) {
+  const serviceHref = service.slug?.current
+    ? `/services/${service.slug.current}`
+    : "/services";
+  const cardHref = href || serviceHref;
 
   return (
     <Link
-      href={href}
+      href={cardHref}
       className={cn(
         "group block h-full bg-white rounded-2xl p-6 sm:p-7",
         "border border-border/50 shadow-sm",
