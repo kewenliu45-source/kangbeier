@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import {
   fetchConsultationFormConfig,
   fetchServiceBySlug,
-  fetchServiceSlugs,
   fetchSiteSettings,
 } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
@@ -18,15 +17,10 @@ import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
 
 // 允许动态生成未预渲染的页面
-export const dynamicParams = true;
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const slugs = await fetchServiceSlugs();
-  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
