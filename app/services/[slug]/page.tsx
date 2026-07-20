@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import {
   fetchConsultationFormConfig,
   fetchServiceBySlug,
@@ -15,6 +17,95 @@ import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { ConsultationForm } from "@/components/forms/consultation-form";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
+import { urlForImage } from "@/sanity/lib/image";
+
+const portableTextComponents: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => (
+      <p className="text-base leading-8 text-muted-foreground">{children}</p>
+    ),
+    h2: ({ children }) => (
+      <h2 className="pt-4 text-2xl font-bold text-foreground">{children}</h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="pt-2 text-xl font-bold text-foreground">{children}</h3>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className="border-l-4 border-accent pl-4 text-base leading-8 text-muted-foreground italic">
+        {children}
+      </blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="list-disc space-y-2 pl-6 text-base leading-8 text-muted-foreground">
+        {children}
+      </ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal space-y-2 pl-6 text-base leading-8 text-muted-foreground">
+        {children}
+      </ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li>{children}</li>,
+    number: ({ children }) => <li>{children}</li>,
+  },
+  marks: {
+    link: ({ children, value }) => {
+      const link = value as { href?: string; blank?: boolean } | undefined;
+      const href = link?.href || "#";
+      return (
+        <a
+          href={href}
+          target={link?.blank ? "_blank" : undefined}
+          rel={link?.blank ? "noopener noreferrer" : undefined}
+          className="font-medium text-accent underline-offset-4 hover:underline"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+  types: {
+    imageWithAlt: ({ value }) => {
+      const imageValue = value as {
+        image?: Parameters<typeof urlForImage>[0];
+        alt?: string;
+        caption?: string;
+      };
+
+      if (!imageValue.image) return null;
+
+      let imageUrl: string | null = null;
+      try {
+        imageUrl = urlForImage(imageValue.image).width(900).url();
+      } catch {
+        imageUrl = null;
+      }
+
+      if (!imageUrl) return null;
+
+      return (
+        <figure className="my-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageUrl}
+            alt={imageValue.alt || ""}
+            className="w-full rounded-2xl"
+            loading="lazy"
+          />
+          {imageValue.caption && (
+            <figcaption className="mt-2 text-center text-xs text-muted-foreground">
+              {imageValue.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
+  },
+};
 
 // 服务详情页在构建时按 Sanity slug 生成，避免静态部署环境下动态路由 404。
 export const dynamicParams = false;
@@ -106,6 +197,19 @@ export default async function ServiceDetailPage({ params }: Props) {
           </div>
         </PageContainer>
       </section>
+
+      {service?.description && service.description.length > 0 && (
+        <section className="py-12 lg:py-16 bg-white">
+          <PageContainer>
+            <div className="mx-auto max-w-3xl space-y-5">
+              <PortableText
+                value={service.description as unknown as PortableTextBlock[]}
+                components={portableTextComponents}
+              />
+            </div>
+          </PageContainer>
+        </section>
+      )}
 
       {/* 服务亮点 */}
       {service?.highlights && service.highlights.length > 0 && (
