@@ -158,7 +158,8 @@ export async function fetchServiceBySlug(
     return await sanityFetch<Service | null>({
       query: serviceBySlugQuery,
       params: { slug },
-      cache: "no-store",
+      cache: "force-cache",
+      revalidate: 60,
     });
   } catch {
     console.warn(`Failed to fetch service by slug: ${slug}`);
@@ -171,8 +172,7 @@ export async function fetchServiceSlugs(): Promise<string[]> {
   try {
     const result = await sanityFetch<{ slug: string }[]>({
       query: serviceSlugsQuery,
-      cache: "force-cache",
-      revalidate: 60,
+      cache: "no-store",
     });
     return result.map((item) => item.slug);
   } catch {

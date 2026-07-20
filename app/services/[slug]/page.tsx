@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
 import {
   fetchConsultationFormConfig,
   fetchServiceBySlug,
+  fetchServiceSlugs,
   fetchSiteSettings,
 } from "@/sanity/lib/fetchers";
 import { buildMetadata } from "@/lib/metadata";
@@ -16,11 +16,16 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
 
-// 允许动态生成未预渲染的页面
-export const dynamic = "force-dynamic";
+// 服务详情页在构建时按 Sanity slug 生成，避免静态部署环境下动态路由 404。
+export const dynamicParams = false;
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const slugs = await fetchServiceSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -30,7 +35,11 @@ export async function generateMetadata({
   const service = await fetchServiceBySlug(slug);
 
   if (!service) {
-    return buildMetadata({ title: "服务未找到", noIndex: true });
+    return buildMetadata({
+      title: "服务详情",
+      description: "了解康贝儿助孕中心服务项目，并提交咨询表单获取一对一方案建议。",
+      path: `/services/${slug}`,
+    });
   }
 
   return buildMetadata({
@@ -50,12 +59,13 @@ export default async function ServiceDetailPage({ params }: Props) {
     fetchConsultationFormConfig(),
   ]);
 
-  if (!service) {
-    notFound();
-  }
+  const serviceTitle = service?.title || "服务详情";
+  const serviceSummary =
+    service?.summary ||
+    "我们会根据您的年龄、身体情况、过往经历和当前需求，提供更适合的助孕咨询建议。";
 
   const faqs =
-    service.faqs?.map((faq) => ({
+    service?.faqs?.map((faq) => ({
       question: faq.question,
       answer: faq.answer,
     })) || [];
@@ -66,7 +76,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         items={[
           { name: "首页", url: "/" },
           { name: "服务项目", url: "/services" },
-          { name: service.title, url: `/services/${slug}` },
+          { name: serviceTitle, url: `/services/${slug}` },
         ]}
       />
       <FaqJsonLd faqs={faqs} />
@@ -76,7 +86,7 @@ export default async function ServiceDetailPage({ params }: Props) {
         <Breadcrumbs
           items={[
             { label: "服务项目", href: "/services" },
-            { label: service.title },
+            { label: serviceTitle },
           ]}
         />
       </PageContainer>
@@ -86,11 +96,11 @@ export default async function ServiceDetailPage({ params }: Props) {
         <PageContainer>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              {service.title}
+              {serviceTitle}
             </h1>
-            {service.summary && (
+            {serviceSummary && (
               <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
-                {service.summary}
+                {serviceSummary}
               </p>
             )}
           </div>
@@ -98,7 +108,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       </section>
 
       {/* 服务亮点 */}
-      {service.highlights && service.highlights.length > 0 && (
+      {service?.highlights && service.highlights.length > 0 && (
         <section className="py-12 lg:py-16 bg-white">
           <PageContainer>
             <SectionHeader
@@ -121,7 +131,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* 适合人群 */}
-      {service.suitableFor && service.suitableFor.length > 0 && (
+      {service?.suitableFor && service.suitableFor.length > 0 && (
         <section className="py-12 lg:py-16 bg-brand-cream">
           <PageContainer>
             <SectionHeader
@@ -144,7 +154,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* 服务流程 */}
-      {service.processSteps && service.processSteps.length > 0 && (
+      {service?.processSteps && service.processSteps.length > 0 && (
         <section className="py-12 lg:py-16 bg-white">
           <PageContainer>
             <SectionHeader
@@ -177,7 +187,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* 服务优势 */}
-      {service.advantages && service.advantages.length > 0 && (
+      {service?.advantages && service.advantages.length > 0 && (
         <section className="py-12 lg:py-16 bg-brand-cream">
           <PageContainer>
             <SectionHeader

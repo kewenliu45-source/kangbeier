@@ -401,7 +401,7 @@ export const serviceBySlugQuery = `*[_type == "service" && slug.current == $slug
   icon${IMAGE_ASSET},
   description[]{
     ...,
-    _type == "imageWithAlt"${IMAGE_WITH_ALT}
+    _type == "imageWithAlt" => ${IMAGE_WITH_ALT}
   },
   highlights,
   suitableFor,
