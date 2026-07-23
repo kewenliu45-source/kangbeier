@@ -94,6 +94,9 @@ export default async function RootLayout({
 
   return (
     <html lang="zh-CN" className={cn("font-sans", geist.variable)}>
+      <head>
+        <meta name="sogou_site_verification" content="OyIwuw6XQr" />
+      </head>
       <body className="min-h-screen flex flex-col">
         <OrganizationJsonLd
           name={brandName}
