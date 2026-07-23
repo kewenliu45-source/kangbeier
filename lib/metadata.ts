@@ -61,6 +61,8 @@ export function getSanityOgImageUrl(
       .width(1200)
       .height(630)
       .fit("crop")
+      .format("jpg")
+      .quality(82)
       .url();
   } catch {
     return undefined;
@@ -172,8 +174,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: fullTitle,
-      description: metaDescription,
+      title: ogTitle || fullTitle,
+      description: ogDescription || metaDescription,
       images: [ogImage],
     },
   };

@@ -37,6 +37,8 @@ export async function generateMetadata(): Promise<Metadata> {
       getSanityOgImageUrl(pageSeo?.ogImage),
     path: "/contact",
     noIndex: contactSeo?.noIndex || pageSeo?.noIndex || false,
+    ogTitle: contactSeo?.ogTitle,
+    ogDescription: contactSeo?.ogDescription,
   });
 }
 

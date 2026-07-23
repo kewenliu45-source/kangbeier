@@ -39,6 +39,8 @@ export async function generateMetadata({
       getSanityOgImageUrl(video.coverImage?.image),
     path: `/knowledge/videos/${slug}`,
     noIndex: video.seo?.noIndex || false,
+    ogTitle: video.seo?.ogTitle,
+    ogDescription: video.seo?.ogDescription,
   });
 }
 

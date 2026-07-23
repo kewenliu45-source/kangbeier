@@ -142,6 +142,8 @@ export async function generateMetadata({
       getSanityOgImageUrl(service.coverImage?.image),
     path: `/services/${slug}`,
     noIndex: service.seo?.noIndex || false,
+    ogTitle: service.seo?.ogTitle,
+    ogDescription: service.seo?.ogDescription,
   });
 }
 

@@ -40,6 +40,8 @@ export async function generateMetadata({
     path: `/knowledge/articles/${slug}`,
     noIndex: article.seo?.noIndex || false,
     type: "article",
+    ogTitle: article.seo?.ogTitle,
+    ogDescription: article.seo?.ogDescription,
   });
 }
 
