@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fetchKnowledgePageData } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -22,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
       seo?.description ||
       "整理试管基础知识、高龄备孕、胚胎筛查和常见问题，帮助您在咨询前先建立基本判断。",
     keywords: seo?.keywords,
+    image: getSanityOgImageUrl(seo?.ogImage),
     path: "/knowledge",
     noIndex: seo?.noIndex || false,
   });

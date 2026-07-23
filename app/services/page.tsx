@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { fetchServices, fetchSiteSettings, fetchServicesPageConfig } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { fetchServicesPageData } from "@/sanity/lib/fetchers";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -9,11 +9,18 @@ import { CtaSection } from "@/components/sections/cta-section";
 import type { Service } from "@/types/sanity";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchServicesPageData();
+  const seo = data.pageSeo;
+
   return buildMetadata({
-    title: "服务项目",
+    title: seo?.title || "服务项目",
     description:
+      seo?.description ||
       "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。",
+    keywords: seo?.keywords,
+    image: getSanityOgImageUrl(seo?.ogImage),
     path: "/services",
+    noIndex: seo?.noIndex || false,
   });
 }
 
@@ -75,13 +82,11 @@ const fallbackServices: Service[] = [
 ];
 
 export default async function ServicesPage() {
-  const [services, siteSettings, servicesPageConfig] = await Promise.all([
-    fetchServices(),
-    fetchSiteSettings(),
-    fetchServicesPageConfig(),
-  ]);
+  const data = await fetchServicesPageData();
   const displayServices =
-    services && services.length > 0 ? services : fallbackServices;
+    data.services && data.services.length > 0
+      ? data.services
+      : fallbackServices;
 
   return (
     <main>
@@ -94,9 +99,9 @@ export default async function ServicesPage() {
       <section className="bg-brand-cream pt-8 pb-12 lg:pt-12 lg:pb-16">
         <PageContainer>
           <SectionHeader
-            eyebrow={servicesPageConfig?.heroEyebrow || "服务项目"}
-            title={servicesPageConfig?.heroTitle || "根据您的情况，匹配更合适的助孕咨询路径"}
-            description={servicesPageConfig?.heroDescription || "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。"}
+            eyebrow={data.servicesPageConfig?.heroEyebrow || "服务项目"}
+            title={data.servicesPageConfig?.heroTitle || "根据您的情况，匹配更合适的助孕咨询路径"}
+            description={data.servicesPageConfig?.heroDescription || "不做统一套餐推荐，先了解年龄、身体情况、过往经历和当前需求，再给出更清晰的服务建议。"}
             align="center"
           />
         </PageContainer>
@@ -114,7 +119,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <CtaSection siteSettings={siteSettings} />
+      <CtaSection siteSettings={data.siteSettings} />
     </main>
   );
 }

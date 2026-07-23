@@ -19,6 +19,7 @@ import type {
   KnowledgePageConfig,
   PageSeo,
   Service,
+  ServicesPageConfig,
   SiteSettings,
   Video,
 } from "./sanity";
@@ -49,6 +50,7 @@ export interface ServicesPageData {
   pageSeo: PageSeo | null;
   banners: Banner[];
   services: Service[];
+  servicesPageConfig: ServicesPageConfig | null;
 }
 
 // ─────────────────────────────────────────────

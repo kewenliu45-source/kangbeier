@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fetchHomePageData } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { WebSiteJsonLd } from "@/components/seo/website-json-ld";
 import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { HeroSection } from "@/components/sections/hero-section";
@@ -29,6 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
       defaultSeo?.metaDescription ||
       "为高龄、二胎、试管多次失败及特殊生育需求家庭，提供一对一助孕咨询、方案评估和全程陪伴服务。",
     keywords: pageSeo?.keywords || defaultSeo?.keywords,
+    image:
+      getSanityOgImageUrl(pageSeo?.ogImage) ||
+      getSanityOgImageUrl(defaultSeo?.ogImage),
     path: "/",
     noIndex: pageSeo?.noIndex || defaultSeo?.noIndex || false,
   });

@@ -6,7 +6,12 @@ import { Footer } from "@/components/layout/footer";
 import { FloatingContact } from "@/components/layout/floating-contact";
 import { OrganizationJsonLd } from "@/components/seo/organization-json-ld";
 import { fetchLayoutData } from "@/sanity/lib/fetchers";
-import { setSiteName, getSiteUrl, getDefaultOgImage } from "@/lib/metadata";
+import {
+  setSiteName,
+  getSiteUrl,
+  getDefaultOgImage,
+  getSanityOgImageUrl,
+} from "@/lib/metadata";
 import { urlForImage } from "@/sanity/lib/image";
 import "./globals.css";
 
@@ -34,7 +39,10 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   const siteUrl = getSiteUrl();
-  const ogImage = getDefaultOgImage();
+  const defaultSeoImage = getSanityOgImageUrl(siteSettings?.defaultSeo?.ogImage);
+  const ogImage = defaultSeoImage || getDefaultOgImage();
+  const ogImageWidth = defaultSeoImage ? 1200 : 800;
+  const ogImageHeight = defaultSeoImage ? 630 : 800;
 
   return {
     title: siteName,
@@ -59,8 +67,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [
         {
           url: ogImage,
-          width: 800,
-          height: 800,
+          width: ogImageWidth,
+          height: ogImageHeight,
           alt: siteName,
         },
       ],

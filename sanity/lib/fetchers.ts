@@ -23,6 +23,7 @@ import type {
   ContactPageData,
   HomePageData,
   KnowledgePageData,
+  ServicesPageData,
 } from "@/types/page";
 
 import {
@@ -42,6 +43,7 @@ import {
   consultationFormConfigQuery,
   serviceBySlugQuery,
   serviceSlugsQuery,
+  servicesPageQuery,
   servicesQuery,
   siteSettingsQuery,
   videoBySlugQuery,
@@ -147,6 +149,25 @@ export async function fetchServices(): Promise<Service[]> {
   } catch {
     console.warn("Failed to fetch services");
     return [];
+  }
+}
+
+export async function fetchServicesPageData(): Promise<ServicesPageData> {
+  try {
+    return await sanityFetch<ServicesPageData>({
+      query: servicesPageQuery,
+      cache: "force-cache",
+      revalidate: 60,
+    });
+  } catch {
+    console.warn("Failed to fetch services page data");
+    return {
+      siteSettings: null,
+      pageSeo: null,
+      banners: [],
+      services: [],
+      servicesPageConfig: null,
+    };
   }
 }
 

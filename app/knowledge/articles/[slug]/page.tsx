@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
 import { fetchArticleBySlug, fetchSiteSettings } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { ArticleJsonLd } from "@/components/seo/article-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
@@ -34,6 +34,9 @@ export async function generateMetadata({
     title: article.seo?.metaTitle || article.title,
     description: article.seo?.metaDescription || article.excerpt,
     keywords: article.seo?.keywords,
+    image:
+      getSanityOgImageUrl(article.seo?.ogImage) ||
+      getSanityOgImageUrl(article.coverImage?.image),
     path: `/knowledge/articles/${slug}`,
     noIndex: article.seo?.noIndex || false,
     type: "article",

@@ -8,7 +8,7 @@ import {
   Mail,
 } from "lucide-react";
 import { fetchContactPageData, fetchConsultationFormConfig } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { LocalBusinessJsonLd } from "@/components/seo/local-business-json-ld";
 import { FaqJsonLd } from "@/components/seo/faq-json-ld";
@@ -32,6 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
       pageSeo?.description ||
       "如果您正在经历高龄备孕、试管多次失败、二胎规划或特殊生育需求，可以先做一次初步咨询。",
     keywords: contactSeo?.keywords || pageSeo?.keywords,
+    image:
+      getSanityOgImageUrl(contactSeo?.ogImage) ||
+      getSanityOgImageUrl(pageSeo?.ogImage),
     path: "/contact",
     noIndex: contactSeo?.noIndex || pageSeo?.noIndex || false,
   });

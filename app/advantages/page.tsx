@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { fetchAdvantagesPageData } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
 import { SectionHeader } from "@/components/shared/section-header";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
@@ -19,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       seo?.description ||
       "从身体情况评估、方案理解、资源对接到周期陪伴，为有特殊生育需求的家庭提供更清晰的咨询支持。",
     keywords: seo?.keywords,
+    image: getSanityOgImageUrl(seo?.ogImage),
     path: "/advantages",
     noIndex: seo?.noIndex || false,
   });

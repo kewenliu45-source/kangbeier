@@ -8,7 +8,7 @@ import {
   fetchServiceSlugs,
   fetchSiteSettings,
 } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { FaqJsonLd } from "@/components/seo/faq-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
@@ -137,6 +137,9 @@ export async function generateMetadata({
     title: service.seo?.metaTitle || service.title,
     description: service.seo?.metaDescription || service.summary,
     keywords: service.seo?.keywords,
+    image:
+      getSanityOgImageUrl(service.seo?.ogImage) ||
+      getSanityOgImageUrl(service.coverImage?.image),
     path: `/services/${slug}`,
     noIndex: service.seo?.noIndex || false,
   });

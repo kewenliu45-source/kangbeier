@@ -390,6 +390,41 @@ export const servicesQuery = `*[_type == "service"] | order(sortOrder asc){
   seo${SEO}
 }`;
 
+const SERVICES_PAGE_SEO = `*[_type == "pageSeo" && pageKey == "services"][0]{
+  _id,
+  _type,
+  pageKey,
+  title,
+  description,
+  "keywords": keywords[].text,
+  ogImage${IMAGE_ASSET},
+  canonicalUrl,
+  noIndex
+}`;
+
+export const servicesPageQuery = `{
+  "siteSettings": ${siteSettingsQuery},
+  "pageSeo": ${SERVICES_PAGE_SEO},
+  "banners": *[_type == "banner" && position == "servicesHero" && isActive == true] | order(sortOrder asc){
+    _id,
+    _type,
+    title,
+    subtitle,
+    description,
+    desktopImage${IMAGE_WITH_ALT},
+    mobileImage${IMAGE_WITH_ALT},
+    buttonText,
+    buttonLink,
+    secondaryButtonText,
+    secondaryButtonLink,
+    position,
+    isActive,
+    seoImage${IMAGE_ASSET}
+  },
+  "services": ${servicesQuery},
+  "servicesPageConfig": ${servicesPageConfigQuery}
+}`;
+
 /** 服务详情（按 slug） */
 export const serviceBySlugQuery = `*[_type == "service" && slug.current == $slug][0]{
   _id,

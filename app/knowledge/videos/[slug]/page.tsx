@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ExternalLink, Play } from "lucide-react";
 import { fetchVideoBySlug, fetchSiteSettings } from "@/sanity/lib/fetchers";
-import { buildMetadata } from "@/lib/metadata";
+import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { BreadcrumbJsonLd } from "@/components/seo/breadcrumb-json-ld";
 import { VideoJsonLd } from "@/components/seo/video-json-ld";
 import { PageContainer } from "@/components/shared/page-container";
@@ -34,6 +34,9 @@ export async function generateMetadata({
     title: video.seo?.metaTitle || video.title,
     description: video.seo?.metaDescription || video.summary,
     keywords: video.seo?.keywords,
+    image:
+      getSanityOgImageUrl(video.seo?.ogImage) ||
+      getSanityOgImageUrl(video.coverImage?.image),
     path: `/knowledge/videos/${slug}`,
     noIndex: video.seo?.noIndex || false,
   });

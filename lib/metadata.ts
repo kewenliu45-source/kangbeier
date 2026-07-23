@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { Seo } from "@/types/sanity";
+import type { SanityImage, Seo } from "@/types/sanity";
 import { urlForImage } from "@/sanity/lib/image";
 
 // ─────────────────────────────────────────────
@@ -49,6 +49,22 @@ export function buildCanonicalUrl(pathname: string): string {
 export function getDefaultOgImage(): string {
   const siteUrl = getSiteUrl();
   return `${siteUrl}/images/share.png`;
+}
+
+export function getSanityOgImageUrl(
+  image: SanityImage | null | undefined
+): string | undefined {
+  if (!image?.asset) return undefined;
+
+  try {
+    return urlForImage(image as unknown as Parameters<typeof urlForImage>[0])
+      .width(1200)
+      .height(630)
+      .fit("crop")
+      .url();
+  } catch {
+    return undefined;
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -122,6 +138,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
 
   // OG 图片：优先使用传入的图片，否则使用默认分享图片
   const ogImage = image || getDefaultOgImage();
+  const ogImageWidth = image ? 1200 : 800;
+  const ogImageHeight = image ? 630 : 800;
 
   return {
     title: fullTitle,
@@ -146,8 +164,8 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
       images: [
         {
           url: ogImage,
-          width: 800,
-          height: 800,
+          width: ogImageWidth,
+          height: ogImageHeight,
           alt: title || SITE_NAME,
         },
       ],
@@ -173,20 +191,7 @@ export function buildMetadataFromSeo(
     path?: string;
   }
 ): Metadata {
-  // 从 Sanity ogImage 生成 URL
-  let ogImageUrl: string | undefined;
-  if (seo?.ogImage?.asset) {
-    try {
-      ogImageUrl = urlForImage(
-        seo.ogImage as unknown as Parameters<typeof urlForImage>[0]
-      )
-        .width(1200)
-        .height(630)
-        .url();
-    } catch {
-      // 忽略错误，使用默认图片
-    }
-  }
+  const ogImageUrl = getSanityOgImageUrl(seo?.ogImage);
 
   return buildMetadata({
     title: seo?.metaTitle || fallback?.title,
