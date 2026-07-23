@@ -39,6 +39,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: siteName,
     description,
+    other: {
+      sogou_site_verification: "OyIwuw6XQr",
+    },
     icons: faviconUrl
       ? {
           icon: faviconUrl,
@@ -49,6 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: siteName,
       description,
+    other: {
+      sogou_site_verification: "OyIwuw6XQr",
+    },
       url: siteUrl,
       siteName,
       type: "website" as const,
@@ -66,6 +72,9 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image" as const,
       title: siteName,
       description,
+    other: {
+      sogou_site_verification: "OyIwuw6XQr",
+    },
       images: [ogImage],
     },
   };

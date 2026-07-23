@@ -25,6 +25,8 @@ const FALLBACK_SEO = {
   keywords: ["试管咨询", "高龄备孕", "第三代试管", "胚胎筛查", "助孕咨询"],
 };
 
+const SOGOU_SITE_VERIFICATION = "OyIwuw6XQr";
+
 // ─────────────────────────────────────────────
 // 工具函数
 // ─────────────────────────────────────────────
@@ -125,6 +127,9 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
     title: fullTitle,
     description: metaDescription,
     keywords: keywordsArray,
+    other: {
+      sogou_site_verification: SOGOU_SITE_VERIFICATION,
+    },
     robots: noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true },
