@@ -74,7 +74,7 @@ export function AdvantageSection({
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+          <div className="mx-auto grid max-w-5xl auto-rows-fr grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
             {displayAdvantages.map((advantage) => (
               <AdvantageCard key={advantage._id} advantage={advantage} />
             ))}
