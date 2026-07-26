@@ -6,12 +6,13 @@ import type { Advantage } from "@/types/sanity";
 
 interface AdvantageCardProps {
   advantage: Advantage;
-  index: number;
+  variant?: "compact" | "image";
   className?: string;
 }
 
 export function AdvantageCard({
   advantage,
+  variant = "compact",
   className,
 }: AdvantageCardProps) {
   const hasImage = advantage.coverImage?.image?.asset;
@@ -28,6 +29,30 @@ export function AdvantageCard({
     } catch {
       imageUrl = null;
     }
+  }
+
+  if (variant === "compact") {
+    return (
+      <div
+        className={cn(
+          "h-full bg-white rounded-2xl p-6 sm:p-7",
+          "border border-border/50 shadow-sm",
+          "transition-all duration-200",
+          "hover:shadow-md hover:border-primary/30 hover:-translate-y-0.5",
+          className
+        )}
+      >
+        <h3 className="text-base sm:text-lg font-bold text-foreground">
+          {advantage.title}
+        </h3>
+
+        {advantage.summary && (
+          <p className="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-3">
+            {advantage.summary}
+          </p>
+        )}
+      </div>
+    );
   }
 
   return (

@@ -106,11 +106,11 @@ export default async function AdvantagesPage() {
       <section className="py-12 lg:py-20 bg-brand-green-light">
         <PageContainer>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-            {displayAdvantages.map((advantage, index) => (
+            {displayAdvantages.map((advantage) => (
               <AdvantageCard
                 key={advantage._id}
                 advantage={advantage}
-                index={index}
+                variant="image"
               />
             ))}
           </div>
