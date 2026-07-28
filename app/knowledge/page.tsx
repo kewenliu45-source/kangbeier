@@ -88,7 +88,12 @@ function getKnowledgePageHref(
   }
 
   const query = params.toString();
-  return query ? `/knowledge?${query}` : "/knowledge";
+  const anchor =
+    pageKey === "articlePage"
+      ? "knowledge-article-pagination"
+      : "knowledge-video-pagination";
+
+  return query ? `/knowledge?${query}#${anchor}` : `/knowledge#${anchor}`;
 }
 
 function PaginationControls({
@@ -110,9 +115,15 @@ function PaginationControls({
     return null;
   }
 
+  const paginationId =
+    pageKey === "articlePage"
+      ? "knowledge-article-pagination"
+      : "knowledge-video-pagination";
+
   return (
     <nav
-      className="mt-8 flex flex-wrap items-center justify-center gap-2"
+      id={paginationId}
+      className="mt-8 flex scroll-mt-24 flex-wrap items-center justify-center gap-2"
       aria-label="分页导航"
     >
       {currentPage > 1 && (
@@ -123,7 +134,6 @@ function PaginationControls({
             articlePage,
             videoPage
           )}
-          scroll={false}
           className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-white px-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -143,7 +153,6 @@ function PaginationControls({
           <Link
             key={item}
             href={getKnowledgePageHref(pageKey, item, articlePage, videoPage)}
-            scroll={false}
             aria-current={item === currentPage ? "page" : undefined}
             className={cn(
               "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-3 text-sm font-medium transition-colors",
@@ -165,7 +174,6 @@ function PaginationControls({
             articlePage,
             videoPage
           )}
-          scroll={false}
           className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-white px-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
         >
           下一页
