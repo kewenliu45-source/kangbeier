@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { fetchKnowledgePageData } from "@/sanity/lib/fetchers";
 import { buildMetadata, getSanityOgImageUrl } from "@/lib/metadata";
 import { PageContainer } from "@/components/shared/page-container";
@@ -8,9 +9,169 @@ import { ArticleCard } from "@/components/cards/article-card";
 import { VideoCard } from "@/components/cards/video-card";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CtaSection } from "@/components/sections/cta-section";
-import { Film, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, Film, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Article, Video } from "@/types/sanity";
+
+const ITEMS_PER_PAGE = 6;
+
+type KnowledgeSearchParams = {
+  articlePage?: string | string[];
+  videoPage?: string | string[];
+};
+
+type PageKey = "articlePage" | "videoPage";
+
+type PaginationItem = number | "ellipsis";
+
+interface KnowledgePageProps {
+  searchParams?: Promise<KnowledgeSearchParams>;
+}
+
+function getSearchParamValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function parseRequestedPage(value: string | string[] | undefined) {
+  const page = Number.parseInt(getSearchParamValue(value) || "", 10);
+  return Number.isFinite(page) && page > 0 ? page : 1;
+}
+
+function clampPage(page: number, totalItems: number) {
+  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
+  return Math.min(page, totalPages);
+}
+
+function getPageItems(totalPages: number, currentPage: number): PaginationItem[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages = new Set([1, totalPages, currentPage]);
+
+  if (currentPage > 1) {
+    pages.add(currentPage - 1);
+  }
+
+  if (currentPage < totalPages) {
+    pages.add(currentPage + 1);
+  }
+
+  const sortedPages = Array.from(pages).sort((a, b) => a - b);
+
+  return sortedPages.flatMap((page, index) => {
+    const previousPage = sortedPages[index - 1];
+    if (previousPage && page - previousPage > 1) {
+      return ["ellipsis" as const, page];
+    }
+
+    return [page];
+  });
+}
+
+function getKnowledgePageHref(
+  pageKey: PageKey,
+  page: number,
+  articlePage: number,
+  videoPage: number
+) {
+  const params = new URLSearchParams();
+  const nextArticlePage = pageKey === "articlePage" ? page : articlePage;
+  const nextVideoPage = pageKey === "videoPage" ? page : videoPage;
+
+  if (nextArticlePage > 1) {
+    params.set("articlePage", String(nextArticlePage));
+  }
+
+  if (nextVideoPage > 1) {
+    params.set("videoPage", String(nextVideoPage));
+  }
+
+  const query = params.toString();
+  return query ? `/knowledge?${query}` : "/knowledge";
+}
+
+function PaginationControls({
+  pageKey,
+  currentPage,
+  totalItems,
+  articlePage,
+  videoPage,
+}: {
+  pageKey: PageKey;
+  currentPage: number;
+  totalItems: number;
+  articlePage: number;
+  videoPage: number;
+}) {
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  if (totalPages <= 1) {
+    return null;
+  }
+
+  return (
+    <nav
+      className="mt-8 flex flex-wrap items-center justify-center gap-2"
+      aria-label="分页导航"
+    >
+      {currentPage > 1 && (
+        <Link
+          href={getKnowledgePageHref(
+            pageKey,
+            currentPage - 1,
+            articlePage,
+            videoPage
+          )}
+          className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-white px-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+        >
+          <ChevronLeft className="h-4 w-4" />
+          上一页
+        </Link>
+      )}
+
+      {getPageItems(totalPages, currentPage).map((item, index) =>
+        item === "ellipsis" ? (
+          <span
+            key={`ellipsis-${index}`}
+            className="inline-flex h-9 min-w-9 items-center justify-center px-1 text-sm text-muted-foreground"
+          >
+            ...
+          </span>
+        ) : (
+          <Link
+            key={item}
+            href={getKnowledgePageHref(pageKey, item, articlePage, videoPage)}
+            aria-current={item === currentPage ? "page" : undefined}
+            className={cn(
+              "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-3 text-sm font-medium transition-colors",
+              item === currentPage
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-white text-muted-foreground hover:border-primary/30 hover:text-primary"
+            )}
+          >
+            {item}
+          </Link>
+        )
+      )}
+
+      {currentPage < totalPages && (
+        <Link
+          href={getKnowledgePageHref(
+            pageKey,
+            currentPage + 1,
+            articlePage,
+            videoPage
+          )}
+          className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-white px-3 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+        >
+          下一页
+          <ChevronRight className="h-4 w-4" />
+        </Link>
+      )}
+    </nav>
+  );
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await fetchKnowledgePageData();
@@ -121,8 +282,9 @@ const fallbackVideos: Video[] = [
   },
 ];
 
-export default async function KnowledgePage() {
+export default async function KnowledgePage({ searchParams }: KnowledgePageProps) {
   const data = await fetchKnowledgePageData();
+  const resolvedSearchParams = searchParams ? await searchParams : {};
 
   const displayArticles =
     data.articles && data.articles.length > 0
@@ -130,6 +292,22 @@ export default async function KnowledgePage() {
       : fallbackArticles;
   const displayVideos =
     data.videos && data.videos.length > 0 ? data.videos : fallbackVideos;
+  const articlePage = clampPage(
+    parseRequestedPage(resolvedSearchParams.articlePage),
+    displayArticles.length
+  );
+  const videoPage = clampPage(
+    parseRequestedPage(resolvedSearchParams.videoPage),
+    displayVideos.length
+  );
+  const pagedArticles = displayArticles.slice(
+    (articlePage - 1) * ITEMS_PER_PAGE,
+    articlePage * ITEMS_PER_PAGE
+  );
+  const pagedVideos = displayVideos.slice(
+    (videoPage - 1) * ITEMS_PER_PAGE,
+    videoPage * ITEMS_PER_PAGE
+  );
   const faqs =
     data.faqs?.map((faq) => ({
       question: faq.question,
@@ -183,11 +361,20 @@ export default async function KnowledgePage() {
             align="center"
           />
           {displayArticles.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-              {displayArticles.map((article) => (
-                <ArticleCard key={article._id} article={article} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+                {pagedArticles.map((article) => (
+                  <ArticleCard key={article._id} article={article} />
+                ))}
+              </div>
+              <PaginationControls
+                pageKey="articlePage"
+                currentPage={articlePage}
+                totalItems={displayArticles.length}
+                articlePage={articlePage}
+                videoPage={videoPage}
+              />
+            </>
           ) : (
             <div className="text-center py-12">
               <BookOpen className="w-10 h-10 mx-auto mb-3 text-muted-foreground/40" />
@@ -209,11 +396,20 @@ export default async function KnowledgePage() {
             align="center"
           />
           {displayVideos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-              {displayVideos.map((video) => (
-                <VideoCard key={video._id} video={video} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+                {pagedVideos.map((video) => (
+                  <VideoCard key={video._id} video={video} />
+                ))}
+              </div>
+              <PaginationControls
+                pageKey="videoPage"
+                currentPage={videoPage}
+                totalItems={displayVideos.length}
+                articlePage={articlePage}
+                videoPage={videoPage}
+              />
+            </>
           ) : (
             <div className="text-center py-12">
               <Film className="w-10 h-10 mx-auto mb-3 text-muted-foreground/40" />
