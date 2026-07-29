@@ -31,8 +31,11 @@ export async function generateMetadata({
   }
 
   return buildMetadata({
-    title: article.seo?.metaTitle || article.title,
-    description: article.seo?.metaDescription || article.excerpt,
+    title: article.seo?.ogTitle || article.seo?.metaTitle || article.title,
+    description:
+      article.seo?.ogDescription ||
+      article.seo?.metaDescription ||
+      article.excerpt,
     keywords: article.seo?.keywords,
     image:
       getSanityOgImageUrl(article.seo?.ogImage) ||
@@ -42,6 +45,7 @@ export async function generateMetadata({
     type: "article",
     ogTitle: article.seo?.ogTitle,
     ogDescription: article.seo?.ogDescription,
+    appendSiteName: !article.seo?.ogTitle,
   });
 }
 

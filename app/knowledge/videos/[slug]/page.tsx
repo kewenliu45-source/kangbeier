@@ -31,8 +31,9 @@ export async function generateMetadata({
   }
 
   return buildMetadata({
-    title: video.seo?.metaTitle || video.title,
-    description: video.seo?.metaDescription || video.summary,
+    title: video.seo?.ogTitle || video.seo?.metaTitle || video.title,
+    description:
+      video.seo?.ogDescription || video.seo?.metaDescription || video.summary,
     keywords: video.seo?.keywords,
     image:
       getSanityOgImageUrl(video.seo?.ogImage) ||
@@ -41,6 +42,7 @@ export async function generateMetadata({
     noIndex: video.seo?.noIndex || false,
     ogTitle: video.seo?.ogTitle,
     ogDescription: video.seo?.ogDescription,
+    appendSiteName: !video.seo?.ogTitle,
   });
 }
 

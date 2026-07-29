@@ -134,8 +134,11 @@ export async function generateMetadata({
   }
 
   return buildMetadata({
-    title: service.seo?.metaTitle || service.title,
-    description: service.seo?.metaDescription || service.summary,
+    title: service.seo?.ogTitle || service.seo?.metaTitle || service.title,
+    description:
+      service.seo?.ogDescription ||
+      service.seo?.metaDescription ||
+      service.summary,
     keywords: service.seo?.keywords,
     image:
       getSanityOgImageUrl(service.seo?.ogImage) ||
@@ -144,6 +147,7 @@ export async function generateMetadata({
     noIndex: service.seo?.noIndex || false,
     ogTitle: service.seo?.ogTitle,
     ogDescription: service.seo?.ogDescription,
+    appendSiteName: !service.seo?.ogTitle,
   });
 }
 

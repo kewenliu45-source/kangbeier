@@ -57,13 +57,14 @@ export function getSanityOgImageUrl(
   if (!image?.asset) return undefined;
 
   try {
-    return urlForImage(image as unknown as Parameters<typeof urlForImage>[0])
+    const url = urlForImage(image as unknown as Parameters<typeof urlForImage>[0])
       .width(1200)
       .height(630)
       .fit("crop")
       .format("jpg")
       .quality(82)
       .url();
+    return url.replace(/([?&])auto=format&?/, "$1").replace(/[?&]$/, "");
   } catch {
     return undefined;
   }
@@ -92,6 +93,7 @@ interface BuildMetadataOptions {
   ogTitle?: string;
   /** 社交分享描述（覆盖 description） */
   ogDescription?: string;
+  appendSiteName?: boolean;
 }
 
 /**
@@ -117,6 +119,7 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
     type = "website",
     ogTitle,
     ogDescription,
+    appendSiteName = true,
   } = options;
 
   const siteUrl = getSiteUrl();
@@ -124,9 +127,9 @@ export function buildMetadata(options: BuildMetadataOptions = {}): Metadata {
 
   // 标题处理：带品牌后缀（使用动态 SITE_NAME）
   const currentSiteName = getSiteName();
-  const fullTitle = title
+  const fullTitle = title && appendSiteName
     ? `${title} | ${currentSiteName}`
-    : currentSiteName;
+    : title || currentSiteName;
 
   // 描述处理
   const metaDescription = description || FALLBACK_SEO.description;
