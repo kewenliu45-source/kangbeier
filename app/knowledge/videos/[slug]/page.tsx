@@ -11,6 +11,7 @@ import { PageContainer } from "@/components/shared/page-container";
 import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { CtaSection } from "@/components/sections/cta-section";
 import { urlForImage } from "@/sanity/lib/image";
+import { formatChineseDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 // 强制动态渲染，避免构建时超时
@@ -104,11 +105,7 @@ export default async function VideoDetailPage({ params }: Props) {
 
   // 日期格式化
   const publishedDate = video.publishedAt
-    ? new Date(video.publishedAt).toLocaleDateString("zh-CN", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
+    ? formatChineseDate(video.publishedAt)
     : null;
 
   return (

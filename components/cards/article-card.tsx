@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Calendar, FileText } from "lucide-react";
+import { formatChineseDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 import { urlForImage } from "@/sanity/lib/image";
 import type { Article } from "@/types/sanity";
@@ -34,11 +35,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
 
   // 日期格式化
   const publishedDate = article.publishedAt
-    ? new Date(article.publishedAt).toLocaleDateString("zh-CN", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
+    ? formatChineseDate(article.publishedAt)
     : null;
 
   return (
